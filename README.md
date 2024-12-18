@@ -1,7 +1,21 @@
 # Ubicua_Paquete_Envio
 
-[Enlace del Word en Docs](https://docs.google.com/document/d/1EwQTDTlvPVAPi7CF_E9ypvhFXsR4SJYN-_lQEtFpixw/edit?usp=sharing)
+[Enlace memoria en Word](https://docs.google.com/document/d/1EwQTDTlvPVAPi7CF_E9ypvhFXsR4SJYN-_lQEtFpixw/edit?usp=sharing)
 
+
+## Directorios
+
+### android
+Contiene el proyecto en netbeans de la aplicación android
+
+### server
+Contiene el proyecto en netbeans que ejecutará el servidor
+
+### DB 
+Contiene los scripts de carga de tablas y datos en la base de datos
+
+### arduino
+Código del esp de arduino
 
 ## RoadMap
 
