@@ -1,5 +1,7 @@
 # Ubicua_Paquete_Envio
 
+[Enlace del Word en Docs](https://docs.google.com/document/d/1EwQTDTlvPVAPi7CF_E9ypvhFXsR4SJYN-_lQEtFpixw/edit?usp=sharing)
+
 
 ## RoadMap
 
