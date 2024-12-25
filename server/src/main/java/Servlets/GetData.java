@@ -11,9 +11,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import logic.Log;
-import logic.Logic;
-import logic.Measurement;
+import Logic.Log;
+import Logic.Logic;
+import Logic.Measurement;
 
 /**
  * Servlet implementation class GetData
