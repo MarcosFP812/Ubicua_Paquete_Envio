@@ -59,15 +59,13 @@ public class Projectinitializer implements ServletContextListener {
         } else {
             Log.log.info("Error al insertar el cliente.");
         }
-        
-        /*
 
         Log.log.info("\nObteniendo clientes de tipo 'RECEPTOR'...");
         ArrayList<Cliente> receptores = FachadaBD.getClientesByTipo("Receptor");
         for (Cliente receptor : receptores) {
             Log.log.info(receptor);
         }
-
+        
         Log.log.info("\nObteniendo cliente por ID...");
         if (!allClientes.isEmpty()) {
             int idToSearch = allClientes.get(0).getId(); // Usa el ID del primer cliente en la lista
@@ -78,7 +76,7 @@ public class Projectinitializer implements ServletContextListener {
                 Log.log.info("No se encontró el cliente con ID " + idToSearch);
             }
         }
-        */
+        
         Log.log.info("");
         
         /*Log.log.info("-->Suscribe Topics<--");

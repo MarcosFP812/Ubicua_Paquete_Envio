@@ -88,6 +88,6 @@ public class ConnectionDB {
     }
 
     public static PreparedStatement insertTipo(Connection con, String tipo) {
-        return getStatement(con, "INSERT INTO " + tipo + " (Cliente_idCliente) VALUES (?)");
+        return getStatement(con, "INSERT INTO "+tipo+" (Cliente_idCliente) VALUES (?)");
     }
 }

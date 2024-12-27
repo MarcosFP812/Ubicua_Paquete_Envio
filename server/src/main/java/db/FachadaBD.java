@@ -10,16 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import Logic.Log;
 import Logic.Cliente;
@@ -53,7 +45,6 @@ public class FachadaBD {
         Connection con = null;
 
         try {
-            
             con = connector.obtainConnection(true);
             PreparedStatement ps = ConnectionDB.selectAllClientes(con);
             Log.log.info("Ejecutando: "+ps);
@@ -148,20 +139,14 @@ public class FachadaBD {
             ps.setString(3, pw);
             ps.setDouble(4, cliente.getUbicacion().getLongitud());
             ps.setDouble(5, cliente.getUbicacion().getLatitud());
-
             Log.log.info("Ejecutando: "+ps);
             ps.executeUpdate();
             
-
-            ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) {
-                int clienteId = keys.getInt(1);
-                PreparedStatement tipoPs = ConnectionDB.insertTipo(con, cliente.getTipo());
-                tipoPs.setInt(1, clienteId);
-                tipoPs.executeUpdate();
-                Log.log.info("Ejecutando: "+ps);
-            }
-
+            PreparedStatement tipoPs = ConnectionDB.insertTipo(con, cliente.getTipo());
+            tipoPs.setInt(1, ultimoIdCliente);
+            Log.log.info("Ejecutando: "+tipoPs);
+            tipoPs.executeUpdate();
+     
             con.commit();
             success = true;
         } catch (SQLException | NullPointerException e) {
