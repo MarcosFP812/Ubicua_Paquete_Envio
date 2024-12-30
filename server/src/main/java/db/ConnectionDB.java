@@ -90,4 +90,17 @@ public class ConnectionDB {
     public static PreparedStatement insertTipo(Connection con, String tipo) {
         return getStatement(con, "INSERT INTO "+tipo+" (Cliente_idCliente) VALUES (?)");
     }
+    
+    public static PreparedStatement selectIdPorNombre(Connection con) {
+        return getStatement(con, "SELECT idCliente FROM Cliente WHERE Nombre = ?");
+    }
+    
+    public static PreparedStatement checkUsuarioPorNombreYContraseña(Connection con) {
+        return getStatement(con, "SELECT COUNT(*) AS count FROM Cliente WHERE Nombre = ? AND PW = ?");
+    }
+    
+    public static PreparedStatement checkClienteEnTabla(Connection con, String tabla) {
+        return getStatement(con, "SELECT COUNT(*) AS count FROM " + tabla + " WHERE Cliente_idCliente = ?");
+    }
+
 }

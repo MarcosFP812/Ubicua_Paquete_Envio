@@ -107,13 +107,42 @@ public class FachadaBD {
             PreparedStatement ps = ConnectionDB.selectClienteById(con);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            Log.log.info("Ejecutando: "+ps);
+            Log.log.info("Ejecutando: " + ps);
 
             if (rs.next()) {
+                // Crear el cliente y asignar sus propiedades básicas
+                cliente = new Cliente();
                 Ubicacion ubicacion = new Ubicacion(rs.getDouble("Longitud"), rs.getDouble("Latitud"));
                 cliente.setId(rs.getInt("idCliente"));
                 cliente.setNombre(rs.getString("Nombre"));
                 cliente.setUbicacion(ubicacion);
+
+                // Determinar el tipo del cliente (remitente o receptor)
+                PreparedStatement tipoPsRemitente = ConnectionDB.checkClienteEnTabla(con, "Remitente");
+                tipoPsRemitente.setInt(1, id);
+                ResultSet tipoRs = tipoPsRemitente.executeQuery();
+                Log.log.info("Ejecutando para tipo Remitente: " + tipoPsRemitente);
+
+                if (tipoRs.next() && tipoRs.getInt("count") > 0) {
+                    cliente.setTipo("Remitente");
+                } else {
+                    PreparedStatement tipoPsReceptor = ConnectionDB.checkClienteEnTabla(con, "Receptor");
+                    tipoPsReceptor.setInt(1, id);
+                    ResultSet receptorRs = tipoPsReceptor.executeQuery();
+                    Log.log.info("Ejecutando para tipo Receptor: " + tipoPsReceptor);
+
+                    if (receptorRs.next() && receptorRs.getInt("count") > 0) {
+                        cliente.setTipo("Receptor");
+                    } else {
+                        cliente.setTipo("Desconocido");
+                    }
+
+                    receptorRs.close();
+                    tipoPsReceptor.close();
+                }
+
+                tipoRs.close();
+                tipoPsRemitente.close();
             }
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
@@ -123,6 +152,57 @@ public class FachadaBD {
 
         return cliente;
     }
+
+    
+    public static int getIdByNombre(String nombre) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        int idCliente = -1; // Devuelve -1 si no se encuentra el cliente
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectIdPorNombre(con);
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+            Log.log.info("Ejecutando: " + ps);
+
+            if (rs.next()) {
+                idCliente = rs.getInt("idCliente");
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return idCliente;
+    }
+    
+    public static boolean validarUsuario(String nombre, String pw) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        boolean esValido = false;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.checkUsuarioPorNombreYContraseña(con);
+            ps.setString(1, nombre);
+            ps.setString(2, pw);
+            ResultSet rs = ps.executeQuery();
+            Log.log.info("Ejecutando: " + ps);
+
+            if (rs.next()) {
+                esValido = rs.getInt("count") > 0;
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return esValido;
+    }
+
 
     public static boolean insertCliente(Cliente cliente, String pw) {
         ConnectionDB connector = new ConnectionDB();
@@ -186,6 +266,8 @@ public class FachadaBD {
 
         return maxId;
     }
+    
+    
     
     
     /**
