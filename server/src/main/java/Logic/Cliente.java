@@ -22,6 +22,14 @@ public class Cliente {
         Log.log.info("Creando cliente...");
     }
 
+    public Cliente(String nombre, Ubicacion ubicacion, String tipo) {
+        Log.log.info("Creando cliente: " + "Cliente{" + "nombre=" + nombre + ", ubicacion=" + ubicacion + ", tipo" + tipo + '}');
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.tipo = tipo;
+    }
+    
+
     /**
      * Get the value of tipo
      *
@@ -42,7 +50,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "nombre=" + nombre + ", Id=" + Id + ", ubicacion=" + ubicacion + '}';
+        return "Cliente{" + "nombre=" + nombre + ", Id=" + Id + ", ubicacion=" + ubicacion + ", tipo" + tipo + '}';
     }
 
     /**

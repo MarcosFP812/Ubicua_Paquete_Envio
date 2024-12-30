@@ -2,13 +2,8 @@ package db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,7 +11,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import Logic.Log;
-import Logic.Cliente;
+
 
 /**
  * Se encarga de establecer la conexión a la base de datos y preparar las consultas
@@ -103,4 +98,46 @@ public class ConnectionDB {
         return getStatement(con, "SELECT COUNT(*) AS count FROM " + tabla + " WHERE Cliente_idCliente = ?");
     }
 
+    // Consultas para Envio
+    public static PreparedStatement selectEnviosPorCliente(Connection con) {
+        return getStatement(con, "SELECT idEnvio FROM Envio WHERE Remitente_Cliente_idCliente = ?");
+    }
+
+    public static PreparedStatement selectHistorialEnvio(Connection con) {
+        return getStatement(con, "SELECT * FROM Dato WHERE Envio_idEnvio = ?");
+    }
+
+    public static PreparedStatement selectEnviosActivosPorCliente(Connection con) {
+        return getStatement(con, "SELECT idEnvio FROM Envio WHERE Remitente_Cliente_idCliente = ? AND Finalizado = 0");
+    }
+
+    public static PreparedStatement selectHistorialEnvioDesdeFecha(Connection con) {
+        return getStatement(con, "SELECT * FROM Dato WHERE Envio_idEnvio = ? AND Fecha >= ?");
+    }
+
+    public static PreparedStatement selectPosiblesReceptores(Connection con) {
+        return getStatement(con, "SELECT * FROM Receptor NATURAL JOIN Cliente");
+    }
+
+    public static PreparedStatement insertNuevoEnvio(Connection con) {
+        return getStatement(con, "INSERT INTO Envio (idEnvio, Transportista_idTransportista, Paquete_idPaquete, Receptor_Cliente_idCliente, Remitente_Cliente_idCliente, Finalizado) VALUES (?, ?, ?, ?, ?, 0)");
+    }
+
+    public static PreparedStatement insertTemperaturaHumedad(Connection con) {
+        return getStatement(con, "INSERT INTO TH (Dato_idDato, Temperatura, Humedad, Fecha) VALUES (?, ?, ?, ?)");
+    }
+
+    public static PreparedStatement insertUbicacion(Connection con) {
+        return getStatement(con, "INSERT INTO Ubicacion (Dato_idDato, Longitud, Latitud, Velocidad, Velocidad_via, Fecha) VALUES (?, ?, ?, ?, ?, ?)");
+    }
+
+    public static PreparedStatement insertVentilador(Connection con) {
+        return getStatement(con, "INSERT INTO Ventilador (Dato_idDato, Activo, Fecha) VALUES (?, ?, ?)");
+    }
+
+    public static PreparedStatement insertCambioEstado(Connection con) {
+        return getStatement(con, "INSERT INTO Estado (Dato_idDato, Estado, Fecha) VALUES (?, ?, ?)");
+    }
+
 }
+

@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebListener;
 import mqtt.MQTTBroker;
 import mqtt.MQTTPublisher;
 import mqtt.MQTTSuscriber;
-import db.FachadaBD;
+import db.FachadaClienteBD;
 /**
  * Inicializar hilos
  */
@@ -33,10 +33,10 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Pruebas acceso base de datos...");
         
-        FachadaBD fachada = new FachadaBD();
+        FachadaClienteBD fachada = new FachadaClienteBD();
         
         Log.log.info("\nObteniendo todos los clientes...");
-        ArrayList<Cliente> allClientes = FachadaBD.getAllClientes();
+        ArrayList<Cliente> allClientes = FachadaClienteBD.getAllClientes();
         for (Cliente cl : allClientes) {
             Log.log.info(cl);
         }
@@ -53,23 +53,29 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Insertando cliente...");
         
-        boolean insertSuccess = FachadaBD.insertCliente(cliente, PW);
-        if (insertSuccess) {
+        int insertSuccess = FachadaClienteBD.insertCliente(cliente, PW);
+        if (insertSuccess != -1) {
             Log.log.info("Cliente insertado exitosamente.");
         } else {
             Log.log.info("Error al insertar el cliente.");
         }
 
         Log.log.info("\nObteniendo clientes de tipo 'RECEPTOR'...");
-        ArrayList<Cliente> receptores = FachadaBD.getClientesByTipo("Receptor");
+        ArrayList<Cliente> receptores = FachadaClienteBD.getClientesByTipo("Receptor");
+        for (Cliente receptor : receptores) {
+            Log.log.info(receptor);
+        }
+        
+        Log.log.info("\nObteniendo clientes de tipo 'REMITENTE'...");
+        ArrayList<Cliente> remitentes = FachadaClienteBD.getClientesByTipo("Receptor");
         for (Cliente receptor : receptores) {
             Log.log.info(receptor);
         }
         
         Log.log.info("\nObteniendo cliente por ID...");
         if (!allClientes.isEmpty()) {
-            int idToSearch = allClientes.get(0).getId(); // Usa el ID del primer cliente en la lista
-            Cliente clienteById = FachadaBD.getClienteById(idToSearch);
+            int idToSearch = allClientes.get(1).getId(); // Usa el ID del primer cliente en la lista
+            Cliente clienteById = FachadaClienteBD.getClienteById(idToSearch);
             if (clienteById != null) {
                 Log.log.info("Cliente encontrado: " + clienteById);
             } else {

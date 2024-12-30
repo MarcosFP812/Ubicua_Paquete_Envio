@@ -21,11 +21,11 @@ import Logic.Ubicacion;
  * Usa connectionbd para realizar las consultas a la bd
  * @author socra
  */
-public class FachadaBD {
+public class FachadaClienteBD {
     
     private static int ultimoIdCliente;    
     
-    public FachadaBD() {
+    public FachadaClienteBD() {
         
         Log.log.info("Creando Fachada...");
         
@@ -36,7 +36,6 @@ public class FachadaBD {
         
         
     }
-
 
     public static ArrayList<Cliente> getAllClientes() {
         
@@ -204,11 +203,9 @@ public class FachadaBD {
     }
 
 
-    public static boolean insertCliente(Cliente cliente, String pw) {
+    public static int insertCliente(Cliente cliente, String pw) {
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
-        boolean success = false;
-        int id = 0;
 
         try {
             con = connector.obtainConnection(false);
@@ -228,14 +225,13 @@ public class FachadaBD {
             tipoPs.executeUpdate();
      
             con.commit();
-            success = true;
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
         } finally {
             connector.closeConnection(con);
         }
 
-        return success;
+        return ultimoIdCliente;
     }
     
     public static int ultimoIdCliente() {
@@ -266,8 +262,6 @@ public class FachadaBD {
 
         return maxId;
     }
-    
-    
     
     
     /**
