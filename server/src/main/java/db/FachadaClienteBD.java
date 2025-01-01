@@ -22,19 +22,9 @@ import Logic.Ubicacion;
  * @author socra
  */
 public class FachadaClienteBD {
-    
-    private static int ultimoIdCliente;    
-    
+        
     public FachadaClienteBD() {
-        
         Log.log.info("Creando Fachada...");
-        
-        ultimoIdCliente = this.ultimoIdCliente();
-        if (ultimoIdCliente == -1){
-            Log.log.info("NO SE HA PODIDO ENCONTRAR UN ID DE UN CLIENTE PUEDE QUE HAYA ERROR A LA HORA DE LA INSERCIÓN");
-        }
-        
-        
     }
 
     public static ArrayList<Cliente> getAllClientes() {
@@ -84,6 +74,7 @@ public class FachadaClienteBD {
                 cliente.setId(rs.getInt("idCliente"));
                 cliente.setNombre(rs.getString("Nombre"));
                 cliente.setUbicacion(ubicacion);
+                cliente.setTipo(tipo);
 
                 clientes.add(cliente);
             }
@@ -206,10 +197,12 @@ public class FachadaClienteBD {
     public static int insertCliente(Cliente cliente, String pw) {
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
+        int ultimoIdCliente = -1;
 
         try {
             con = connector.obtainConnection(false);
             PreparedStatement ps = ConnectionDB.insertCliente(con);
+            ultimoIdCliente = FachadaClienteBD.ultimoIdCliente();
             ultimoIdCliente += 1;
             ps.setInt(1, ultimoIdCliente);
             ps.setString(2, cliente.getNombre());
@@ -261,25 +254,6 @@ public class FachadaClienteBD {
         }
 
         return maxId;
-    }
-    
-    
-    /**
-     * Get the value of ultimoIdCliente
-     *
-     * @return the value of ultimoIdCliente
-     */
-    public int getUltimoIdCliente() {
-        return ultimoIdCliente;
-    }
-
-    /**
-     * Set the value of ultimoIdCliente
-     *
-     * @param ultimoIdCliente new value of ultimoIdCliente
-     */
-    public void setUltimoIdCliente(int ultimoIdCliente) {
-        this.ultimoIdCliente = ultimoIdCliente;
     }
     
 }

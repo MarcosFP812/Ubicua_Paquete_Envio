@@ -5,6 +5,8 @@
 package Logic;
 
 import db.FachadaClienteBD;
+import db.FachadaEnvioBD;
+import java.util.ArrayList;
 
 /**
  *
@@ -43,10 +45,32 @@ public class Controlador {
         return !existe;
     }
     
-    /* Sacar todos los envíos realizados por un cliente
-    *
-    *
+    /* Sacar todos los posibles receptores
+    * 1. consultar todos los clientes de tipo receptor
     */
+    public static ArrayList<Cliente> obtenerReceptores(){
+        ArrayList<Cliente> clientes = FachadaClienteBD.getClientesByTipo("Receptor");
+        
+        return clientes;
+    }
+    
+    /* sacar todos los transportistas
+    * 1. consultar todos los transportistas
+    */
+    public static ArrayList<Transportista> obtenerTransportistas(){
+        ArrayList<Transportista> t = FachadaEnvioBD.getTransportistas();
+        
+        return t;
+    }
+    
+    /* Crear un nuevo envío
+    * Dato el id del cliente, 
+    */
+    
+    /* Sacar todos los envíos realizados por un cliente
+    * 1. Dado un id llamar a la fachada para obtener los envíos
+    */
+    
     
     /* Ver el historial de un envío realizado
     *
@@ -59,16 +83,6 @@ public class Controlador {
     */
     
     /* Ver el historial de un envío desde una fecha
-    *
-    *
-    */
-    
-    /* Sacar todos los posibles receptores
-    *
-    *
-    */
-    
-    /* Crear un nuevo envío
     *
     *
     */

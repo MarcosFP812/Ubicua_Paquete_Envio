@@ -65,6 +65,10 @@ public class ConnectionDB {
     public static PreparedStatement selectAllClientes(Connection con) {
         return getStatement(con, "SELECT * FROM Cliente");
     }
+    
+    public static PreparedStatement selectAllTransportistas(Connection con) {
+        return getStatement(con, "SELECT * FROM Transportista");
+    }
 
     public static PreparedStatement selectClientesByTipo(Connection con, String tipo) {
         return getStatement(con, "SELECT * FROM Cliente WHERE idCliente IN (SELECT Cliente_idCliente FROM " + tipo + ")");
@@ -121,6 +125,10 @@ public class ConnectionDB {
 
     public static PreparedStatement insertNuevoEnvio(Connection con) {
         return getStatement(con, "INSERT INTO Envio (idEnvio, Transportista_idTransportista, Paquete_idPaquete, Receptor_Cliente_idCliente, Remitente_Cliente_idCliente, Finalizado) VALUES (?, ?, ?, ?, ?, 0)");
+    }
+
+    public static PreparedStatement insertDato(Connection con) {
+        return getStatement(con, "INSERT INTO Dato (idDato, Envio_idEnvio, Fecha) VALUES (?, ?)");
     }
 
     public static PreparedStatement insertTemperaturaHumedad(Connection con) {

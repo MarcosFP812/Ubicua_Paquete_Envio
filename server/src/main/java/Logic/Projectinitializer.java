@@ -33,8 +33,23 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Pruebas acceso base de datos...");
         
-        FachadaClienteBD fachada = new FachadaClienteBD();
+        //Test registrar Cliente
+        Controlador.registrarCliente("ubicua", "ubicua", 0, 0, "Receptor");
+        //Test validar Cliente
+        Log.log.info("Validando cliente: "+Controlador.validarCliente("ubicua", "ubicua"));
+        //Test obtener receptores
+        ArrayList<Cliente> receptores = Controlador.obtenerReceptores();
+        for (int i = 0; i < receptores.size(); i++){
+            Log.log.info(receptores.get(i));
+        }
+        //Test obtener transportistas
+        ArrayList<Transportista> t = Controlador.obtenerTransportistas();
+        for (int i = 0; i < t.size(); i++){
+            Log.log.info(t.get(i));
+        }
         
+        
+        /*
         Log.log.info("\nObteniendo todos los clientes...");
         ArrayList<Cliente> allClientes = FachadaClienteBD.getAllClientes();
         for (Cliente cl : allClientes) {
@@ -81,7 +96,7 @@ public class Projectinitializer implements ServletContextListener {
             } else {
                 Log.log.info("No se encontró el cliente con ID " + idToSearch);
             }
-        }
+        }*/
         
         Log.log.info("");
         
