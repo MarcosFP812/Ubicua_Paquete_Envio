@@ -1,6 +1,7 @@
 package com.example.wheatherstation_uah
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -32,6 +33,14 @@ class RegisterActivity : AppCompatActivity() {
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_register)
         supportActionBar!!.hide()
+
+        val btnR  = findViewById<Button>(R.id.btn3)
+        btnR.setOnClickListener {
+            val i = Intent(this@RegisterActivity, HistorialActivity::class.java)
+            startActivity(i)
+            finish()
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(
             findViewById(R.id.main)
         ) { v: View, insets: WindowInsetsCompat ->
