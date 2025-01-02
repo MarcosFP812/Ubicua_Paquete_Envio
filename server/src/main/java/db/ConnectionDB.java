@@ -85,6 +85,10 @@ public class ConnectionDB {
     public static PreparedStatement selectMaxIdEnvio(Connection con) {
         return getStatement(con, "SELECT MAX(idEnvio) AS max_id FROM Envio;");
     }
+    
+    public static PreparedStatement selectMaxIdDato(Connection con) {
+        return getStatement(con, "SELECT MAX(idDato) AS max_id FROM Dato WHERE Envio_idEnvio = ?;");
+    }
 
     public static PreparedStatement insertCliente(Connection con) {
         return getStatement(con, "INSERT INTO Cliente (idCliente, Nombre, PW, Longitud, Latitud) VALUES (?, ?, ?, ?, ?)");
@@ -106,17 +110,8 @@ public class ConnectionDB {
         return getStatement(con, "SELECT COUNT(*) AS count FROM " + tabla + " WHERE Cliente_idCliente = ?");
     }
 
-    // Consultas para Envio
-    public static PreparedStatement selectEnviosPorCliente(Connection con) {
-        return getStatement(con, "SELECT idEnvio FROM Envio WHERE Remitente_Cliente_idCliente = ?");
-    }
-
     public static PreparedStatement selectHistorialEnvio(Connection con) {
         return getStatement(con, "SELECT * FROM Dato WHERE Envio_idEnvio = ?");
-    }
-
-    public static PreparedStatement selectEnviosActivosPorCliente(Connection con) {
-        return getStatement(con, "SELECT idEnvio FROM Envio WHERE Remitente_Cliente_idCliente = ? AND Finalizado = 0");
     }
 
     public static PreparedStatement selectHistorialEnvioDesdeFecha(Connection con) {
@@ -130,9 +125,21 @@ public class ConnectionDB {
     public static PreparedStatement insertNuevoEnvio(Connection con) {
         return getStatement(con, "INSERT INTO Envio (idEnvio, Transportista_idTransportista, Paquete_idPaquete, Receptor_Cliente_idCliente, Remitente_Cliente_idCliente, Finalizado) VALUES (?, ?, ?, ?, ?, 0)");
     }
+    
+    public static PreparedStatement selectEnviosCliente(Connection con) {
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ?;");
+    }
+    
+    public static PreparedStatement selectEnviosClienteActivo(Connection con) {
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Finalizado = 0;");
+    }
+    
+    public static PreparedStatement selectEnviosClienteFinalizado(Connection con) {
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Finalizado = 1;");
+    }
 
     public static PreparedStatement insertDato(Connection con) {
-        return getStatement(con, "INSERT INTO Dato (idDato, Envio_idEnvio, Fecha) VALUES (?, ?)");
+        return getStatement(con, "INSERT INTO Dato (idDato, Envio_idEnvio, Fecha) VALUES (?, ?, ?)");
     }
 
     public static PreparedStatement insertTemperaturaHumedad(Connection con) {

@@ -8,6 +8,8 @@ import mqtt.MQTTBroker;
 import mqtt.MQTTPublisher;
 import mqtt.MQTTSuscriber;
 import db.FachadaClienteBD;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 /**
  * Inicializar hilos
  */
@@ -33,6 +35,7 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Pruebas acceso base de datos...");
         
+        /*
         //Test registrar Cliente
         Controlador.registrarCliente("ubicua", "ubicua", 0, 0, "Receptor");
         
@@ -52,7 +55,44 @@ public class Projectinitializer implements ServletContextListener {
         }
         
         //Test crear envío
-        Controlador.crearEnvio(1, 1, 3, 2);
+        Controlador.crearEnvio(1, 1, 1, 2);
+                 
+        //Test obtener envios de idCliente 3
+        Log.log.info("Envíos de 3: ");
+        ArrayList<Envio> e1 = Controlador.obtenerEnviosCliente(3);
+        for (int i = 0; i < e1.size(); i++){
+            Log.log.info(e1.get(i));
+        }
+        
+        //Test obtener envios de idCliente 3 activos
+        Log.log.info("Envíos activos de 3: ");
+        ArrayList<Envio> e2 = Controlador.obtenerEnviosClienteActivo(3);
+        for (int i = 0; i < e2.size(); i++){
+            Log.log.info(e2.get(i));
+        }
+        
+        //Test obtener envios de idCliente 3 finalizados
+        Log.log.info("Envíos finalizados de 3: ");
+        ArrayList<Envio> e3 = Controlador.obtenerEnviosClienteFinalizado(3);
+        for (int i = 0; i < e3.size(); i++){
+            Log.log.info(e3.get(i));
+        }
+        */
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Timestamp fecha = Timestamp.valueOf(localDateTime);
+        Log.log.info("Registrando temperatura");
+        Controlador.registrarTH(1, 0, 0, fecha);
+        
+        Log.log.info("Registrando ubicacion");
+        Controlador.registrarUbicacion(1, 0, 0, 0, fecha);
+        
+        Log.log.info("Registrando ventilador");
+        Controlador.registrarVentilador(0, true, fecha);
+        
+        Log.log.info("Registrando estado");
+        Controlador.registrarEstado(0, "ABIERTO", fecha);
+        
+        
         
         /*
         Log.log.info("\nObteniendo todos los clientes...");

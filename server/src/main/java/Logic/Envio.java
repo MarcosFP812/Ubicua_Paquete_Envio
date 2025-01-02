@@ -9,6 +9,7 @@ package Logic;
  * @author socra
  */
 public class Envio {
+    
     private int idEnvio;
     private int transportistaId;
     private int paqueteId;
@@ -72,4 +73,11 @@ public class Envio {
     public void setFinalizado(boolean finalizado) {
         this.finalizado = finalizado;
     }
+
+    @Override
+    public String toString() {
+        return "Envio{" + "idEnvio=" + idEnvio + ", transportistaId=" + transportistaId + ", paqueteId=" + paqueteId + ", receptorId=" + receptorId + ", remitenteId=" + remitenteId + ", finalizado=" + finalizado + '}';
+    }
+    
+    
 }

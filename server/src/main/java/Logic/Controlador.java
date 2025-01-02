@@ -6,6 +6,7 @@ package Logic;
 
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -75,7 +76,69 @@ public class Controlador {
     /* Sacar todos los envíos realizados por un cliente
     * 1. Dado un id llamar a la fachada para obtener los envíos
     */
+    public static ArrayList<Envio> obtenerEnviosCliente(int idCliente){
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorCliente(3);
+        
+        return e;
+    }
+    public static ArrayList<Envio> obtenerEnviosClienteActivo(int idCliente){
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteActivo(3);
+        
+        return e;
+    }
+    public static ArrayList<Envio> obtenerEnviosClienteFinalizado(int idCliente){
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteFinalizado(3);
+        
+        return e;
+    }
     
+    /* Registrar nueva temperatura y humedad
+    * 
+    */
+    public static boolean registrarTH(int idEnvio, double t, double h, Timestamp fecha){
+       boolean valido = FachadaEnvioBD.registrarTemperaturaHumedad(idEnvio, fecha, t, h);
+        //Lógica de la temperatura
+        
+        return valido;
+    }
+    
+    /* Registrar localización
+    * 
+    */
+    public static boolean registrarUbicacion(int idEnvio, double longitud, double latitud, double velocidad, Timestamp fecha){
+        
+        //Comprobar que la ubicación el válida con la anterior
+        
+        //Calcular la velocidad si lo necesita
+        
+        //Comprobar la velocidad en la vía
+        double velocidadVia = -1;
+        
+        boolean valido = FachadaEnvioBD.registrarUbicacion(idEnvio, fecha, longitud, latitud, velocidad, velocidadVia);
+        
+        return valido;
+        
+    }
+    
+    /* Registrar ventilador
+    * 
+    */
+    public static boolean registrarVentilador(int idEnvio, boolean activo, Timestamp fecha){
+       boolean valido = FachadaEnvioBD.registrarVentilador(idEnvio, fecha, activo);
+        //Llamar a mqtt para encender en caso de que sea activo
+        
+        return valido;
+    }
+    
+    /* Registrar cambio de estado
+    * 
+    */
+    public static boolean registrarEstado(int idEnvio, String estado, Timestamp fecha){
+       boolean valido = FachadaEnvioBD.registrarCambioEstado(idEnvio, fecha, estado);
+        //Llamar a mqtt para encender en caso de que sea activo
+        
+        return valido;
+    }
     
     /* Ver el historial de un envío realizado
     *
@@ -92,25 +155,7 @@ public class Controlador {
     *
     */
     
-    /* Registrar nueva temperatura y humedad
-    * 
-    *
-    */
     
-    /* Registrar localización
-    * 
-    *
-    */
-    
-    /* Registrar ventilador
-    * 
-    *
-    */
-    
-    /* Registrar cambio de estado
-    * 
-    *
-    */
     
     
 }

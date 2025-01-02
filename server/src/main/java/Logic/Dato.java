@@ -4,7 +4,7 @@
  */
 package Logic;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -13,9 +13,9 @@ import java.util.Date;
 public class Dato {
     private int idDato;
     private int envioId;
-    private Date fecha;
+    private Timestamp fecha;
 
-    public Dato(int idDato, int envioId, Date fecha) {
+    public Dato(int idDato, int envioId, Timestamp fecha) {
         this.idDato = idDato;
         this.envioId = envioId;
         this.fecha = fecha;
@@ -37,11 +37,11 @@ public class Dato {
         this.envioId = envioId;
     }
 
-    public Date getFecha() {
+    public Timestamp getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
 }
