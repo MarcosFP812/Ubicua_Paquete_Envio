@@ -40,17 +40,17 @@ Servlets que recojan las peticiones de android
 
 ### FachadaBD
 Peticiones a la base de datos sobre los clientes:
-- [ ] Crear o eliminar cliente
-- [ ] Devolver todos los clientes de un tipo
-- [ ] Buscar cliente según el tipo
-- [ ] Validar un cliente
+- [X] Crear o eliminar cliente
+- [X] Devolver todos los clientes de un tipo
+- [X] Buscar cliente según el tipo
+- [X] Validar un cliente
 Peticiones a la base de datos sobre los envíos:
-- [ ] Pedir los transportistas
-- [ ] Crear un nuevo envío
+- [X] Pedir los transportistas
+- [X] Crear un nuevo envío
 - [ ] Listar todos los envíos de un cliente
 - [ ] Pedir la información entera de un envío
 - [ ] Pedir información desde una fecha en concreto
-- [ ] Introducir nuevos datos dentro de un envío
+- [X] Introducir nuevos datos dentro de un envío
 
 ### Lógica
 
