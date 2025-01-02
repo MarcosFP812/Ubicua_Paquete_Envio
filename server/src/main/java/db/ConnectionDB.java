@@ -81,6 +81,10 @@ public class ConnectionDB {
     public static PreparedStatement selectMaxIdCliente(Connection con) {
         return getStatement(con, "SELECT MAX(idCliente) AS max_id FROM Cliente;");
     }
+    
+    public static PreparedStatement selectMaxIdEnvio(Connection con) {
+        return getStatement(con, "SELECT MAX(idEnvio) AS max_id FROM Envio;");
+    }
 
     public static PreparedStatement insertCliente(Connection con) {
         return getStatement(con, "INSERT INTO Cliente (idCliente, Nombre, PW, Longitud, Latitud) VALUES (?, ?, ?, ?, ?)");

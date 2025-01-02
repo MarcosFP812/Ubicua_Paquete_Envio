@@ -180,7 +180,7 @@ public class FachadaEnvioBD {
         return receptores;
     }
 
-    public static boolean crearNuevoEnvio(Envio envio) {
+    public static boolean crearNuevoEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente) {
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
         boolean success = false;
@@ -188,11 +188,11 @@ public class FachadaEnvioBD {
         try {
             con = connector.obtainConnection(false);
             PreparedStatement ps = ConnectionDB.insertNuevoEnvio(con);
-            ps.setInt(1, envio.getIdEnvio());
-            ps.setInt(2, envio.getTransportistaId());
-            ps.setInt(3, envio.getPaqueteId());
-            ps.setInt(4, envio.getReceptorId());
-            ps.setInt(5, envio.getRemitenteId());
+            ps.setInt(1, FachadaEnvioBD.ultimoIdEnvio()+1);
+            ps.setInt(2, idTransportista);
+            ps.setInt(3, idPaquete);
+            ps.setInt(4, idReceptor);
+            ps.setInt(5, idRemitente);
             Log.log.info("Ejecutando: " + ps);
 
             int affectedRows = ps.executeUpdate();
@@ -257,4 +257,33 @@ public class FachadaEnvioBD {
         return success;
     }
 */
+    
+    public static int ultimoIdEnvio() {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        int maxId = -1;
+
+        try {
+            con = connector.obtainConnection(false);
+            PreparedStatement ps = ConnectionDB.selectMaxIdEnvio(con);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maxId = rs.getInt("max_id"); // Obtiene el valor del campo `max_id`
+                Log.log.info("Ultimo id de envio: "+maxId);
+            } else {
+                Log.log.info("No se encontraron resultados.");
+            }
+
+            // Cierra el ResultSet y PreparedStatement
+            rs.close();
+            ps.close();
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return maxId;
+    }
 }

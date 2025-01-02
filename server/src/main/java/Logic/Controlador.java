@@ -64,8 +64,13 @@ public class Controlador {
     }
     
     /* Crear un nuevo envío
-    * Dato el id del cliente, 
+    * 1. crear envío
     */
+    public static boolean crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente){
+        boolean valido = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente);
+        
+        return valido;
+    }
     
     /* Sacar todos los envíos realizados por un cliente
     * 1. Dado un id llamar a la fachada para obtener los envíos

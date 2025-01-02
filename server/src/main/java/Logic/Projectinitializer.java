@@ -35,19 +35,24 @@ public class Projectinitializer implements ServletContextListener {
         
         //Test registrar Cliente
         Controlador.registrarCliente("ubicua", "ubicua", 0, 0, "Receptor");
+        
         //Test validar Cliente
         Log.log.info("Validando cliente: "+Controlador.validarCliente("ubicua", "ubicua"));
+        
         //Test obtener receptores
         ArrayList<Cliente> receptores = Controlador.obtenerReceptores();
         for (int i = 0; i < receptores.size(); i++){
             Log.log.info(receptores.get(i));
         }
+        
         //Test obtener transportistas
         ArrayList<Transportista> t = Controlador.obtenerTransportistas();
         for (int i = 0; i < t.size(); i++){
             Log.log.info(t.get(i));
         }
         
+        //Test crear envío
+        Controlador.crearEnvio(1, 1, 3, 2);
         
         /*
         Log.log.info("\nObteniendo todos los clientes...");
