@@ -1,22 +1,29 @@
+// build.gradle (Nivel de Módulo)
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
-
-    namespace 'com.example.wheatherstation_uah'
+    namespace 'com.example.smart_packet'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.wheatherstation_uah"
+        applicationId "com.example.smart_packet"
         minSdk 24
         targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        defaultConfig {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            manifestPlaceholders = [googleMapsApiKey: "${properties.getProperty('MAPS_API_KEY')}"]
+        }
     }
 
     buildTypes {
@@ -32,9 +39,14 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-    buildFeatures {
-        compose true
-    }
+   buildFeatures {
+     viewBinding true 
+     dataBinding true
+     compose true
+}
+   
+    // Aplica el plugin de Google Services
+    apply plugin: 'com.google.gms.google-services'
 }
 
 dependencies {
@@ -64,5 +76,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
-
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

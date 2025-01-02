@@ -1,6 +1,7 @@
-package com.example.wheatherstation_uah.data;
+package com.example.smart_packet.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
@@ -12,7 +13,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wheatherstation_uah.R;
+import com.example.smart_packet.R;
+import com.example.smart_packet.VerPaqueteActivity;
 
 import java.util.List;
 
@@ -36,6 +38,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position) {
         holder.bindData(mData.get(position));
+        ListElement items = mData.get(position);
+
+        // Agregar el OnClickListener a la imagen
+        holder.icon.setOnClickListener(v -> {
+            // Aquí se maneja el clic en la imagen y se navega a la siguiente actividad/pestaña
+            Context context = holder.icon.getContext();
+            Intent intent = new Intent(context, VerPaqueteActivity.class);  // O la Activity/Fragment que desees
+
+            context.startActivity(intent);
+        });
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.wheatherstation_uah.data;
+package com.example.smart_packet.data;
 
 public class City 
 {

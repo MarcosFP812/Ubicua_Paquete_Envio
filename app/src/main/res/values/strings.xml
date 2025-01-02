@@ -5,4 +5,5 @@
     <string name="select_city">Select City</string>
     <string name="select_station">Select Weather Station</string>
     <string name="viewvalues">View Values</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

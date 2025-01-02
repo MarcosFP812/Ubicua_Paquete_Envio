@@ -1,4 +1,4 @@
-package com.example.wheatherstation_uah
+package com.example.smart_packet
 
 import android.content.Context
 import android.content.Intent
@@ -11,8 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.wheatherstation_uah.data.City
-import com.example.wheatherstation_uah.data.Station
+import com.example.smart_packet.data.City
+import com.example.smart_packet.data.Station
 
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"

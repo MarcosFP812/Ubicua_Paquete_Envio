@@ -1,24 +1,19 @@
-package com.example.wheatherstation_uah
+package com.example.smart_packet
+
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wheatherstation_uah.data.ListAdapter
-import com.example.wheatherstation_uah.data.ListElement
-import java.util.concurrent.ArrayBlockingQueue
-import kotlin.random.Random
+import com.example.smart_packet.data.ListAdapter
+import com.example.smart_packet.data.ListElement
+
 
 class HistorialActivity : AppCompatActivity() {
     private var elementsE: ArrayList<ListElement>? = null
     private var elementsEs: ArrayList<ListElement>? = null
     private var elementsC: ArrayList<ListElement>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +26,7 @@ class HistorialActivity : AppCompatActivity() {
         elementsE = ArrayList()
         elementsEs = ArrayList()
         elementsC = ArrayList()
+
         //Envio
         elementsE?.add(ListElement(generarColor(), "0000-0000"))
         elementsE?.add(ListElement(generarColor(), "0000-0010"))

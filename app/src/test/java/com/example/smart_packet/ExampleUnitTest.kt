@@ -1,4 +1,4 @@
-package com.example.wheatherstation_uah
+package com.example.smart_packet
 
 import org.junit.Test
 

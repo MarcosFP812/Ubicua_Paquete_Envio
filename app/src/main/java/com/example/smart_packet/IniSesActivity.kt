@@ -1,18 +1,13 @@
 
-package com.example.wheatherstation_uah
+package com.example.smart_packet
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.wheatherstation_uah.data.City
-import com.example.wheatherstation_uah.data.Station
 
 class IniSesActivity : AppCompatActivity() {
     private val tag = "Iniciar Sesion"

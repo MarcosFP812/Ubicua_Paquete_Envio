@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "601363319110",
+    "project_id": "smartpacket-704f1",
+    "storage_bucket": "smartpacket-704f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601363319110:android:a58d24f596f720d81cfd47",
+        "android_client_info": {
+          "package_name": "com.example.smart_packet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIa4hdjTK4c6ZdJcPn2NbjpYEalcuLEkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

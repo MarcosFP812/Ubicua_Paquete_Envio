@@ -1,6 +1,31 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.compose) apply false
+// build.gradle (Nivel de Proyecto)
+
+buildscript {
+    repositories {
+        //google()  // Repositorio de Google
+        //mavenCentral()  // Repositorio Maven Central
+    }
+    dependencies {
+        // Plugin de Google Services para gestionar Firebase y otros servicios
+        classpath 'com.android.tools.build:gradle:7.4.0'  // Asegúrate de usar la versión adecuada de Gradle
+        classpath 'com.google.gms:google-services:4.3.15'  // Asegúrate de que la versión sea correcta
+        
+    }
 }
+
+
+
+plugins {
+    alias(libs.plugins.android.application) apply false  // Se aplica en el módulo específico
+    alias(libs.plugins.kotlin.android) apply false        // Se aplica en el módulo específico
+    alias(libs.plugins.kotlin.compose) apply false        // Se aplica en el módulo específico
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false  // Plugin para Google Maps Secrets
+}
+
+allprojects {
+    repositories {
+        //google()  // Repositorio de Google
+        //mavenCentral()  // Repositorio Maven Central
+    }
+}
+
