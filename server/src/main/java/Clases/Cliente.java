@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logic;
+package Clases;
+
+import Logic.Log;
 
 /**
  *
@@ -23,7 +25,6 @@ public class Cliente {
     }
 
     public Cliente(String nombre, Ubicacion ubicacion, String tipo) {
-        Log.log.info("Creando cliente: " + "Cliente{" + "nombre=" + nombre + ", ubicacion=" + ubicacion + ", tipo" + tipo + '}');
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.tipo = tipo;
@@ -50,8 +51,13 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "nombre=" + nombre + ", Id=" + Id + ", ubicacion=" + ubicacion + ", tipo" + tipo + '}';
-    }
+    return "{"
+        + "\"nombre\": \"" + nombre + "\", "
+        + "\"Id\": \"" + Id + "\", "
+        + "\"ubicacion\": \"" + ubicacion + "\", "
+        + "\"tipo\": \"" + tipo + "\""
+        + "}";
+}
 
     /**
      * Get the value of ubicacion

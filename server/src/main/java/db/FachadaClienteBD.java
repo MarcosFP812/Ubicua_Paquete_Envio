@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 
 import Logic.Log;
-import Logic.Cliente;
-import Logic.Ubicacion;
+import Clases.Cliente;
+import Clases.Ubicacion;
 
 /**
  * Usa connectionbd para realizar las consultas a la bd

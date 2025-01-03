@@ -4,6 +4,13 @@
  */
 package Logic;
 
+import Clases.Cliente;
+import Clases.TemperaturaHumedad;
+import Clases.Estado;
+import Clases.Ubicacion;
+import Clases.Ventilador;
+import Clases.Envio;
+import Clases.UbicacionEnvio;
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
 import java.sql.Timestamp;
@@ -162,6 +169,30 @@ public class Controlador {
     */
     public static ArrayList<TemperaturaHumedad> obtenerTemperaturasHumedades(int idEnvio){
         return FachadaEnvioBD.getTemperaturaHumedad(idEnvio);
+    }
+    
+    public static String generarJson(ArrayList<?> lista) {
+        // Iniciamos el JSON con un array []
+        StringBuilder json = new StringBuilder("[");
+        
+        // Iteramos sobre la lista de objetos
+        for (int i = 0; i < lista.size(); i++) {
+            // Obtenemos el toString del objeto que debe ser en formato JSON
+            String objetoJson = lista.get(i).toString();
+            
+            // Añadimos el objeto al JSON resultante
+            json.append(objetoJson);
+            
+            // Si no es el último objeto, agregamos una coma
+            if (i < lista.size() - 1) {
+                json.append(", ");
+            }
+        }
+        
+        // Cerramos el JSON con un corchete ]
+        json.append("]");
+        
+        return json.toString();
     }
 
     

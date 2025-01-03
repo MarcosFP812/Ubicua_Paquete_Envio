@@ -1,5 +1,9 @@
 package Logic;
 
+import Clases.TemperaturaHumedad;
+import Clases.Estado;
+import Clases.Ventilador;
+import Clases.UbicacionEnvio;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

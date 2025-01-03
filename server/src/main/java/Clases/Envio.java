@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logic;
+package Clases;
 
 /**
  *
@@ -76,8 +76,16 @@ public class Envio {
 
     @Override
     public String toString() {
-        return "Envio{" + "idEnvio=" + idEnvio + ", transportistaId=" + transportistaId + ", paqueteId=" + paqueteId + ", receptorId=" + receptorId + ", remitenteId=" + remitenteId + ", finalizado=" + finalizado + '}';
-    }
+    return "{"
+        + "\"idEnvio\": \"" + idEnvio + "\", "
+        + "\"transportistaId\": \"" + transportistaId + "\", "
+        + "\"paqueteId\": \"" + paqueteId + "\", "
+        + "\"receptorId\": \"" + receptorId + "\", "
+        + "\"remitenteId\": \"" + remitenteId + "\", "
+        + "\"finalizado\": \"" + finalizado + "\""
+        + "}";
+}
+
     
     
 }

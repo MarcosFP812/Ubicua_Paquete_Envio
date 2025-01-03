@@ -4,16 +4,16 @@
  */
 package db;
 
-import Logic.Cliente;
-import Logic.Dato;
-import Logic.Envio;
-import Logic.Estado;
+import Clases.Cliente;
+import Clases.Dato;
+import Clases.Envio;
+import Clases.Estado;
 import Logic.Log;
-import Logic.TemperaturaHumedad;
+import Clases.TemperaturaHumedad;
 import Logic.Transportista;
-import Logic.Ubicacion;
-import Logic.UbicacionEnvio;
-import Logic.Ventilador;
+import Clases.Ubicacion;
+import Clases.UbicacionEnvio;
+import Clases.Ventilador;
 import java.sql.*;
 import java.util.ArrayList;
 

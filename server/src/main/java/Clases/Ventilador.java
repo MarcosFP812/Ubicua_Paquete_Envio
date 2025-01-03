@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logic;
+package Clases;
 
 import java.sql.Timestamp;
 
@@ -26,8 +26,13 @@ public class Ventilador {
 
     @Override
     public String toString() {
-        return "Ventilador{" + "idDato=" + idDato + ", activo=" + activo + ", fecha=" + fecha + '}';
+        return "{"
+            + "\"idDato\": \"" + idDato + "\", "
+            + "\"activo\": " + activo + ", "
+            + "\"fecha\": \"" + fecha + "\""
+            + "}";
     }
+
 
     /**
      * Get the value of fecha

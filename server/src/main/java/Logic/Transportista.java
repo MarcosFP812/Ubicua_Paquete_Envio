@@ -52,7 +52,11 @@ public class Transportista {
 
     @Override
     public String toString() {
-        return "Transportista{" + "nombre=" + nombre + ", id=" + id + '}';
+        return "{"
+            + "\"nombre\": \"" + nombre + "\", "
+            + "\"id\": \"" + id + "\""
+            + "}";
     }
+
 
 }

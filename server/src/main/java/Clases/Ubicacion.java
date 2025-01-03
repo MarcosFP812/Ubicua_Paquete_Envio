@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logic;
+package Clases;
 
 /**
  *
@@ -21,8 +21,12 @@ public class Ubicacion {
 
     @Override
     public String toString() {
-        return "Ubicacion{" + "Longitud=" + Longitud + ", Latitud=" + Latitud + '}';
-    }
+    return "{"
+        + "\"Longitud\": " + Longitud + ", "
+        + "\"Latitud\": " + Latitud
+        + "}";
+}
+
 
     /**
      * Get the value of Latitud
