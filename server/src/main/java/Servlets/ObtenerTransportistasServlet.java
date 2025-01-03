@@ -6,6 +6,7 @@ package Servlets;
 
 
 import Logic.Controlador;
+import Logic.Log;
 import Logic.Transportista;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,20 +28,22 @@ public class ObtenerTransportistasServlet extends HttpServlet {
         super();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             ArrayList<Transportista> transportistas = Controlador.obtenerTransportistas();
-            out.print(transportistas);
+            out.print(Controlador.generarJson(transportistas));
         } catch (Exception e) {
             out.println("-1");
-            e.printStackTrace();
+            Log.log.info(e);
         } finally {
             out.close();
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

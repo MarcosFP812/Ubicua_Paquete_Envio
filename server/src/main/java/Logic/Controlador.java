@@ -25,10 +25,10 @@ public class Controlador {
     /* Validar cliente
     * 1. Comprobar que dicho nombre no existe en la base de datos
     */
-    public static boolean validarCliente(String nombre, String pw){
-        boolean valido = FachadaClienteBD.validarUsuario(nombre, pw);
+    public static int validarCliente(String nombre, String pw){
+        int id = FachadaClienteBD.validarUsuario(nombre, pw);
         
-        return valido;
+        return id;
     }
     
     /* Registrar un cliente
@@ -36,21 +36,17 @@ public class Controlador {
     * 2. Crear nuevo cliente
     * 3. insertarlo a la BD
     */
-    public static boolean registrarCliente(String nombre, String pw, double longitud, double latitud, String tipo){
+    public static int registrarCliente(String nombre, String pw, double longitud, double latitud, String tipo){
         boolean existe;
-        
+        int idNuevo = -1;
         int id = FachadaClienteBD.getIdByNombre(nombre);
         
-        if (id != -1){
-            existe = true;
-        } else{
-            existe = false;
-            
+        if (id == -1){
             Cliente cliente = new Cliente(nombre, new Ubicacion(longitud, latitud), tipo);
-            int idNuevo = FachadaClienteBD.insertCliente(cliente, pw);
+            idNuevo = FachadaClienteBD.insertCliente(cliente, pw);
         }
         
-        return !existe;
+        return idNuevo;
     }
     
     /* Sacar todos los posibles receptores

@@ -6,6 +6,7 @@ package Servlets;
 
 
 import Logic.Controlador;
+import Logic.Log;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -25,6 +26,7 @@ public class RegistrarClienteServlet extends HttpServlet {
         super();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -34,16 +36,17 @@ public class RegistrarClienteServlet extends HttpServlet {
             double longitud = Double.parseDouble(request.getParameter("longitud"));
             double latitud = Double.parseDouble(request.getParameter("latitud"));
             String tipo = request.getParameter("tipo");
-            boolean registrado = Controlador.registrarCliente(nombre, pw, longitud, latitud, tipo);
-            out.print("{" + "\"registrado\": " + registrado + "}");
+            int registrado = Controlador.registrarCliente(nombre, pw, longitud, latitud, tipo);
+            out.print(registrado);
         } catch (Exception e) {
             out.println("-1");
-            e.printStackTrace();
+            Log.log.info(e);
         } finally {
             out.close();
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

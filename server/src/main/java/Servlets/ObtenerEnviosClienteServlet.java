@@ -7,6 +7,7 @@ package Servlets;
 
 import Logic.Controlador;
 import Clases.Envio;
+import Logic.Log;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -33,15 +34,16 @@ public class ObtenerEnviosClienteServlet extends HttpServlet {
         try {
             int idCliente = Integer.parseInt(request.getParameter("idCliente"));
             ArrayList<Envio> envios = Controlador.obtenerEnviosCliente(idCliente);
-            out.print(envios);
+            out.print(Controlador.generarJson(envios));
         } catch (Exception e) {
             out.println("-1");
-            e.printStackTrace();
+            Log.log.info(e);
         } finally {
             out.close();
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

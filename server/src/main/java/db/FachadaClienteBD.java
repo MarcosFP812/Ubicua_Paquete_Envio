@@ -168,10 +168,11 @@ public class FachadaClienteBD {
         return idCliente;
     }
     
-    public static boolean validarUsuario(String nombre, String pw) {
+    public static int validarUsuario(String nombre, String pw) {
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
         boolean esValido = false;
+        int id = -1;
 
         try {
             con = connector.obtainConnection(true);
@@ -183,6 +184,8 @@ public class FachadaClienteBD {
 
             if (rs.next()) {
                 esValido = rs.getInt("count") > 0;
+                if (esValido) 
+                    id = FachadaClienteBD.getIdByNombre(nombre);
             }
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
@@ -190,7 +193,7 @@ public class FachadaClienteBD {
             connector.closeConnection(con);
         }
 
-        return esValido;
+        return id;
     }
 
 

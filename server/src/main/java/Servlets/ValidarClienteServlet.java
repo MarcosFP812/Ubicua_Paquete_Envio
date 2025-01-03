@@ -5,6 +5,7 @@
 package Servlets;
 
 import Logic.Controlador;
+import Logic.Log;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -21,22 +22,24 @@ public class ValidarClienteServlet extends HttpServlet {
         super();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             String nombre = request.getParameter("nombre");
             String pw = request.getParameter("pw");
-            boolean valido = Controlador.validarCliente(nombre, pw);
-            out.print("{" + "\"valido\": " + valido + "}");
+            int valido = Controlador.validarCliente(nombre, pw);
+            out.print(valido);
         } catch (Exception e) {
             out.println("-1");
-            e.printStackTrace();
+            Log.log.info(e);
         } finally {
             out.close();
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
