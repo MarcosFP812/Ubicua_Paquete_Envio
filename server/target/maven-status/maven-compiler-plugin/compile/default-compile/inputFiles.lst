@@ -6,12 +6,16 @@ C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Controlador.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Dato.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Envio.java
+C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Estado.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Log.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Logic.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Measurement.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Projectinitializer.java
+C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\TemperaturaHumedad.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Transportista.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Ubicacion.java
+C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\UbicacionEnvio.java
+C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Logic\Ventilador.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\MQTTBroker.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\MQTTPublisher.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\MQTTSuscriber.java

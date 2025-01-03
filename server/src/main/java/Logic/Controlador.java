@@ -140,22 +140,30 @@ public class Controlador {
         return valido;
     }
     
-    /* Ver el historial de un envío realizado
-    *
-    *
+    /* Obtener historial de ubicaciones
     */
-    
-    /* Sacar todos los envíos que siguen en envío de un cliente
-    *
-    *
+    public static ArrayList<UbicacionEnvio> obtenerUbicaciones(int idEnvio){
+        return FachadaEnvioBD.getUbicaciones(idEnvio);
+    }
+
+    /* Obtener historial de ventiladores
     */
-    
-    /* Ver el historial de un envío desde una fecha
-    *
-    *
+    public static ArrayList<Ventilador> obtenerVentiladores(int idEnvio){
+        return FachadaEnvioBD.getVentiladores(idEnvio);
+    }
+
+    /* Obtener historial de estados
     */
-    
-    
+    public static ArrayList<Estado> obtenerEstados(int idEnvio){
+        return FachadaEnvioBD.getEstados(idEnvio);
+    }
+
+    /* Obtener historial de temperatura y humedad
+    */
+    public static ArrayList<TemperaturaHumedad> obtenerTemperaturasHumedades(int idEnvio){
+        return FachadaEnvioBD.getTemperaturaHumedad(idEnvio);
+    }
+
     
     
 }

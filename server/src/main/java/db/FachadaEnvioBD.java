@@ -7,8 +7,13 @@ package db;
 import Logic.Cliente;
 import Logic.Dato;
 import Logic.Envio;
+import Logic.Estado;
 import Logic.Log;
+import Logic.TemperaturaHumedad;
 import Logic.Transportista;
+import Logic.Ubicacion;
+import Logic.UbicacionEnvio;
+import Logic.Ventilador;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -129,6 +134,7 @@ public class FachadaEnvioBD {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+                
                 // Crear un objeto Envio basado en los datos de la fila
                 Envio envio = new Envio(
                     rs.getInt("idEnvio"),                  // idEnvio
@@ -149,25 +155,28 @@ public class FachadaEnvioBD {
         return envios;
     }
 
-    public static ArrayList<Dato> getHistorialEnvio(int idEnvio) {
-        ArrayList<Dato> historial = new ArrayList<>();
+    public static ArrayList<UbicacionEnvio> getUbicaciones(int idEnvio) {
+        ArrayList<UbicacionEnvio> ubicaciones = new ArrayList<>();
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
 
         try {
             con = connector.obtainConnection(true);
-            PreparedStatement ps = ConnectionDB.selectHistorialEnvio(con);
+            PreparedStatement ps = ConnectionDB.selectUbicaciones(con);
             ps.setInt(1, idEnvio);
             Log.log.info("Ejecutando: " + ps);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Dato dato = new Dato(
-                    rs.getInt("idDato"),
-                    rs.getInt("Envio_idEnvio"),
-                    rs.getTimestamp("Fecha")
+                UbicacionEnvio ubicacion = new UbicacionEnvio(
+                        rs.getInt("Dato_idDato"),
+                        rs.getDouble("Longitud"),
+                        rs.getDouble("Latitud"),
+                        rs.getDouble("Velocidad"),
+                        rs.getDouble("Velocidad_via"),
+                        rs.getTimestamp("Fecha")
                 );
-                historial.add(dato);
+                ubicaciones.add(ubicacion);
             }
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
@@ -175,29 +184,28 @@ public class FachadaEnvioBD {
             connector.closeConnection(con);
         }
 
-        return historial;
+        return ubicaciones;
     }
 
-    public static ArrayList<Dato> getHistorialEnvioDesdeFecha(int idEnvio, Timestamp fecha) {
-        ArrayList<Dato> historial = new ArrayList<>();
+    public static ArrayList<Ventilador> getVentiladores(int idEnvio) {
+        ArrayList<Ventilador> ventiladores = new ArrayList<>();
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
 
         try {
             con = connector.obtainConnection(true);
-            PreparedStatement ps = ConnectionDB.selectHistorialEnvioDesdeFecha(con);
+            PreparedStatement ps = ConnectionDB.selectVentiladores(con);
             ps.setInt(1, idEnvio);
-            ps.setTimestamp(2, fecha);
             Log.log.info("Ejecutando: " + ps);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Dato dato = new Dato(
-                    rs.getInt("idDato"),
-                    rs.getInt("Envio_idEnvio"),
-                    rs.getTimestamp("Fecha")
+                Ventilador ventilador = new Ventilador(
+                        rs.getInt("Dato_idDato"),
+                        rs.getBoolean("Activo"),
+                        rs.getTimestamp("Fecha")
                 );
-                historial.add(dato);
+                ventiladores.add(ventilador);
             }
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
@@ -205,7 +213,66 @@ public class FachadaEnvioBD {
             connector.closeConnection(con);
         }
 
-        return historial;
+        return ventiladores;
+    }
+
+    public static ArrayList<Estado> getEstados(int idEnvio) {
+        ArrayList<Estado> estados = new ArrayList<>();
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectEstados(con);
+            ps.setInt(1, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Estado estado = new Estado(
+                        rs.getInt("Dato_idDato"),
+                        rs.getString("Estado"),
+                        rs.getTimestamp("Fecha")
+                );
+                estados.add(estado);
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return estados;
+    }
+
+    public static ArrayList<TemperaturaHumedad> getTemperaturaHumedad(int idEnvio) {
+        ArrayList<TemperaturaHumedad> thData = new ArrayList<>();
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectTemperaturaHumedad(con);
+            ps.setInt(1, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TemperaturaHumedad th = new TemperaturaHumedad(
+                        rs.getInt("Dato_idDato"),
+                        rs.getDouble("Temperatura"),
+                        rs.getDouble("Humedad"),
+                        rs.getTimestamp("Fecha")
+                );
+                thData.add(th);
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return thData;
     }
 
     public static ArrayList<Cliente> getPosiblesReceptores() {

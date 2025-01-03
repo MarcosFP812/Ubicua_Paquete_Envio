@@ -78,19 +78,47 @@ public class Projectinitializer implements ServletContextListener {
             Log.log.info(e3.get(i));
         }
         */
+        
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp fecha = Timestamp.valueOf(localDateTime);
+
         Log.log.info("Registrando temperatura");
-        Controlador.registrarTH(1, 0, 0, fecha);
-        
+        Controlador.registrarTH(1, 25.5, 60.0, fecha);
+
         Log.log.info("Registrando ubicacion");
-        Controlador.registrarUbicacion(1, 0, 0, 0, fecha);
-        
+        Controlador.registrarUbicacion(1, -99.1332, 19.4326, 30.0, fecha);
+
         Log.log.info("Registrando ventilador");
-        Controlador.registrarVentilador(0, true, fecha);
-        
+        Controlador.registrarVentilador(1, true, fecha);
+
         Log.log.info("Registrando estado");
-        Controlador.registrarEstado(0, "ABIERTO", fecha);
+        Controlador.registrarEstado(1, "ABIERTO", fecha);
+
+        Log.log.info("Obteniendo historial de ubicaciones");
+        ArrayList<UbicacionEnvio> ubicaciones = Controlador.obtenerUbicaciones(1);
+        for (UbicacionEnvio ubicacion : ubicaciones) {
+            Log.log.info("Ubicacion: " + ubicacion);
+        }
+
+        Log.log.info("Obteniendo historial de ventiladores");
+        ArrayList<Ventilador> ventiladores = Controlador.obtenerVentiladores(1);
+        for (Ventilador ventilador : ventiladores) {
+            Log.log.info("Ventilador: " + ventilador);
+        }
+
+        Log.log.info("Obteniendo historial de estados");
+        ArrayList<Estado> estados = Controlador.obtenerEstados(1);
+        for (Estado estado : estados) {
+            Log.log.info("Estado: " + estado);
+        }
+
+        Log.log.info("Obteniendo historial de temperatura y humedad");
+        ArrayList<TemperaturaHumedad> ths = Controlador.obtenerTemperaturasHumedades(1);
+        for (TemperaturaHumedad th : ths) {
+            Log.log.info("Temperatura y Humedad: " + th);
+        }
+        
+        
         
         
         

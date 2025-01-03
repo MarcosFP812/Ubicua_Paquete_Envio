@@ -110,14 +110,6 @@ public class ConnectionDB {
         return getStatement(con, "SELECT COUNT(*) AS count FROM " + tabla + " WHERE Cliente_idCliente = ?");
     }
 
-    public static PreparedStatement selectHistorialEnvio(Connection con) {
-        return getStatement(con, "SELECT * FROM Dato WHERE Envio_idEnvio = ?");
-    }
-
-    public static PreparedStatement selectHistorialEnvioDesdeFecha(Connection con) {
-        return getStatement(con, "SELECT * FROM Dato WHERE Envio_idEnvio = ? AND Fecha >= ?");
-    }
-
     public static PreparedStatement selectPosiblesReceptores(Connection con) {
         return getStatement(con, "SELECT * FROM Receptor NATURAL JOIN Cliente");
     }
@@ -156,6 +148,22 @@ public class ConnectionDB {
 
     public static PreparedStatement insertCambioEstado(Connection con) {
         return getStatement(con, "INSERT INTO Estado (Dato_idDato, Estado, Fecha) VALUES (?, ?, ?)");
+    }
+    
+    public static PreparedStatement selectUbicaciones(Connection con) {
+        return getStatement(con, "SELECT * FROM Ubicacion WHERE Dato_idDato IN (SELECT idDato FROM Dato WHERE Envio_idEnvio = ?)");
+    }
+
+    public static PreparedStatement selectVentiladores(Connection con) {
+        return getStatement(con, "SELECT * FROM Ventilador WHERE Dato_idDato IN (SELECT idDato FROM Dato WHERE Envio_idEnvio = ?)");
+    }
+
+    public static PreparedStatement selectEstados(Connection con) {
+        return getStatement(con, "SELECT * FROM Estado WHERE Dato_idDato IN (SELECT idDato FROM Dato WHERE Envio_idEnvio = ?)");
+    }
+
+    public static PreparedStatement selectTemperaturaHumedad(Connection con) {
+        return getStatement(con, "SELECT * FROM TH WHERE Dato_idDato IN (SELECT idDato FROM Dato WHERE Envio_idEnvio = ?)");
     }
 
 }
