@@ -1,31 +1,21 @@
 package com.example.smart_packet
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.smart_packet.data.City
-import com.example.smart_packet.data.Station
 
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"
-    private val spinnerCities: Spinner? = null
-    private val spinnerStations: Spinner? = null
-    private val buttonStation: Button? = null
-    var arrayCities: ArrayList<String>? = null
-    private val listCities: ArrayList<City>? = null
-    var arrayStations: ArrayList<String>? = null
-    private var listStation: ArrayList<Station>? = null
-    private val context: Context = this
-    private val idStation = 0
-    private val nameStation = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +23,51 @@ class RegisterActivity : AppCompatActivity() {
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_register)
         supportActionBar!!.hide()
+        findViewById<View>(R.id.txt4).visibility = View.GONE
+        findViewById<View>(R.id.miEditText3).visibility = View.GONE
+
+        val btnU: Button = findViewById(R.id.btnU)
+        val btnE: Button = findViewById(R.id.btnE)
+        //Almacenar el valor seleccionado
+        // Comprobar si ha sido pulsado el boton usuario
+        btnU.setOnClickListener {
+            btnU.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
+            btnE.setBackgroundColor(Color.GRAY) // Color deseleccionado
+            findViewById<View>(R.id.txt4).visibility = View.VISIBLE
+            findViewById<View>(R.id.miEditText3).visibility = View.VISIBLE
+        }
+
+        // Comprobar si ha sido pulsado el boton empresa
+        btnE.setOnClickListener {
+            btnE.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
+            btnU.setBackgroundColor(Color.GRAY) // Color deseleccionado
+            findViewById<View>(R.id.txt4).visibility = View.GONE
+            findViewById<View>(R.id.miEditText3).visibility = View.GONE
+        }
+
+        //Almacenar nuevo usuario
 
         val btnR  = findViewById<Button>(R.id.btn3)
         btnR.setOnClickListener {
-            val i = Intent(this@RegisterActivity, HistorialActivity::class.java)
+            Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
+            val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
             startActivity(i)
             finish()
         }
 
+        val btniniciarSesion = findViewById<TextView>(R.id.clickableText)
+        btniniciarSesion.setOnClickListener{
+            val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
+            startActivity(i)
+            finish()
+        }
+
+        val btnAtras = findViewById<ImageView>(R.id.flecha)
+        btnAtras.setOnClickListener{
+            val i = Intent(this@RegisterActivity, MainActivity::class.java)
+            startActivity(i)
+            finish()
+        }
         ViewCompat.setOnApplyWindowInsetsListener(
             findViewById(R.id.main)
         ) { v: View, insets: WindowInsetsCompat ->
