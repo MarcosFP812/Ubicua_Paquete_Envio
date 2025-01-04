@@ -637,4 +637,33 @@ public class FachadaEnvioBD {
 
         return maxId;
     }
+    
+    public static double getTemperaturaMax(int idEnvio){
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        double temp = 8;
+        
+        try {
+            con = connector.obtainConnection(false);
+            PreparedStatement ps = ConnectionDB.selectTemperaturaMax(con);
+            ps.setInt(1, idEnvio);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                temp = rs.getInt("Temperatura_max"); // Obtiene el valor del campo `max_id`
+                Log.log.info("T max: "+temp);
+            } else {
+                Log.log.info("No se encontraron resultados.");
+            }
+
+            // Cierra el ResultSet y PreparedStatement
+            rs.close();
+            ps.close();
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return temp;
+    }
 }
