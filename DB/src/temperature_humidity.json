@@ -1,0 +1,664 @@
+{
+    "0": [
+        {
+            "Fecha": "2024-11-05 10:00:00",
+            "Temperatura": 4.68,
+            "Humedad": 79.03
+        },
+        {
+            "Fecha": "2024-11-05 10:00:10",
+            "Temperatura": 1.08,
+            "Humedad": 74.31
+        },
+        {
+            "Fecha": "2024-11-05 10:00:20",
+            "Temperatura": 3.85,
+            "Humedad": 52.11
+        },
+        {
+            "Fecha": "2024-11-05 10:00:30",
+            "Temperatura": 1.78,
+            "Humedad": 40.56
+        },
+        {
+            "Fecha": "2024-11-05 10:00:40",
+            "Temperatura": 3.96,
+            "Humedad": 39.59
+        },
+        {
+            "Fecha": "2024-11-05 10:00:50",
+            "Temperatura": 4.3,
+            "Humedad": 49.7
+        },
+        {
+            "Fecha": "2024-11-05 10:01:00",
+            "Temperatura": 6.13,
+            "Humedad": 36.24
+        },
+        {
+            "Fecha": "2024-11-05 10:01:10",
+            "Temperatura": 2.01,
+            "Humedad": 74.46
+        },
+        {
+            "Fecha": "2024-11-05 10:01:20",
+            "Temperatura": 6.03,
+            "Humedad": 79.38
+        },
+        {
+            "Fecha": "2024-11-05 10:01:30",
+            "Temperatura": 4.02,
+            "Humedad": 89.74
+        },
+        {
+            "Fecha": "2024-11-05 10:01:40",
+            "Temperatura": 8.1,
+            "Humedad": 81.66
+        },
+        {
+            "Fecha": "2024-11-05 10:01:50",
+            "Temperatura": 6.86,
+            "Humedad": 32.53
+        },
+        {
+            "Fecha": "2024-11-05 10:02:00",
+            "Temperatura": 1.9,
+            "Humedad": 45.44
+        },
+        {
+            "Fecha": "2024-11-05 10:02:10",
+            "Temperatura": 4.53,
+            "Humedad": 38.28
+        },
+        {
+            "Fecha": "2024-11-05 10:02:20",
+            "Temperatura": 8.56,
+            "Humedad": 56.47
+        },
+        {
+            "Fecha": "2024-11-05 10:02:30",
+            "Temperatura": 3.69,
+            "Humedad": 87.45
+        },
+        {
+            "Fecha": "2024-11-05 10:02:40",
+            "Temperatura": 1.28,
+            "Humedad": 43.03
+        },
+        {
+            "Fecha": "2024-11-05 10:02:50",
+            "Temperatura": 8.7,
+            "Humedad": 67.99
+        },
+        {
+            "Fecha": "2024-11-05 10:03:00",
+            "Temperatura": 5.84,
+            "Humedad": 56.48
+        },
+        {
+            "Fecha": "2024-11-05 10:03:10",
+            "Temperatura": 6.51,
+            "Humedad": 53.72
+        },
+        {
+            "Fecha": "2024-11-05 10:03:20",
+            "Temperatura": 3.82,
+            "Humedad": 83.95
+        },
+        {
+            "Fecha": "2024-11-05 10:03:30",
+            "Temperatura": 5.88,
+            "Humedad": 61.47
+        },
+        {
+            "Fecha": "2024-11-05 10:03:40",
+            "Temperatura": 5.75,
+            "Humedad": 31.73
+        },
+        {
+            "Fecha": "2024-11-05 10:03:50",
+            "Temperatura": 1.26,
+            "Humedad": 74.62
+        },
+        {
+            "Fecha": "2024-11-05 10:04:00",
+            "Temperatura": 2.72,
+            "Humedad": 47.57
+        },
+        {
+            "Fecha": "2024-11-05 10:04:10",
+            "Temperatura": 1.54,
+            "Humedad": 56.77
+        },
+        {
+            "Fecha": "2024-11-05 10:04:20",
+            "Temperatura": 4.28,
+            "Humedad": 85.8
+        },
+        {
+            "Fecha": "2024-11-05 10:04:30",
+            "Temperatura": 5.04,
+            "Humedad": 40.54
+        },
+        {
+            "Fecha": "2024-11-05 10:04:40",
+            "Temperatura": 8.57,
+            "Humedad": 44.89
+        },
+        {
+            "Fecha": "2024-11-05 10:04:50",
+            "Temperatura": 3.48,
+            "Humedad": 61.57
+        },
+        {
+            "Fecha": "2024-11-05 10:05:00",
+            "Temperatura": 7.92,
+            "Humedad": 46.82
+        },
+        {
+            "Fecha": "2024-11-05 10:05:10",
+            "Temperatura": 6.51,
+            "Humedad": 34.45
+        },
+        {
+            "Fecha": "2024-11-05 10:05:20",
+            "Temperatura": 2.65,
+            "Humedad": 65.77
+        },
+        {
+            "Fecha": "2024-11-05 10:05:30",
+            "Temperatura": 7.47,
+            "Humedad": 38.75
+        },
+        {
+            "Fecha": "2024-11-05 10:05:40",
+            "Temperatura": 1.81,
+            "Humedad": 70.41
+        },
+        {
+            "Fecha": "2024-11-05 10:05:50",
+            "Temperatura": 1.17,
+            "Humedad": 50.01
+        },
+        {
+            "Fecha": "2024-11-05 10:06:00",
+            "Temperatura": 1.29,
+            "Humedad": 60.0
+        },
+        {
+            "Fecha": "2024-11-05 10:06:10",
+            "Temperatura": 1.19,
+            "Humedad": 39.14
+        },
+        {
+            "Fecha": "2024-11-05 10:06:20",
+            "Temperatura": 4.93,
+            "Humedad": 39.84
+        },
+        {
+            "Fecha": "2024-11-05 10:06:30",
+            "Temperatura": 6.2,
+            "Humedad": 31.61
+        },
+        {
+            "Fecha": "2024-11-05 10:06:40",
+            "Temperatura": 8.3,
+            "Humedad": 64.25
+        },
+        {
+            "Fecha": "2024-11-05 10:06:50",
+            "Temperatura": 2.55,
+            "Humedad": 34.05
+        },
+        {
+            "Fecha": "2024-11-05 10:07:00",
+            "Temperatura": 4.11,
+            "Humedad": 79.22
+        },
+        {
+            "Fecha": "2024-11-05 10:07:10",
+            "Temperatura": 6.87,
+            "Humedad": 89.53
+        },
+        {
+            "Fecha": "2024-11-05 10:07:20",
+            "Temperatura": 2.73,
+            "Humedad": 69.16
+        },
+        {
+            "Fecha": "2024-11-05 10:07:30",
+            "Temperatura": 2.01,
+            "Humedad": 37.67
+        },
+        {
+            "Fecha": "2024-11-05 10:07:40",
+            "Temperatura": 5.42,
+            "Humedad": 43.66
+        },
+        {
+            "Fecha": "2024-11-05 10:07:50",
+            "Temperatura": 2.34,
+            "Humedad": 33.06
+        },
+        {
+            "Fecha": "2024-11-05 10:08:00",
+            "Temperatura": 4.47,
+            "Humedad": 35.93
+        },
+        {
+            "Fecha": "2024-11-05 10:08:10",
+            "Temperatura": 6.57,
+            "Humedad": 34.02
+        },
+        {
+            "Fecha": "2024-11-05 10:08:20",
+            "Temperatura": 1.34,
+            "Humedad": 38.16
+        },
+        {
+            "Fecha": "2024-11-05 10:08:30",
+            "Temperatura": 4.17,
+            "Humedad": 54.02
+        },
+        {
+            "Fecha": "2024-11-05 10:08:40",
+            "Temperatura": 5.05,
+            "Humedad": 48.29
+        },
+        {
+            "Fecha": "2024-11-05 10:08:50",
+            "Temperatura": 5.82,
+            "Humedad": 76.25
+        },
+        {
+            "Fecha": "2024-11-05 10:09:00",
+            "Temperatura": 3.34,
+            "Humedad": 75.95
+        },
+        {
+            "Fecha": "2024-11-05 10:09:10",
+            "Temperatura": 1.98,
+            "Humedad": 74.43
+        },
+        {
+            "Fecha": "2024-11-05 10:09:20",
+            "Temperatura": 4.98,
+            "Humedad": 82.97
+        },
+        {
+            "Fecha": "2024-11-05 10:09:30",
+            "Temperatura": 5.47,
+            "Humedad": 79.75
+        },
+        {
+            "Fecha": "2024-11-05 10:09:40",
+            "Temperatura": 4.27,
+            "Humedad": 70.49
+        },
+        {
+            "Fecha": "2024-11-05 10:09:50",
+            "Temperatura": 3.18,
+            "Humedad": 46.7
+        },
+        {
+            "Fecha": "2024-11-05 10:10:00",
+            "Temperatura": 1.09,
+            "Humedad": 33.99
+        },
+        {
+            "Fecha": "2024-11-05 10:10:10",
+            "Temperatura": 6.24,
+            "Humedad": 66.19
+        },
+        {
+            "Fecha": "2024-11-05 10:10:20",
+            "Temperatura": 5.13,
+            "Humedad": 76.4
+        },
+        {
+            "Fecha": "2024-11-05 10:10:30",
+            "Temperatura": 4.33,
+            "Humedad": 30.54
+        },
+        {
+            "Fecha": "2024-11-05 10:10:40",
+            "Temperatura": 2.88,
+            "Humedad": 50.05
+        },
+        {
+            "Fecha": "2024-11-05 10:10:50",
+            "Temperatura": 3.09,
+            "Humedad": 60.02
+        },
+        {
+            "Fecha": "2024-11-05 10:11:00",
+            "Temperatura": 8.6,
+            "Humedad": 75.82
+        },
+        {
+            "Fecha": "2024-11-05 10:11:10",
+            "Temperatura": 5.84,
+            "Humedad": 50.17
+        },
+        {
+            "Fecha": "2024-11-05 10:11:20",
+            "Temperatura": 6.89,
+            "Humedad": 33.5
+        },
+        {
+            "Fecha": "2024-11-05 10:11:30",
+            "Temperatura": 7.68,
+            "Humedad": 75.95
+        },
+        {
+            "Fecha": "2024-11-05 10:11:40",
+            "Temperatura": 1.12,
+            "Humedad": 65.63
+        },
+        {
+            "Fecha": "2024-11-05 10:11:50",
+            "Temperatura": 5.75,
+            "Humedad": 66.84
+        },
+        {
+            "Fecha": "2024-11-05 10:12:00",
+            "Temperatura": 4.28,
+            "Humedad": 30.11
+        },
+        {
+            "Fecha": "2024-11-05 10:12:10",
+            "Temperatura": 1.77,
+            "Humedad": 62.96
+        },
+        {
+            "Fecha": "2024-11-05 10:12:20",
+            "Temperatura": 4.11,
+            "Humedad": 40.86
+        },
+        {
+            "Fecha": "2024-11-05 10:12:30",
+            "Temperatura": 3.55,
+            "Humedad": 55.28
+        },
+        {
+            "Fecha": "2024-11-05 10:12:40",
+            "Temperatura": 1.88,
+            "Humedad": 88.71
+        },
+        {
+            "Fecha": "2024-11-05 10:12:50",
+            "Temperatura": 8.44,
+            "Humedad": 80.54
+        },
+        {
+            "Fecha": "2024-11-05 10:13:00",
+            "Temperatura": 4.15,
+            "Humedad": 64.32
+        },
+        {
+            "Fecha": "2024-11-05 10:13:10",
+            "Temperatura": 7.03,
+            "Humedad": 67.98
+        },
+        {
+            "Fecha": "2024-11-05 10:13:20",
+            "Temperatura": 3.33,
+            "Humedad": 37.77
+        },
+        {
+            "Fecha": "2024-11-05 10:13:30",
+            "Temperatura": 8.81,
+            "Humedad": 37.09
+        },
+        {
+            "Fecha": "2024-11-05 10:13:40",
+            "Temperatura": 6.2,
+            "Humedad": 73.09
+        },
+        {
+            "Fecha": "2024-11-05 10:13:50",
+            "Temperatura": 4.28,
+            "Humedad": 66.93
+        },
+        {
+            "Fecha": "2024-11-05 10:14:00",
+            "Temperatura": 3.39,
+            "Humedad": 58.38
+        },
+        {
+            "Fecha": "2024-11-05 10:14:10",
+            "Temperatura": 5.33,
+            "Humedad": 31.98
+        },
+        {
+            "Fecha": "2024-11-05 10:14:20",
+            "Temperatura": 6.65,
+            "Humedad": 50.71
+        },
+        {
+            "Fecha": "2024-11-05 10:14:30",
+            "Temperatura": 7.24,
+            "Humedad": 67.71
+        },
+        {
+            "Fecha": "2024-11-05 10:14:40",
+            "Temperatura": 4.05,
+            "Humedad": 87.28
+        },
+        {
+            "Fecha": "2024-11-05 10:14:50",
+            "Temperatura": 8.37,
+            "Humedad": 41.95
+        },
+        {
+            "Fecha": "2024-11-05 10:15:00",
+            "Temperatura": 4.46,
+            "Humedad": 73.0
+        },
+        {
+            "Fecha": "2024-11-05 10:15:10",
+            "Temperatura": 5.26,
+            "Humedad": 53.23
+        },
+        {
+            "Fecha": "2024-11-05 10:15:20",
+            "Temperatura": 8.2,
+            "Humedad": 88.03
+        },
+        {
+            "Fecha": "2024-11-05 10:15:30",
+            "Temperatura": 7.86,
+            "Humedad": 53.45
+        },
+        {
+            "Fecha": "2024-11-05 10:15:40",
+            "Temperatura": 4.34,
+            "Humedad": 32.32
+        },
+        {
+            "Fecha": "2024-11-05 10:15:50",
+            "Temperatura": 5.55,
+            "Humedad": 56.4
+        },
+        {
+            "Fecha": "2024-11-05 10:16:00",
+            "Temperatura": 3.75,
+            "Humedad": 59.33
+        },
+        {
+            "Fecha": "2024-11-05 10:16:10",
+            "Temperatura": 1.42,
+            "Humedad": 30.71
+        },
+        {
+            "Fecha": "2024-11-05 10:16:20",
+            "Temperatura": 8.8,
+            "Humedad": 53.33
+        },
+        {
+            "Fecha": "2024-11-05 10:16:30",
+            "Temperatura": 3.34,
+            "Humedad": 53.11
+        },
+        {
+            "Fecha": "2024-11-05 10:16:40",
+            "Temperatura": 5.4,
+            "Humedad": 64.39
+        },
+        {
+            "Fecha": "2024-11-05 10:16:50",
+            "Temperatura": 8.54,
+            "Humedad": 78.7
+        },
+        {
+            "Fecha": "2024-11-05 10:17:00",
+            "Temperatura": 6.11,
+            "Humedad": 39.32
+        },
+        {
+            "Fecha": "2024-11-05 10:17:10",
+            "Temperatura": 3.59,
+            "Humedad": 88.39
+        },
+        {
+            "Fecha": "2024-11-05 10:17:20",
+            "Temperatura": 2.83,
+            "Humedad": 34.18
+        },
+        {
+            "Fecha": "2024-11-05 10:17:30",
+            "Temperatura": 2.56,
+            "Humedad": 37.8
+        },
+        {
+            "Fecha": "2024-11-05 10:17:40",
+            "Temperatura": 7.15,
+            "Humedad": 89.72
+        },
+        {
+            "Fecha": "2024-11-05 10:17:50",
+            "Temperatura": 3.36,
+            "Humedad": 75.83
+        },
+        {
+            "Fecha": "2024-11-05 10:18:00",
+            "Temperatura": 7.11,
+            "Humedad": 41.13
+        },
+        {
+            "Fecha": "2024-11-05 10:18:10",
+            "Temperatura": 1.85,
+            "Humedad": 54.27
+        },
+        {
+            "Fecha": "2024-11-05 10:18:20",
+            "Temperatura": 2.87,
+            "Humedad": 63.2
+        },
+        {
+            "Fecha": "2024-11-05 10:18:30",
+            "Temperatura": 2.32,
+            "Humedad": 74.72
+        },
+        {
+            "Fecha": "2024-11-05 10:18:40",
+            "Temperatura": 7.85,
+            "Humedad": 78.32
+        },
+        {
+            "Fecha": "2024-11-05 10:18:50",
+            "Temperatura": 8.58,
+            "Humedad": 39.55
+        },
+        {
+            "Fecha": "2024-11-05 10:19:00",
+            "Temperatura": 3.16,
+            "Humedad": 30.84
+        },
+        {
+            "Fecha": "2024-11-05 10:19:10",
+            "Temperatura": 3.3,
+            "Humedad": 38.04
+        },
+        {
+            "Fecha": "2024-11-05 10:19:20",
+            "Temperatura": 5.43,
+            "Humedad": 80.33
+        },
+        {
+            "Fecha": "2024-11-05 10:19:30",
+            "Temperatura": 4.62,
+            "Humedad": 53.35
+        },
+        {
+            "Fecha": "2024-11-05 10:19:40",
+            "Temperatura": 1.19,
+            "Humedad": 50.47
+        },
+        {
+            "Fecha": "2024-11-05 10:19:50",
+            "Temperatura": 2.98,
+            "Humedad": 74.99
+        },
+        {
+            "Fecha": "2024-11-05 10:20:00",
+            "Temperatura": 7.15,
+            "Humedad": 51.85
+        },
+        {
+            "Fecha": "2024-11-05 10:20:10",
+            "Temperatura": 6.41,
+            "Humedad": 48.93
+        },
+        {
+            "Fecha": "2024-11-05 10:20:20",
+            "Temperatura": 4.1,
+            "Humedad": 70.24
+        },
+        {
+            "Fecha": "2024-11-05 10:20:30",
+            "Temperatura": 3.34,
+            "Humedad": 73.41
+        },
+        {
+            "Fecha": "2024-11-05 10:20:40",
+            "Temperatura": 7.59,
+            "Humedad": 78.95
+        },
+        {
+            "Fecha": "2024-11-05 10:20:50",
+            "Temperatura": 4.9,
+            "Humedad": 44.25
+        },
+        {
+            "Fecha": "2024-11-05 10:21:00",
+            "Temperatura": 2.86,
+            "Humedad": 84.35
+        },
+        {
+            "Fecha": "2024-11-05 10:21:10",
+            "Temperatura": 7.13,
+            "Humedad": 34.09
+        },
+        {
+            "Fecha": "2024-11-05 10:21:20",
+            "Temperatura": 2.16,
+            "Humedad": 78.92
+        },
+        {
+            "Fecha": "2024-11-05 10:21:30",
+            "Temperatura": 8.1,
+            "Humedad": 45.83
+        },
+        {
+            "Fecha": "2024-11-05 10:21:40",
+            "Temperatura": 1.37,
+            "Humedad": 52.85
+        },
+        {
+            "Fecha": "2024-11-05 10:21:50",
+            "Temperatura": 3.46,
+            "Humedad": 31.7
+        }
+    ]
+}
