@@ -14,7 +14,10 @@ import Clases.UbicacionEnvio;
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -70,27 +73,42 @@ public class Controlador {
     /* Crear un nuevo envío
     * 1. crear envío
     */
-    public static boolean crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente){
-        boolean valido = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente);
+    public static int crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min){
+        int id = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
         
-        return valido;
+        return id;
     }
     
     /* Sacar todos los envíos realizados por un cliente
     * 1. Dado un id llamar a la fachada para obtener los envíos
     */
     public static ArrayList<Envio> obtenerEnviosCliente(int idCliente){
-        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorCliente(3);
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorCliente(idCliente);
         
         return e;
     }
     public static ArrayList<Envio> obtenerEnviosClienteActivo(int idCliente){
-        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteActivo(3);
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteActivo(idCliente);
         
         return e;
     }
     public static ArrayList<Envio> obtenerEnviosClienteFinalizado(int idCliente){
-        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteFinalizado(3);
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteFinalizado(idCliente);
+        
+        return e;
+    }
+    public static ArrayList<Envio> obtenerEnviosClienteCancelado(int idCliente){
+        ArrayList<Envio> e = FachadaEnvioBD.getEnviosPorClienteCancelado(idCliente);
+        
+        return e;
+    }
+    
+    /* Cambiar estado de un envío
+    */
+    public static boolean cambiarEstadoEnvio(int idEnvio, String estado){
+        boolean e = FachadaEnvioBD.actualizarEstado(idEnvio, estado);
+        
+        //Publish estado
         
         return e;
     }
@@ -128,7 +146,8 @@ public class Controlador {
     */
     public static boolean registrarVentilador(int idEnvio, boolean activo, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarVentilador(idEnvio, fecha, activo);
-        //Llamar a mqtt para encender en caso de que sea activo
+       
+        //Publish del estado del ventilador
         
         return valido;
     }
@@ -138,7 +157,8 @@ public class Controlador {
     */
     public static boolean registrarEstado(int idEnvio, String estado, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarCambioEstado(idEnvio, fecha, estado);
-        //Llamar a mqtt para encender en caso de que sea activo
+       
+        //Publish estado 
         
         return valido;
     }
@@ -191,6 +211,29 @@ public class Controlador {
         return json.toString();
     }
 
+    
+    /* Crear pin
+    */
+    public static String generarPin(int idEnvio){
+        Random random = new Random();
+        StringBuilder pinBuilder = new StringBuilder();
+
+        for (int i = 0; i < 5; i++) {
+            int digit = random.nextInt(10); // Generar un dígito aleatorio (0-9)
+            pinBuilder.append(digit);
+        }
+
+        String pin = pinBuilder.toString();
+        
+        //Publish del pin
+        
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(currentDateTime);
+        
+        Controlador.registrarEstado(idEnvio, "APERTURA", timestamp);
+        
+        return pin;
+    }
     
     
 }

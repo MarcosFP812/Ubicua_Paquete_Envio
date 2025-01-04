@@ -73,7 +73,7 @@ public class FachadaEnvioBD {
                     rs.getInt("Paquete_idPaquete"),       // paqueteId
                     rs.getInt("Receptor_Cliente_idCliente"), // receptorId
                     rs.getInt("Remitente_Cliente_idCliente"), // remitenteId
-                    rs.getBoolean("Finalizado")           // finalizado
+                    rs.getString("Estado")           // finalizado
                 );
                 envios.add(envio); // Agregar el envío a la lista
             }
@@ -107,7 +107,7 @@ public class FachadaEnvioBD {
                     rs.getInt("Paquete_idPaquete"),       // paqueteId
                     rs.getInt("Receptor_Cliente_idCliente"), // receptorId
                     rs.getInt("Remitente_Cliente_idCliente"), // remitenteId
-                    rs.getBoolean("Finalizado")           // finalizado
+                    rs.getString("Estado")          // finalizado
                 );
                 envios.add(envio); // Agregar el envío a la lista
             }
@@ -142,7 +142,7 @@ public class FachadaEnvioBD {
                     rs.getInt("Paquete_idPaquete"),       // paqueteId
                     rs.getInt("Receptor_Cliente_idCliente"), // receptorId
                     rs.getInt("Remitente_Cliente_idCliente"), // remitenteId
-                    rs.getBoolean("Finalizado")           // finalizado
+                    rs.getString("Estado")         // finalizado
                 );
                 envios.add(envio); // Agregar el envío a la lista
             }
@@ -153,6 +153,63 @@ public class FachadaEnvioBD {
         }
 
         return envios;
+    }
+    
+    public static ArrayList<Envio> getEnviosPorClienteCancelado(int idCliente) {
+        ArrayList<Envio> envios = new ArrayList<>();
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectEnviosClienteCancelado(con);
+            ps.setInt(1, idCliente); // Cliente como remitente
+            ps.setInt(2, idCliente); // Cliente como receptor
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                
+                // Crear un objeto Envio basado en los datos de la fila
+                Envio envio = new Envio(
+                    rs.getInt("idEnvio"),                  // idEnvio
+                    rs.getInt("Transportista_idTransportista"), // transportistaId
+                    rs.getInt("Paquete_idPaquete"),       // paqueteId
+                    rs.getInt("Receptor_Cliente_idCliente"), // receptorId
+                    rs.getInt("Remitente_Cliente_idCliente"), // remitenteId
+                    rs.getString("Estado")         // finalizado
+                );
+                envios.add(envio); // Agregar el envío a la lista
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return envios;
+    }
+    
+    public static boolean actualizarEstado(int idEnvio, String estado){
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        boolean valido = false;
+        
+        try{
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.updateEstado(con);
+            ps.setString(2, estado);
+            ps.setInt(2, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+            valido = true;
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+        
+        return valido;
     }
 
     public static ArrayList<UbicacionEnvio> getUbicaciones(int idEnvio) {
@@ -301,19 +358,23 @@ public class FachadaEnvioBD {
         return receptores;
     }
 
-    public static boolean crearNuevoEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente) {
+    public static int crearNuevoEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min) {
         ConnectionDB connector = new ConnectionDB();
         Connection con = null;
         boolean success = false;
+        int id = -1;
 
         try {
             con = connector.obtainConnection(false);
             PreparedStatement ps = ConnectionDB.insertNuevoEnvio(con);
-            ps.setInt(1, FachadaEnvioBD.ultimoIdEnvio()+1);
+            id = FachadaEnvioBD.ultimoIdEnvio()+1;
+            ps.setInt(1, id);
             ps.setInt(2, idTransportista);
             ps.setInt(3, idPaquete);
             ps.setInt(4, idReceptor);
             ps.setInt(5, idRemitente);
+            ps.setDouble(6, temperatura_min);
+            ps.setDouble(7, temperatura_max);
             Log.log.info("Ejecutando: " + ps);
 
             int affectedRows = ps.executeUpdate();
@@ -337,7 +398,7 @@ public class FachadaEnvioBD {
             connector.closeConnection(con);
         }
 
-        return success;
+        return id;
     }
     
     public static int getUltimoIdDato(int idEnvio){

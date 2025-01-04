@@ -15,9 +15,9 @@ public class Envio {
     private int paqueteId;
     private int receptorId;
     private int remitenteId;
-    private boolean finalizado;
+    private String finalizado;
 
-    public Envio(int idEnvio, int transportistaId, int paqueteId, int receptorId, int remitenteId, boolean finalizado) {
+    public Envio(int idEnvio, int transportistaId, int paqueteId, int receptorId, int remitenteId, String finalizado) {
         this.idEnvio = idEnvio;
         this.transportistaId = transportistaId;
         this.paqueteId = paqueteId;
@@ -66,11 +66,11 @@ public class Envio {
         this.remitenteId = remitenteId;
     }
 
-    public boolean isFinalizado() {
+    public String isFinalizado() {
         return finalizado;
     }
 
-    public void setFinalizado(boolean finalizado) {
+    public void setFinalizado(String finalizado) {
         this.finalizado = finalizado;
     }
 

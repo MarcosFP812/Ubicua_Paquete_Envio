@@ -20,6 +20,7 @@ C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\M
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\MQTTPublisher.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Mqtt\MQTTSuscriber.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Servlets\CrearEnvioServlet.java
+C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Servlets\CrearPinServlet.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Servlets\GetData.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Servlets\ObtenerEnviosClienteServlet.java
 C:\Users\socra\Documents\GitHub\Ubicua_Paquete_Envio\server\src\main\java\Servlets\ObtenerReceptoresServlet.java

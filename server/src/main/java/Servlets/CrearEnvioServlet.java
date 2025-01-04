@@ -35,8 +35,10 @@ public class CrearEnvioServlet extends HttpServlet {
             int idPaquete = Integer.parseInt(request.getParameter("idPaquete"));
             int idReceptor = Integer.parseInt(request.getParameter("idReceptor"));
             int idRemitente = Integer.parseInt(request.getParameter("idRemitente"));
-            boolean creado = Controlador.crearEnvio(idTransportista, idPaquete, idReceptor, idRemitente);
-            out.print(creado);
+            double temperatura_min = Double.parseDouble(request.getParameter("temperatura_min"));
+            double temperatura_max = Double.parseDouble(request.getParameter("temperatura_max"));
+            int id = Controlador.crearEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
+            out.print(id);
         } catch (Exception e) {
             out.println("-1");
             Log.log.info(e);;

@@ -9,6 +9,7 @@ db\Topics.class
 Logic\Logic.class
 Clases\Dato.class
 Clases\Ventilador.class
+Servlets\CrearPinServlet.class
 Servlets\ValidarClienteServlet.class
 Logic\Measurement.class
 db\FachadaClienteBD.class

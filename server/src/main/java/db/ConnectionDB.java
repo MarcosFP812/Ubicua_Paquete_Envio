@@ -115,7 +115,7 @@ public class ConnectionDB {
     }
 
     public static PreparedStatement insertNuevoEnvio(Connection con) {
-        return getStatement(con, "INSERT INTO Envio (idEnvio, Transportista_idTransportista, Paquete_idPaquete, Receptor_Cliente_idCliente, Remitente_Cliente_idCliente, Finalizado) VALUES (?, ?, ?, ?, ?, 0)");
+        return getStatement(con, "INSERT INTO Envio (idEnvio, Transportista_idTransportista, Paquete_idPaquete, Receptor_Cliente_idCliente, Remitente_Cliente_idCliente, Estado, Temperatura_min, Temperatura_max) VALUES (?, ?, ?, ?, ?, 'Envio', ?, ?)");
     }
     
     public static PreparedStatement selectEnviosCliente(Connection con) {
@@ -123,11 +123,19 @@ public class ConnectionDB {
     }
     
     public static PreparedStatement selectEnviosClienteActivo(Connection con) {
-        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Finalizado = 0;");
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Estado = 'Envio';");
     }
     
     public static PreparedStatement selectEnviosClienteFinalizado(Connection con) {
-        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Finalizado = 1;");
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Estado = 'Enviado';");
+    }
+    
+    public static PreparedStatement selectEnviosClienteCancelado(Connection con) {
+        return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Estado = 'Cancelado';");
+    }
+    
+    public static PreparedStatement updateEstado(Connection con) {
+        return getStatement(con, "UPDATE Envio SET Estado = ? WHERE idEnvio = ?;");
     }
 
     public static PreparedStatement insertDato(Connection con) {

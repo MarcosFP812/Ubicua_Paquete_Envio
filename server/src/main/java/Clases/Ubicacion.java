@@ -22,8 +22,8 @@ public class Ubicacion {
     @Override
     public String toString() {
     return "{"
-        + "\"Longitud\": " + Longitud + ", "
-        + "\"Latitud\": " + Latitud
+        + " \"Longitud\": " + Longitud + ", "
+        + " \"Latitud\": " + Latitud
         + "}";
 }
 

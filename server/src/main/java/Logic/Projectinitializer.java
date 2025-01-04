@@ -1,5 +1,6 @@
 package Logic;
 
+import Clases.Cliente;
 import Clases.TemperaturaHumedad;
 import Clases.Estado;
 import Clases.Ventilador;
@@ -39,7 +40,7 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Pruebas acceso base de datos...");
         
-        /*
+        /* 
         //Test registrar Cliente
         Controlador.registrarCliente("ubicua", "ubicua", 0, 0, "Receptor");
         
@@ -59,8 +60,8 @@ public class Projectinitializer implements ServletContextListener {
         }
         
         //Test crear envío
-        Controlador.crearEnvio(1, 1, 1, 2);
-                 
+        Controlador.crearEnvio(1, 1, 1, 2, 8, 2);
+          
         //Test obtener envios de idCliente 3
         Log.log.info("Envíos de 3: ");
         ArrayList<Envio> e1 = Controlador.obtenerEnviosCliente(3);
@@ -81,7 +82,7 @@ public class Projectinitializer implements ServletContextListener {
         for (int i = 0; i < e3.size(); i++){
             Log.log.info(e3.get(i));
         }
-        */
+        
         
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp fecha = Timestamp.valueOf(localDateTime);
@@ -121,7 +122,7 @@ public class Projectinitializer implements ServletContextListener {
         for (TemperaturaHumedad th : ths) {
             Log.log.info("Temperatura y Humedad: " + th);
         }
-        
+        */
         
         
         
