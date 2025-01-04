@@ -8,11 +8,18 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.graphics.Color
+import android.location.Geocoder
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.net.HttpURLConnection
+import java.net.URL
+import android.location.Address
+import java.io.IOException
+import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"
@@ -28,8 +35,10 @@ class RegisterActivity : AppCompatActivity() {
 
         val btnU: Button = findViewById(R.id.btnU)
         val btnE: Button = findViewById(R.id.btnE)
-        //Almacenar el valor seleccionado
-        // Comprobar si ha sido pulsado el boton usuario
+        val editNombre = findViewById<EditText>(R.id.miEditText)
+        val editPw = findViewById<EditText>(R.id.miEditText2)
+        val editDirection = findViewById<EditText>(R.id.miEditText3)
+
         btnU.setOnClickListener {
             btnU.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
             btnE.setBackgroundColor(Color.GRAY) // Color deseleccionado
@@ -37,7 +46,6 @@ class RegisterActivity : AppCompatActivity() {
             findViewById<View>(R.id.miEditText3).visibility = View.VISIBLE
         }
 
-        // Comprobar si ha sido pulsado el boton empresa
         btnE.setOnClickListener {
             btnE.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
             btnU.setBackgroundColor(Color.GRAY) // Color deseleccionado
@@ -45,25 +53,34 @@ class RegisterActivity : AppCompatActivity() {
             findViewById<View>(R.id.miEditText3).visibility = View.GONE
         }
 
-        //Almacenar nuevo usuario
-
-        val btnR  = findViewById<Button>(R.id.btn3)
+        val btnR = findViewById<Button>(R.id.btn3)
         btnR.setOnClickListener {
-            Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
-            val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
-            startActivity(i)
-            finish()
+            val nombre = editNombre.text.toString()
+            val pw = editPw.text.toString()
+            val tipo = if (btnU.isEnabled) "Receptor" else "Remitente"
+            var direccion: List<Double>? = obtenerCoordenadas(editDirection.text.toString())
+
+            if (nombre.isNotEmpty() && pw.isNotEmpty() && direccion!=null) {
+                sendClientDataToServer(nombre, pw, direccion.get(0), direccion.get(1), tipo)
+                Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
+                val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
+                startActivity(i)
+                finish()
+            } else {
+                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         val btniniciarSesion = findViewById<TextView>(R.id.clickableText)
-        btniniciarSesion.setOnClickListener{
+        btniniciarSesion.setOnClickListener {
             val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
             startActivity(i)
             finish()
         }
 
         val btnAtras = findViewById<ImageView>(R.id.flecha)
-        btnAtras.setOnClickListener{
+        btnAtras.setOnClickListener {
             val i = Intent(this@RegisterActivity, MainActivity::class.java)
             startActivity(i)
             finish()
@@ -75,151 +92,55 @@ class RegisterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+    private fun obtenerCoordenadas(direccion: String): List<Double>? {
+        val geocoder = Geocoder(this, Locale.getDefault())
 
-        /*
+        return try {
+            // Intentamos obtener la dirección
+            val direcciones: List<Address>? = geocoder.getFromLocationName(direccion, 1)
 
-    //Init the spinners and the button
-    this.spinnerCities = this.findViewById(R.id.spinnerCity);
-    Log.e(tag, "cities");
-    this.spinnerStations = this.findViewById(R.id.spinnerStation);
-    Log.e(tag, "stations");
-    this.buttonStation = this.findViewById(R.id.buttonStation);
-    Log.e(tag, "button");
+            if (direcciones != null && direcciones.isNotEmpty()) {
+                // Obtenemos la primera dirección encontrada
+                val direccionObtenida = direcciones[0]
+                val latitud = direccionObtenida.latitude
+                val longitud = direccionObtenida.longitude
 
-    //init the arraylist to incorpore the information
-    this.listCities = new ArrayList<>();
-    this.listStation = new ArrayList<>();
-    this.arrayCities = new ArrayList<>();
-    this.arrayStations = new ArrayList<>();
-
-    //Add action when the spinner of the cities changes
-    spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int id = listCities.get(i).getId();//Get the id of the selected position
-            Log.i(tag, "City selected:" + listCities.get(i).getName());
-
-            //Get the list of stations of the selected city and set them into the spinner
-            loadStations(listCities.get(i).getId());
-            spinnerStations.setAdapter(new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, arrayStations));
-            if(arrayStations.size()>0) {
-                spinnerStations.setSelection(0);
+                listOf(longitud, latitud)
+            } else {
+                // Si no se encuentra la dirección, mostramos el mensaje y retornamos null
+                Toast.makeText(this, "No se encontraron resultados para la dirección. Pruebe con otra.", Toast.LENGTH_SHORT).show()
+                null
             }
+        } catch (e: IOException) {
+            // En caso de error de entrada/salida (por ejemplo, sin conexión a Internet)
+            e.printStackTrace()
+            Toast.makeText(this, "Error al obtener las coordenadas.", Toast.LENGTH_SHORT).show()
+            null
         }
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-        }
-    });
+    }
 
-    //Add action when the spinner of the stations changes
-    spinnerStations.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    private fun sendClientDataToServer(nombre: String, pw: String, longitud: Double, latitud: Double, tipo: String) {
+        val thread = Thread {
             try {
-                idStation = listStation.get(i).getId();//Get the id of the selected position
-                nameStation = listStation.get(i).getName();
-                Log.i(tag, "Station selected:" + listStation.get(i).getName());
-            }catch (Exception e){
-                Log.e(tag, "Error on selecting Station:" + e.toString());
+                val url = URL("http://192.168.1.203:8080/ServerExampleUbicomp-1.0-SNAPSHOT/RegistrarCliente?nombre=$nombre&pw=$pw&longitud=$longitud&latitud=$latitud&tipo=$tipo")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET" // O "POST" si necesitas enviar los datos en el cuerpo de la solicitud
+                conn.connectTimeout = 5000
+                conn.readTimeout = 5000
+
+                val responseCode = conn.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.d(tag, "Cliente registrado exitosamente")
+                } else {
+                    Log.e(tag, "Error al registrar cliente: Código $responseCode")
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                Log.e(tag, "Error en la conexión al servidor", e)
             }
         }
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-        }
-    });
-
-    buttonStation.setOnClickListener( new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            Log.i(tag, "Button pressed");
-            Intent i = new Intent(SelectStationActivity.this, StationActivity.class);
-            i.putExtra("stationId", "station" + idStation);
-            i.putExtra("stationName", nameStation);
-            startActivity(i);
-            finish();
-        }
-    });
-    //Initial load of cities and stations
-    loadCities();
-    if(arrayCities.size()>0) {
-        spinnerCities.setSelection(0);
-
-        Log.e(tag, "mayor");
-    }else {
-
-        Log.e(tag, "menor");
-    }*/
+        thread.start()
     }
-
-/*
-    //Search the cities and fill the spinner with the information
-    private fun loadCities() {
-        val url = "http://192.168.1.21:8080/ServerExampleUbicomp/GetCities"
-
-        Log.e(tag, "loadcities")
-        val thread = ServerConnectionThread(this, url)
-        try {
-            thread.join()
-        } catch (e: InterruptedException) {
-        }
-    }
-
-    //Search the stations of the selected city and fill the spinner with the information
-    private fun loadStations(cityId: Int) {
-        val url =
-            "http://192.168.1.21:8080/ServerExampleUbicomp/GetStationsCity?cityId=$cityId"
-        this.listStation = ArrayList()
-        this.arrayStations = ArrayList()
-        val thread = ServerConnectionThread(this, url)
-        try {
-            thread.join()
-        } catch (e: InterruptedException) {
-        }
-    }
-
-    //Select the Cities from JSON response
-    fun setListCities(jsonCities: JSONArray) {
-        try {
-            for (i in 0 until jsonCities.length()) {
-                val jsonobject = jsonCities.getJSONObject(i)
-                listCities!!.add(
-                    City(
-                        jsonobject.getInt("id"),
-                        jsonobject.getString("name")
-                    )
-                )
-                arrayCities!!.add(jsonobject.getString("name"))
-            }
-            spinnerCities!!.adapter = ArrayAdapter(
-                context,
-                android.R.layout.simple_spinner_item, arrayCities
-            )
-        } catch (e: Exception) {
-            Log.e(tag, "Error: $e")
-        }
-    }
-
-    //Select the stations from JSON response
-    fun setListStations(jsonCities: JSONArray) {
-        Log.e(tag, "Loading stations $jsonCities")
-        try {
-            for (i in 0 until jsonCities.length()) {
-                val jsonobject = jsonCities.getJSONObject(i)
-                listStation!!.add(
-                    Station(
-                        jsonobject.getInt("id"),
-                        jsonobject.getString("name"),
-                        jsonobject.getString("latitude").toDouble(),
-                        jsonobject.getString("longitude").toDouble()
-                    )
-                )
-                arrayStations!!.add(jsonobject.getString("name"))
-                Log.e(tag, "Station " + jsonobject.getString("name"))
-            }
-        } catch (e: Exception) {
-            Log.e(tag, "Error: $e")
-        }
-    }*/
 }
