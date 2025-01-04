@@ -38,6 +38,7 @@ class RegisterActivity : AppCompatActivity() {
         val editNombre = findViewById<EditText>(R.id.miEditText)
         val editPw = findViewById<EditText>(R.id.miEditText2)
         val editDirection = findViewById<EditText>(R.id.miEditText3)
+        var direccion: List<Double>? = listOf(0.0, 0.0)
 
         btnU.setOnClickListener {
             btnU.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
@@ -51,21 +52,28 @@ class RegisterActivity : AppCompatActivity() {
             btnU.setBackgroundColor(Color.GRAY) // Color deseleccionado
             findViewById<View>(R.id.txt4).visibility = View.GONE
             findViewById<View>(R.id.miEditText3).visibility = View.GONE
+            direccion = listOf(0.0,0.0)
         }
 
         val btnR = findViewById<Button>(R.id.btn3)
         btnR.setOnClickListener {
             val nombre = editNombre.text.toString()
             val pw = editPw.text.toString()
-            val tipo = if (btnU.isEnabled) "Receptor" else "Remitente"
-            var direccion: List<Double>? = obtenerCoordenadas(editDirection.text.toString())
+            val tipo = if (btnU.isActivated) "Receptor" else "Remitente"
+            if(tipo == "Receptor"){
+                direccion = obtenerCoordenadas(editDirection.text.toString())
+            }
 
             if (nombre.isNotEmpty() && pw.isNotEmpty() && direccion!=null) {
-                sendClientDataToServer(nombre, pw, direccion.get(0), direccion.get(1), tipo)
-                Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
-                val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
-                startActivity(i)
-                finish()
+                val coord1 = direccion?.get(0)
+                val coord2 = direccion?.get(1)
+                if (coord1 != null && coord2 != null){
+                    sendClientDataToServer(nombre, pw, coord1, coord2, tipo)
+                    Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
+                    val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
+                    startActivity(i)
+                    finish()
+                }
             } else {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
