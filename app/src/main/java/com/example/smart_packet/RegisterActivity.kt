@@ -18,11 +18,15 @@ import androidx.core.view.WindowInsetsCompat
 import java.net.HttpURLConnection
 import java.net.URL
 import android.location.Address
+import com.example.smart_packet.data.Receptor
+import com.example.smart_packet.data.Ubicacion
 import java.io.IOException
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"
+    private val listaReceptores: HashMap<String, Receptor> = hashMapOf()
+    private var idCount : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +73,13 @@ class RegisterActivity : AppCompatActivity() {
                 val coord2 = direccion?.get(1)
                 if (coord1 != null && coord2 != null){
                     sendClientDataToServer(nombre, pw, coord1, coord2, tipo)
-                    Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
                     val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
+                    if (tipo == "Receptor"){
+                        idCount++
+                        listaReceptores[nombre] = Receptor(idCount, nombre, pw, tipo, Ubicacion(coord1, coord2))
+                        i.putExtra("idReceptor", idCount)
+                    }
+                    Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
                     startActivity(i)
                     finish()
                 }

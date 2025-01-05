@@ -7,6 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".HistorialActivity">
 
+    <Button
+        android:id="@+id/btnEnvio"
+        android:layout_width="162dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:background="#005D89"
+        android:fontFamily="@font/niramit"
+        android:padding="8dp"
+        android:text="Registrar envio"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/canceladosrv" />
+
     <ImageView
         android:id="@+id/sm"
         android:layout_width="match_parent"
@@ -59,12 +77,12 @@
         android:id="@+id/enviado"
         android:layout_width="92dp"
         android:layout_height="37dp"
-        android:layout_marginTop="244dp"
+        android:layout_marginTop="216dp"
         android:fontFamily="@font/inter"
         android:text="Enviados"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintHorizontal_bias="0.087"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historial" />
@@ -73,7 +91,7 @@
         android:id="@+id/cancelados"
         android:layout_width="123dp"
         android:layout_height="32dp"
-        android:layout_marginTop="488dp"
+        android:layout_marginTop="440dp"
         android:fontFamily="@font/inter"
         android:text="Cancelados"
         android:textColor="@color/black"
@@ -85,8 +103,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/enviorv"
-        android:layout_width="372dp"
-        android:layout_height="192dp"
+        android:layout_width="374dp"
+        android:layout_height="163dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
@@ -102,7 +120,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/enviadosrv"
         android:layout_width="372dp"
-        android:layout_height="192dp"
+        android:layout_height="163dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
@@ -117,16 +135,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/canceladosrv"
         android:layout_width="372dp"
-        android:layout_height="192dp"
+        android:layout_height="163dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enviado"
-        app:layout_constraintVertical_bias="0.852" />
+        app:layout_constraintTop_toBottomOf="@+id/cancelados"
+        app:layout_constraintVertical_bias="0.123" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

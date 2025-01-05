@@ -2,6 +2,7 @@ package com.example.smart_packet
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.appcompat.app.AlertDialog
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Random
 
 
@@ -56,8 +59,9 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView((R.layout.activity_ver_paquete_c))
         val btnPin: Button = findViewById(R.id.btnPin)
         btnPin.setOnClickListener {
+            val idEnvio = intent.getIntExtra("idEnvio", -1)
             // Crear el código que deseas mostrar
-            val codigo = generarCodigo();
+            val codigo = generarCodigoEnvio(idEnvio)
 
             // Crear el AlertDialog para mostrar el código
             val builder = AlertDialog.Builder(this)
@@ -79,6 +83,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.mapa) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
+        // Temperatura y Humedad
         val combinedChart = findViewById<LineChart>(R.id.combinedChart)
         val temperatureData = listOf(
             Entry(1f, 20f),  // Tiempo: 1, Temperatura: 20°C
@@ -153,18 +158,64 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         Toast.makeText(this, "Envío cancelado", Toast.LENGTH_SHORT).show()
     }
 
-    fun generarCodigo() : String {
-        val caracteres = "0123456789"  // Solo números para el PIN
-        val random = Random()
-        val pin = StringBuilder()
+    // Función para generar el código de seguridad PIN
+    private fun generarCodigoEnvio(idEnvio: Int) {
+        // URL del servlet para generar el PIN
+        val urlString = "http://192.168.1.203:8080/ServerExampleUbicomp-1.0-SNAPSHOT/GenerarPinEnvio?idEnvio=$idEnvio"
 
-        // Generar el PIN con la longitud especificada
-        for (i in 0 until 5) {
-            val randomIndex = random.nextInt(caracteres.length)
-            pin.append(caracteres[randomIndex])
+        // Realizamos la solicitud HTTP en un hilo separado
+        val thread = Thread {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"  // Hacemos una solicitud GET
+
+                // Establecemos tiempos de espera para la conexión
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+
+                val responseCode = connection.responseCode
+
+                // Si la respuesta del servidor es OK (200), leemos el PIN
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inputStream = connection.inputStream
+                    val response = inputStream.bufferedReader().use { it.readText() }
+
+                    // Supongamos que el servidor devuelve el PIN directamente como una cadena
+                    runOnUiThread {
+                        mostrarCodigoPin(response)  // Mostramos el código en un AlertDialog
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, "Error al generar el PIN", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                connection.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error en la conexión con el servidor", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("VerPaqueteActivity", "Error al generar el PIN", e)
+            }
         }
-        return pin.toString()
+        thread.start()  // Iniciamos el hilo
     }
 
+    // Función para mostrar el código PIN en un AlertDialog
+    private fun mostrarCodigoPin(codigo: String) {
+        // Crear el AlertDialog para mostrar el código
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Código de Seguridad")  // Título del diálogo
+            .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
+            .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
+            .setPositiveButton("OK") { dialog, id ->
+                dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
+            }
 
+        // Mostrar el diálogo
+        val alert = builder.create()
+        alert.show()
+    }
 }
+
+
