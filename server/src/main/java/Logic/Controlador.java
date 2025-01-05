@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
+import mqtt.MQTTPublisher;
 
 /**
  *
@@ -75,7 +76,8 @@ public class Controlador {
     */
     public static int crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min){
         int id = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
-        
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(id), String.valueOf(id));
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(id)+"/estado","CARGA");
         return id;
     }
     
@@ -105,10 +107,11 @@ public class Controlador {
     
     /* Cambiar estado de un envío
     */
-    public static boolean cambiarEstadoEnvio(int idEnvio, String estado){
+    public static boolean cambiarEstadoEnvio(int idPaquete, int idEnvio, String estado){
         boolean e = FachadaEnvioBD.actualizarEstado(idEnvio, estado);
         
         //Publish estado
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/estado", estado);
         
         return e;
     }
@@ -116,10 +119,11 @@ public class Controlador {
     /* Registrar nueva temperatura y humedad
     * 
     */
-    public static boolean registrarTH(int idEnvio, double t, double h, Timestamp fecha){
+    public static boolean registrarTH(int idPaquete, int idEnvio, double t, double h, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarTemperaturaHumedad(idEnvio, fecha, t, h);
         //Lógica de la temperatura
-        
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/temperatura", String.valueOf(t));
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/temperatura", String.valueOf(h));
         return valido;
     }
     
@@ -144,10 +148,11 @@ public class Controlador {
     /* Registrar ventilador
     * 
     */
-    public static boolean registrarVentilador(int idEnvio, boolean activo, Timestamp fecha){
+    public static boolean registrarVentilador(int idPaquete, int idEnvio, boolean activo, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarVentilador(idEnvio, fecha, activo);
        
         //Publish del estado del ventilador
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/ventilador", String.valueOf(activo));
         
         return valido;
     }
@@ -155,10 +160,11 @@ public class Controlador {
     /* Registrar cambio de estado
     * 
     */
-    public static boolean registrarEstado(int idEnvio, String estado, Timestamp fecha){
+    public static boolean registrarEstado(int idPaquete, int idEnvio, String estado, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarCambioEstado(idEnvio, fecha, estado);
        
         //Publish estado 
+        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/estado", estado);
         
         return valido;
     }
@@ -226,11 +232,13 @@ public class Controlador {
         String pin = pinBuilder.toString();
         
         //Publish del pin
+        //MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/pw", pin);
+        int idPaquete = 0;
         
         LocalDateTime currentDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(currentDateTime);
         
-        Controlador.registrarEstado(idEnvio, "APERTURA", timestamp);
+        Controlador.registrarEstado(idPaquete, idEnvio, "APERTURA", timestamp);
         
         return pin;
     }
