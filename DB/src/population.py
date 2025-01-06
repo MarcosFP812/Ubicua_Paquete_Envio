@@ -150,13 +150,13 @@ def write_to_json(data, output_path):
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 # Ruta del archivo KML
-input_kml_path = 'Torrejon.kml'
+input_kml_path = 'guada1.kml'
 
 # Número de envíos a generar
 num_shipments = 30
 
 # Fecha y hora de inicio
-start_time = datetime.datetime(2024, 10, 28, 12, 0)
+start_time = datetime.datetime(2024, 10, 28, 10, 0)
 
 # Extraer coordenadas
 coordinates = extract_coordinates_from_kml(input_kml_path)
@@ -165,7 +165,7 @@ coordinates = extract_coordinates_from_kml(input_kml_path)
 synthetic_shipments = generate_synthetic_data(coordinates, num_shipments, start_time)
 
 # Guardar los datos en un archivo JSON
-output_json_path = 'synthetic_shipments_t1_torrejon.json'
+output_json_path = 'synthetic_shipments_t1_guada.json'
 write_to_json(synthetic_shipments, output_json_path)
 
 print(f"Datos sintéticos generados y guardados en {output_json_path}")

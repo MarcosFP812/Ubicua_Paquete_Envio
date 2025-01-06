@@ -666,4 +666,37 @@ public class FachadaEnvioBD {
 
         return temp;
     }
+    
+    public static UbicacionEnvio getUltimaUbicacionPorEnvio(int idEnvio) {
+        UbicacionEnvio ubicacion = null;
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectUltimaUbicacion(con);
+            ps.setInt(1, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                ubicacion = new UbicacionEnvio(
+                    rs.getInt("Dato_idDato"),
+                    rs.getDouble("Longitud"),
+                    rs.getDouble("Latitud"),
+                    rs.getDouble("Velocidad"),
+                    rs.getDouble("Velocidad_via"),
+                    rs.getTimestamp("Fecha")
+                );
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return ubicacion;
+    }
+
 }

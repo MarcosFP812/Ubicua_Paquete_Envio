@@ -34,7 +34,7 @@ public class CrearPinServlet extends HttpServlet {
             out.print(pin);
         } catch (Exception e) {
             out.println("-1");
-            // Aquí puedes agregar un logging de error si es necesario
+            Log.log.info(e);
         } finally {
             out.close();
         }

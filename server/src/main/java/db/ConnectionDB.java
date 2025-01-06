@@ -134,6 +134,10 @@ public class ConnectionDB {
         return getStatement(con, "SELECT DISTINCT e.* FROM Envio e WHERE e.Remitente_Cliente_idCliente = ? OR e.Receptor_Cliente_idCliente = ? AND Estado = 'Cancelado';");
     }
     
+    public static PreparedStatement selectTemperaturaMax(Connection con) {
+        return getStatement(con, "SELECT Temperatura_max FROM Envio WHERE idEnvio = ?;");
+    }
+    
     public static PreparedStatement updateEstado(Connection con) {
         return getStatement(con, "UPDATE Envio SET Estado = ? WHERE idEnvio = ?;");
     }
