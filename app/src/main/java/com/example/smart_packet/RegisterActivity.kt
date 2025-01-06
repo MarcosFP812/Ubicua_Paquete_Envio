@@ -18,7 +18,9 @@ import androidx.core.view.WindowInsetsCompat
 import java.net.HttpURLConnection
 import java.net.URL
 import android.location.Address
+import com.example.smart_packet.data.GlobalVariables
 import com.example.smart_packet.data.Receptor
+import com.example.smart_packet.data.Remitente
 import com.example.smart_packet.data.Ubicacion
 import java.io.IOException
 import java.util.*
@@ -26,6 +28,7 @@ import java.util.*
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"
     private val listaReceptores: HashMap<String, Receptor> = hashMapOf()
+    private val listaRemitente: HashMap<String, Remitente> = hashMapOf()
     private var idCount : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,29 +37,23 @@ class RegisterActivity : AppCompatActivity() {
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_register)
         supportActionBar!!.hide()
-        findViewById<View>(R.id.txt4).visibility = View.GONE
-        findViewById<View>(R.id.miEditText3).visibility = View.GONE
 
         val btnU: Button = findViewById(R.id.btnU)
         val btnE: Button = findViewById(R.id.btnE)
         val editNombre = findViewById<EditText>(R.id.miEditText)
         val editPw = findViewById<EditText>(R.id.miEditText2)
         val editDirection = findViewById<EditText>(R.id.miEditText3)
-        var direccion: List<Double>? = listOf(0.0, 0.0)
+        var direccion: List<Double>? = null
 
         btnU.setOnClickListener {
             btnU.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
             btnE.setBackgroundColor(Color.GRAY) // Color deseleccionado
-            findViewById<View>(R.id.txt4).visibility = View.VISIBLE
-            findViewById<View>(R.id.miEditText3).visibility = View.VISIBLE
+
         }
 
         btnE.setOnClickListener {
             btnE.setBackgroundColor(Color.parseColor("#028BC3")) // Color seleccionado
             btnU.setBackgroundColor(Color.GRAY) // Color deseleccionado
-            findViewById<View>(R.id.txt4).visibility = View.GONE
-            findViewById<View>(R.id.miEditText3).visibility = View.GONE
-            direccion = listOf(0.0,0.0)
         }
 
         val btnR = findViewById<Button>(R.id.btn3)
@@ -64,9 +61,9 @@ class RegisterActivity : AppCompatActivity() {
             val nombre = editNombre.text.toString()
             val pw = editPw.text.toString()
             val tipo = if (btnU.isActivated) "Receptor" else "Remitente"
-            if(tipo == "Receptor"){
-                direccion = obtenerCoordenadas(editDirection.text.toString())
-            }
+
+            direccion = obtenerCoordenadas(editDirection.text.toString())
+
 
             if (nombre.isNotEmpty() && pw.isNotEmpty() && direccion!=null) {
                 val coord1 = direccion?.get(0)
@@ -76,8 +73,15 @@ class RegisterActivity : AppCompatActivity() {
                     val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
                     if (tipo == "Receptor"){
                         idCount++
-                        listaReceptores[nombre] = Receptor(idCount, nombre, pw, tipo, Ubicacion(coord1, coord2))
-                        i.putExtra("idReceptor", idCount)
+                        listaReceptores[nombre] = Receptor(idCount, nombre, pw, Ubicacion(coord1, coord2))
+                        GlobalVariables.listaReceptor = listaReceptores
+                        GlobalVariables.id = idCount
+                        GlobalVariables.nombre = nombre
+                    } else {
+                        idCount++
+                        listaRemitente[nombre] = Remitente(idCount, nombre, pw, Ubicacion(coord1, coord2))
+                        GlobalVariables.id = idCount
+                        GlobalVariables.nombre = nombre
                     }
                     Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
                     startActivity(i)
@@ -141,7 +145,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun sendClientDataToServer(nombre: String, pw: String, longitud: Double, latitud: Double, tipo: String) {
         val thread = Thread {
             try {
-                val url = URL("http://192.168.1.203:8080/ServerExampleUbicomp-1.0-SNAPSHOT/RegistrarCliente?nombre=$nombre&pw=$pw&longitud=$longitud&latitud=$latitud&tipo=$tipo")
+                val url = URL("http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/RegistrarCliente?nombre=$nombre&pw=$pw&longitud=$longitud&latitud=$latitud&tipo=$tipo")
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "GET" // O "POST" si necesitas enviar los datos en el cuerpo de la solicitud
                 conn.connectTimeout = 5000

@@ -18,64 +18,77 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import androidx.appcompat.app.AlertDialog
+import com.example.smart_packet.data.GlobalVariables
+import org.json.JSONArray
+import org.json.JSONException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.Random
 
 
 class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mMap: GoogleMap? = null
+    private var tipo: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Comprobar si es empresa o cliente
-
-        /*
-        setContentView(R.layout.activity_ver_paquete_e) // Usa el layout que definimos antes
-        val btnCancelar: Button = findViewById(R.id.btnCancelar)
-
-        btnCancelar.setOnClickListener {
-            // Crear el AlertDialog
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("¿Seguro que desea cancelar el envío?")
-                .setCancelable(false) // Evita que se cierre al tocar fuera del diálogo
-                .setPositiveButton("Sí") { dialog, id ->
-                    // Acción si el usuario elige "Sí"
-                    cancelarEnvio()
-                }
-                .setNegativeButton("No") { dialog, id ->
-                    // Acción si el usuario elige "No"
-                    dialog.dismiss()  // Cierra el diálogo
-                }
-
-            // Mostrar el diálogo
-            val alert = builder.create()
-            alert.show()
-        }*/
-
-
-
-        setContentView((R.layout.activity_ver_paquete_c))
-        val btnPin: Button = findViewById(R.id.btnPin)
-        btnPin.setOnClickListener {
-            val idEnvio = intent.getIntExtra("idEnvio", -1)
-            // Crear el código que deseas mostrar
-            val codigo = generarCodigoEnvio(idEnvio)
-
-            // Crear el AlertDialog para mostrar el código
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Código de Seguridad")  // Título del diálogo
-                .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
-                .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
-                .setPositiveButton("OK") { dialog, id ->
-                    dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
-                }
-
-            // Mostrar el diálogo
-            val alert = builder.create()
-            alert.show()
+        val map = GlobalVariables.listaReceptor
+        if (map != null) {
+            if(map.get(GlobalVariables.nombre)!=null){
+                tipo = "Receptor"
+            } else{
+                tipo = "Remitente"
+            }
+        } else{
+            tipo = "Remitente"
         }
+        if (tipo == "Remitente"){
+            setContentView(R.layout.activity_ver_paquete_e) // Usa el layout que definimos antes
+            val idEnvio = intent.getIntExtra("idEnvio", -1)
+            val btnCancelar: Button = findViewById(R.id.btnCancelar)
+
+            btnCancelar.setOnClickListener {
+                // Crear el AlertDialog
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("¿Seguro que desea cancelar el envío?")
+                    .setCancelable(false) // Evita que se cierre al tocar fuera del diálogo
+                    .setPositiveButton("Sí") { dialog, id ->
+                        // Acción si el usuario elige "Sí"
+                        cancelarEnvio()
+                    }
+                    .setNegativeButton("No") { dialog, id ->
+                        // Acción si el usuario elige "No"
+                        dialog.dismiss()  // Cierra el diálogo
+                    }
+
+                // Mostrar el diálogo
+                val alert = builder.create()
+                alert.show()
+            }
+        } else if (tipo == "Receptor"){
+            setContentView((R.layout.activity_ver_paquete_c))
+            val btnPin: Button = findViewById(R.id.btnPin)
+            btnPin.setOnClickListener {
+                val idEnvio = intent.getIntExtra("idEnvio", -1)
+                // Crear el código que deseas mostrar
+                val codigo = generarCodigoEnvio(idEnvio)
+
+                // Crear el AlertDialog para mostrar el código
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Código de Seguridad")  // Título del diálogo
+                    .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
+                    .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
+                    .setPositiveButton("OK") { dialog, id ->
+                        dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
+                    }
+
+                // Mostrar el diálogo
+                val alert = builder.create()
+                alert.show()
+            }
+        }
+
 
         supportActionBar!!.hide()
         // Configurar el mapa
@@ -83,32 +96,158 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.mapa) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
-        // Temperatura y Humedad
+        val idEnvio = intent.getIntExtra("idEnvio", -1)
+        if (idEnvio != -1) {
+            obtenerTemperaturasYHumedades(idEnvio)
+        } else {
+            Toast.makeText(this, "ID de envío no válido", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        val idEnvio = intent.getIntExtra("idEnvio", -1)
+        if (idEnvio != -1) {
+            obtenerUbicaciones(idEnvio)
+        } else {
+            Toast.makeText(this, "ID de envío no válido", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun obtenerUbicaciones(idEnvio: Int) {
+        val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerUbicaciones?idEnvio=$idEnvio"
+
+        val thread = Thread {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val inputStream = connection.inputStream
+                    val response = inputStream.bufferedReader().use { it.readText() }
+
+                    val ubicaciones = parseUbicaciones(response)
+                    runOnUiThread {
+                        mostrarUbicacionesEnMapa(ubicaciones)
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, "Error al obtener ubicaciones", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                connection.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error en la conexión con el servidor", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("VerPaqueteActivity", "Error al obtener ubicaciones", e)
+            }
+        }
+        thread.start()
+    }
+
+    private fun parseUbicaciones(response: String): List<LatLng> {
+        val ubicaciones = mutableListOf<LatLng>()
+        try {
+            val jsonArray = JSONArray(response)
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val lat = jsonObject.getDouble("latitud")
+                val lng = jsonObject.getDouble("longitud")
+                ubicaciones.add(LatLng(lat, lng))
+            }
+        } catch (e: JSONException) {
+            Log.e("VerPaqueteActivity", "Error al parsear JSON", e)
+        }
+        return ubicaciones
+    }
+
+    private fun mostrarUbicacionesEnMapa(ubicaciones: List<LatLng>) {
+        if (mMap == null) return
+
+        for (ubicacion in ubicaciones) {
+            mMap!!.addMarker(MarkerOptions().position(ubicacion).title("Ubicación del paquete"))
+        }
+
+        if (ubicaciones.isNotEmpty()) {
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicaciones[0], 15f))
+        }
+    }
+
+    private fun obtenerTemperaturasYHumedades(idEnvio: Int) {
+        val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTemperaturasHumedades?idEnvio=$idEnvio"
+
+        val thread = Thread {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val inputStream = connection.inputStream
+                    val response = inputStream.bufferedReader().use { it.readText() }
+
+                    val datos = parseTemperaturasYHumedades(response)
+                    runOnUiThread {
+                        mostrarDatosEnGrafico(datos)
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, "Error al obtener temperaturas y humedades", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                connection.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error en la conexión con el servidor", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("VerPaqueteActivity", "Error al obtener temperaturas y humedades", e)
+            }
+        }
+        thread.start()
+    }
+
+
+    private fun parseTemperaturasYHumedades(response: String): List<Pair<Float, Float>> {
+        val datos = mutableListOf<Pair<Float, Float>>()
+        try {
+            val jsonArray = JSONArray(response)
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val temperatura = jsonObject.getDouble("temperatura").toFloat()
+                val humedad = jsonObject.getDouble("humedad").toFloat()
+                datos.add(Pair(temperatura, humedad))
+            }
+        } catch (e: JSONException) {
+            Log.e("VerPaqueteActivity", "Error al parsear JSON", e)
+        }
+        return datos
+    }
+
+    private fun mostrarDatosEnGrafico(datos: List<Pair<Float, Float>>) {
         val combinedChart = findViewById<LineChart>(R.id.combinedChart)
-        val temperatureData = listOf(
-            Entry(1f, 20f),  // Tiempo: 1, Temperatura: 20°C
-            Entry(2f, 22f),
-            Entry(3f, 24f),
-            Entry(4f, 23f),
-            Entry(5f, 25f)
-        )
 
-        val humidityData = listOf(
-            Entry(1f, 50f),  // Tiempo: 1, Humedad: 50%
-            Entry(2f, 55f),
-            Entry(3f, 53f),
-            Entry(4f, 60f),
-            Entry(5f, 58f)
-        )
+        val temperatureData = datos.mapIndexed { index, pair ->
+            Entry(index.toFloat() + 1, pair.first)
+        }
 
-        // Crear los DataSet para temperatura y humedad
+        val humidityData = datos.mapIndexed { index, pair ->
+            Entry(index.toFloat() + 1, pair.second)
+        }
+
         val temperatureDataSet = LineDataSet(temperatureData, "Temperatura (°C)")
         temperatureDataSet.color = Color.RED
         temperatureDataSet.valueTextColor = Color.BLACK
         temperatureDataSet.lineWidth = 2f
         temperatureDataSet.setDrawCircles(true)
         temperatureDataSet.setCircleColor(Color.RED)
-        temperatureDataSet.axisDependency = YAxis.AxisDependency.LEFT // Eje izquierdo
+        temperatureDataSet.axisDependency = YAxis.AxisDependency.LEFT
 
         val humidityDataSet = LineDataSet(humidityData, "Humedad (%)")
         humidityDataSet.color = Color.BLUE
@@ -116,39 +255,25 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         humidityDataSet.lineWidth = 2f
         humidityDataSet.setDrawCircles(true)
         humidityDataSet.setCircleColor(Color.BLUE)
-        humidityDataSet.axisDependency = YAxis.AxisDependency.RIGHT // Eje derecho
+        humidityDataSet.axisDependency = YAxis.AxisDependency.RIGHT
 
-        // Configurar el gráfico
         val lineData = LineData(temperatureDataSet, humidityDataSet)
         combinedChart.data = lineData
         combinedChart.setBackgroundColor(Color.WHITE)
         combinedChart.setDrawGridBackground(false)
 
-        // Personalizar ejes
         val leftAxis = combinedChart.axisLeft
         leftAxis.textColor = Color.RED
-        leftAxis.axisMinimum = 0f // Ajusta según tus datos
+        leftAxis.axisMinimum = 0f
 
         val rightAxis = combinedChart.axisRight
         rightAxis.textColor = Color.BLUE
-        rightAxis.axisMinimum = 0f // Ajusta según tus datos
+        rightAxis.axisMinimum = 0f
 
-        // Descripción
         combinedChart.description.text = "Temperatura y Humedad"
         combinedChart.description.textSize = 12f
 
-        // Actualizar el gráfico
         combinedChart.invalidate()
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Coordenadas de la ubicación del paquete (ejemplo de coordenadas)
-        val packageLocation =
-            LatLng(40.748817, -73.985428) // Nueva York, cambia a las coordenadas que desees
-        mMap!!.addMarker(MarkerOptions().position(packageLocation).title("Ubicación del paquete"))
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(packageLocation, 15f)) // Zoom nivel 15
     }
 
     // Función para cancelar el envío
@@ -161,7 +286,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     // Función para generar el código de seguridad PIN
     private fun generarCodigoEnvio(idEnvio: Int) {
         // URL del servlet para generar el PIN
-        val urlString = "http://192.168.1.203:8080/ServerExampleUbicomp-1.0-SNAPSHOT/GenerarPinEnvio?idEnvio=$idEnvio"
+        val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/GenerarPinEnvio?idEnvio=$idEnvio"
 
         // Realizamos la solicitud HTTP en un hilo separado
         val thread = Thread {

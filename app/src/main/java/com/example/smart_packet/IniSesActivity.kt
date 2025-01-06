@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.smart_packet.data.GlobalVariables
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -41,9 +42,9 @@ class IniSesActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, ingrese nombre y contraseña", Toast.LENGTH_SHORT).show()
             }
-            val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
+            /*val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
             startActivity(i)
-            finish()
+            finish()*/
         }
 
         val registrarse = findViewById<TextView>(R.id.clickableText)
@@ -69,8 +70,7 @@ class IniSesActivity : AppCompatActivity() {
 
     // Función para validar al cliente
     private fun validarCliente(nombre: String, pw: String) {
-        val urlString = "http://192.168.1.203:8080/ServerExampleUbicomp-1.0-SNAPSHOT/ValidarCliente?nombre=$nombre&pw=$pw"
-
+        val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ValidarCliente?nombre=$nombre&pw=$pw"
         // Hacemos la solicitud en un hilo en segundo plano para no bloquear el hilo principal
         val thread = Thread {
             try {

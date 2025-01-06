@@ -4,11 +4,13 @@ package com.example.smart_packet
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.smart_packet.data.GlobalVariables
 import com.example.smart_packet.data.ListAdapter
 import com.example.smart_packet.data.ListElement
 import org.json.JSONArray
@@ -18,9 +20,11 @@ import java.net.URL
 
 
 class HistorialActivity : AppCompatActivity() {
+    private var tipo: String = ""
     private var elementsE: ArrayList<ListElement>? = ArrayList() // Enviado
     private var elementsEs: ArrayList<ListElement>? = ArrayList() // Envio
     private var elementsC: ArrayList<ListElement>? = ArrayList() // Cancelado
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,18 +33,31 @@ class HistorialActivity : AppCompatActivity() {
         supportActionBar!!.hide()
         init()
         val btnEnvio  = findViewById<Button>(R.id.btnEnvio)
-        btnEnvio.setOnClickListener {
-            val i = Intent(this@HistorialActivity, EnvioActivity::class.java)
-            startActivity(i)
-            finish()
+        if (tipo == "Remitente"){
+            btnEnvio.setOnClickListener {
+                val i = Intent(this@HistorialActivity, EnvioActivity::class.java)
+                startActivity(i)
+                finish()
+            }
+        } else{
+            btnEnvio.visibility = View.GONE
         }
+
     }
 
     fun init() {
 
-        obtenerEnviosCliente(intent.getIntExtra("idReceptor", -1))
-
-        //Envio
+        obtenerEnviosCliente(GlobalVariables.id)
+        val map = GlobalVariables.listaReceptor
+        if (map != null) {
+            if(map.get(GlobalVariables.nombre)!=null){
+                tipo = "Receptor"
+            } else{
+                tipo = "Remitente"
+            }
+        } else{
+            tipo = "Remitente"
+        }
         val listAdapterE = ListAdapter(elementsE ?: emptyList(), this)
         val recyclerViewE = findViewById<RecyclerView>(R.id.enviorv)
         recyclerViewE.setHasFixedSize(true)
@@ -91,7 +108,7 @@ class HistorialActivity : AppCompatActivity() {
         Thread {
             try {
                 // Definir la URL
-                val url = URL("http://192.168.1.153:8080/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerEnviosCliente?idCliente=$idCliente")
+                val url = URL("http://${GlobalVariables.myGlobalUrl}ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerEnviosCliente?idCliente=$idCliente")
                 val connection = url.openConnection() as HttpURLConnection
 
                 // Configuración de la conexión HTTP
@@ -150,7 +167,7 @@ class HistorialActivity : AppCompatActivity() {
                 val envio = jsonArray.getJSONObject(i)
                 val estado = envio.getString("estado")
                 val idEnvio = envio.getString("idEnvio")
-                val detalle = envio.getString("detalle")
+                val detalle = envio.getInt("detalle")
 
                 // Crear el ListElement con el detalle del paquete y su estado
                 val listElement = ListElement(generarColor(), detalle)

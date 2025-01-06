@@ -1,25 +1,24 @@
 package com.example.smart_packet.data;
 
-public class Receptor {
-    private int id;
+public class Remitente {
+    private int idRemitente;
     private String user;
     private String pw;
     private Ubicacion ubi;
 
-
-    public Receptor(int id, String user, String pw, Ubicacion ubi) {
-        this.id = id;
+    public Remitente(int idRemitente, String user, String pw, Ubicacion ubi) {
+        this.idRemitente = idRemitente;
         this.user = user;
         this.pw = pw;
         this.ubi = ubi;
     }
 
-    public int getId() {
-        return id;
+    public int getIdRemitente() {
+        return idRemitente;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdRemitente(int idRemitente) {
+        this.idRemitente = idRemitente;
     }
 
     public String getUser() {

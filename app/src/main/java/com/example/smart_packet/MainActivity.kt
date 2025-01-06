@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -35,16 +37,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        /*
-    //Wait 4 seconds and change the activity
-    int TIME_OUT = 4000;
-    new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            Intent i = new Intent(MainActivity.this, SelectStationActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }, TIME_OUT);*/
     }
 }

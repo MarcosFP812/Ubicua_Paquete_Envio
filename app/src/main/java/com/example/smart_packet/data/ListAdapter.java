@@ -45,8 +45,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             // Aquí se maneja el clic en la imagen y se navega a la siguiente actividad/pestaña
             Context context = holder.icon.getContext();
             Intent intent = new Intent(context, VerPaqueteActivity.class);  // O la Activity/Fragment que desees
-            var idEnvio = items.getId();
-            intent.putExtra("idEnvio", idEnvio);
+            var id = items.getId();
+            intent.putExtra("idEnvio", id);
             context.startActivity(intent);
         });
     }
