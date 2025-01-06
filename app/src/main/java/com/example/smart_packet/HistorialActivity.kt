@@ -1,8 +1,10 @@
 package com.example.smart_packet
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +28,12 @@ class HistorialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_historial)
         supportActionBar!!.hide()
         init()
+        val btnEnvio  = findViewById<Button>(R.id.btnEnvio)
+        btnEnvio.setOnClickListener {
+            val i = Intent(this@HistorialActivity, EnvioActivity::class.java)
+            startActivity(i)
+            finish()
+        }
     }
 
     fun init() {
