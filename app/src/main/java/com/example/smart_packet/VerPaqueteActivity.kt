@@ -36,26 +36,27 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         var tipo = intent.getStringExtra("tipo")
         if (tipo == "Remitente"){
             setContentView(R.layout.activity_ver_paquete_e) // Usa el layout que definimos antes
-            val idEnvio = intent.getIntExtra("idEnvio", -1)
+            val idEnvio = intent.getStringExtra("idEnvio")
             val btnCancelar: Button = findViewById(R.id.btnCancelar)
+            if (idEnvio != null) {
+                btnCancelar.setOnClickListener {
+                    // Crear el AlertDialog
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage("¿Seguro que desea cancelar el envío?")
+                        .setCancelable(false) // Evita que se cierre al tocar fuera del diálogo
+                        .setPositiveButton("Sí") { dialog, id ->
+                            // Acción si el usuario elige "Sí"
+                            cancelarEnvio(idEnvio)
+                        }
+                        .setNegativeButton("No") { dialog, id ->
+                            // Acción si el usuario elige "No"
+                            dialog.dismiss()  // Cierra el diálogo
+                        }
 
-            btnCancelar.setOnClickListener {
-                // Crear el AlertDialog
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("¿Seguro que desea cancelar el envío?")
-                    .setCancelable(false) // Evita que se cierre al tocar fuera del diálogo
-                    .setPositiveButton("Sí") { dialog, id ->
-                        // Acción si el usuario elige "Sí"
-                        cancelarEnvio()
-                    }
-                    .setNegativeButton("No") { dialog, id ->
-                        // Acción si el usuario elige "No"
-                        dialog.dismiss()  // Cierra el diálogo
-                    }
-
-                // Mostrar el diálogo
-                val alert = builder.create()
-                alert.show()
+                    // Mostrar el diálogo
+                    val alert = builder.create()
+                    alert.show()
+                }
             }
         } else if (tipo == "Receptor"){
             setContentView((R.layout.activity_ver_paquete_c))
@@ -333,6 +334,45 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         // Mostrar el diálogo
         val alert = builder.create()
         alert.show()
+    }
+
+
+    private fun cancelarEnvio(idEnvio: String) {
+        // URL del servlet para generar el PIN
+        val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/CancelarEnvio?idEnvio=$idEnvio"
+
+        // Realizamos la solicitud HTTP en un hilo separado
+        val thread = Thread {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"  // Hacemos una solicitud GET
+
+                // Establecemos tiempos de espera para la conexión
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+
+                val responseCode = connection.responseCode
+
+                // Si la respuesta del servidor es OK (200), leemos la respuesta
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inputStream = connection.inputStream
+                    val response = inputStream.bufferedReader().use { it.readText() }
+
+
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, "Error al cancelar el envio", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                connection.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error en la conexión con el servidor", Toast.LENGTH_SHORT).show()
+                }
+                Log.e("VerPaqueteActivity", "Error al cancelar el envio", e)
+            }
+        }.start()
     }
 }
 

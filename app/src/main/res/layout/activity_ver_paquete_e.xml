@@ -85,54 +85,6 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/textTemp"
-        android:layout_width="165dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/inter"
-        android:text="Modificar Tª (ºC)"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.121"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/combinedChart" />
-
-    <EditText
-        android:id="@+id/miEditText"
-        android:layout_width="112dp"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:enabled="true"
-        android:focusable="true"
-        android:gravity="left"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="50"
-        android:padding="16dp"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textTemp"
-        app:layout_constraintTop_toBottomOf="@+id/combinedChart" />
-
-    <Button
-        android:id="@+id/btnCheck"
-        android:layout_width="54dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/botoncheck"
-        android:padding="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/miEditText"
-        app:layout_constraintTop_toBottomOf="@+id/combinedChart" />
-
-    <TextView
         android:id="@+id/textFecha"
         android:layout_width="280dp"
         android:layout_height="40dp"
@@ -144,7 +96,7 @@
         app:layout_constraintHorizontal_bias="0.229"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/miEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/combinedChart" />
 
     <TextView
         android:id="@+id/FechaEditable"
