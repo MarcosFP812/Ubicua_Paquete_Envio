@@ -157,6 +157,16 @@ public class ConnectionDB {
     public static PreparedStatement updateEstado(Connection con) {
         return getStatement(con, "UPDATE Envio SET Estado = ? WHERE idEnvio = ?;");
     }
+    public static PreparedStatement updateVelocidadMedia(Connection con) {
+        return getStatement(con, "UPDATE Envio SET Velocidad_media = ? WHERE idEnvio = ?;");
+    }
+    public static PreparedStatement updatePerdidaCadena(Connection con) {
+        return getStatement(con, "UPDATE Envio SET Tiempo_perdida_cadena = ? WHERE idEnvio = ?;");
+    }
+    public static PreparedStatement updateTiempoEnvio(Connection con) {
+        return getStatement(con, "UPDATE Envio SET Tiempo_envio = ? WHERE idEnvio = ?;");
+    }
+
 
     public static PreparedStatement insertDato(Connection con) {
         return getStatement(con, "INSERT INTO Dato (idDato, Envio_idEnvio, Fecha) VALUES (?, ?, ?)");
@@ -206,6 +216,17 @@ public class ConnectionDB {
     public static PreparedStatement selectMenorFecha(Connection con){
         return getStatement(con, "SELECT MIN(Fecha) AS MenorFecha FROM Dato WHERE Envio_idEnvio = ?");
     }
-
+    
+    public static PreparedStatement selectMediaTiempoEnvio(Connection con){
+        return getStatement(con, "SELECT AVG(Tiempo_envio) AS Media_Tiempo_Envio FROM Envio WHERE"+
+                " Transportista_idTransportista = ? AND Receptor_Cliente_idCliente = ? AND Remitente_Cliente_idCliente = ?");
+    }
+    
+    public static PreparedStatement selectMediaPerdida(Connection con){
+        return getStatement(con, "SELECT AVG(Tiempo_perdida_cadena) AS Media_Perdida FROM Envio WHERE"+
+                " Transportista_idTransportista = ?");
+    }
+    
+    
 }
 

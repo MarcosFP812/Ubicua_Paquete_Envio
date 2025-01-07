@@ -14,6 +14,8 @@ import Clases.UbicacionEnvio;
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -289,24 +291,30 @@ public class Controlador {
     
     
     public static void finalizarEnvio(int idEnvio, int idPaquete){
-        Controlador.cambiarEstadoEnvio(idEnvio, "Enviado");
+        
         
         //Calculos
         double tiempoEnvio = Logic.calcularTiempoEnvio(idEnvio);
         double tiempoCadenaFrio = Logic.contarMinutosPorEncimaDelUmbral(idEnvio);
         
+        FachadaEnvioBD.actualizarTiempoEnvio(idEnvio, tiempoEnvio);
+        FachadaEnvioBD.actualizarPerdidaCadena(idEnvio, tiempoCadenaFrio);
+        
+        Controlador.cambiarEstadoEnvio(idEnvio, "Enviado");
+        
     }
 
     public static void poblarEnvios(String ruta) {
+        boolean explotado = false;
         try {
             // Leer el archivo envio.json
-            FileReader envioReader = new FileReader(ruta+"envio.json");
-            JSONArray enviosArray = new JSONArray(new JSONTokener(envioReader));
+            String content = new String(Files.readAllBytes(Paths.get(ruta+"envio.json")));
+            JSONObject envio = new JSONObject(content);
 
             // Iterar sobre los envíos y registrar cada uno en la base de datos
             for (int i = 0; i < 30; i++) {
-                JSONObject envio = enviosArray.getJSONObject(i);
-
+                //JSONObject envio = enviosArray.getJSONObject(i);
+                //if (explotado) break;
                 int idTransportista = envio.getInt("Transportista_idTransportista");
                 int idPaquete = envio.getInt("Paquete_idPaquete");
                 int idReceptor = envio.getInt("Receptor_Cliente_idCliente");
@@ -316,23 +324,26 @@ public class Controlador {
 
                 // Crear el envío en la base de datos
                 int idEnvio = Controlador.crearEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperaturaMax, temperaturaMin);
-
+                if (explotado) break;
                 // Registrar datos asociados al envío
                 registrarDatosAsociados(idEnvio, idPaquete, i, ruta);
             }
 
         } catch (Exception e) {
+            explotado = true;
             Log.log.info(e);
         }
     }
 
     public static void registrarDatosAsociados(int idEnvio, int idPaquete, int indice, String ruta) {
+        boolean explotado = false;
         try {
             // Leer y procesar estados
             FileReader estadosReader = new FileReader(ruta+"estados.json");
             JSONObject estadosJson = new JSONObject(new JSONTokener(estadosReader));
             JSONArray estadosArray = estadosJson.getJSONArray(String.valueOf(indice));
             for (int j = 0; j < estadosArray.length(); j++) {
+                if (explotado) break;
                 JSONObject estado = estadosArray.getJSONObject(j);
                 Timestamp fecha = Timestamp.valueOf(estado.getString("Fecha"));
                 String estadoStr = estado.getString("Estado");
@@ -344,6 +355,7 @@ public class Controlador {
             JSONObject temperaturasJson = new JSONObject(new JSONTokener(temperaturasReader));
             JSONArray temperaturasArray = temperaturasJson.getJSONArray(String.valueOf(indice));
             for (int j = 0; j < temperaturasArray.length(); j++) {
+                if (explotado) break;
                 JSONObject temp = temperaturasArray.getJSONObject(j);
                 Timestamp fecha = Timestamp.valueOf(temp.getString("Fecha"));
                 double temperatura = temp.getDouble("Temperatura");
@@ -356,6 +368,7 @@ public class Controlador {
             JSONObject ventiladoresJson = new JSONObject(new JSONTokener(ventiladorReader));
             JSONArray ventiladoresArray = ventiladoresJson.getJSONArray(String.valueOf(indice));
             for (int j = 0; j < ventiladoresArray.length(); j++) {
+                if (explotado) break;
                 JSONObject ventilador = ventiladoresArray.getJSONObject(j);
                 Timestamp fecha = Timestamp.valueOf(ventilador.getString("Fecha"));
                 boolean activo = ventilador.getBoolean("Activo");
@@ -367,6 +380,7 @@ public class Controlador {
             JSONObject ubicacionesJson = new JSONObject(new JSONTokener(ubicacionesReader));
             JSONArray ubicacionesArray = ubicacionesJson.getJSONArray(String.valueOf(indice));
             for (int j = 0; j < ubicacionesArray.length(); j++) {
+                if (explotado) break;
                 JSONObject ubicacion = ubicacionesArray.getJSONObject(j);
                 double longitud = ubicacion.getDouble("Longitud");
                 double latitud = ubicacion.getDouble("Latitud");
@@ -376,8 +390,20 @@ public class Controlador {
             }
 
         } catch (Exception e) {
+            explotado = true;
             Log.log.info(e);
         }
+    }
+    
+    
+    public static double obtenerTiempoMedioTransportista(int idTransportista, int idReceptor, int idRemitente){
+        double tiempo_medio = FachadaEnvioBD.getMediaTiempoEnvio(idTransportista, idReceptor, idRemitente);
+        return tiempo_medio;
+    }
+    
+     public static double obtenerPerdidaMedia(int idTransportista){
+        double tiempo_medio = FachadaEnvioBD.getMediaPerdida(idTransportista);
+        return tiempo_medio;
     }
     
     

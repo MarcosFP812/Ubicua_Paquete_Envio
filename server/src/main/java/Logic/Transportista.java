@@ -11,6 +11,47 @@ package Logic;
 public class Transportista {
     
     private String nombre;
+    
+    private double TiempoPerdida;
+
+    private double TiempoEnvio;
+
+    /**
+     * Get the value of TiempoEnvio
+     *
+     * @return the value of TiempoEnvio
+     */
+    public double getTiempoEnvio() {
+        return TiempoEnvio;
+    }
+
+    /**
+     * Set the value of TiempoEnvio
+     *
+     * @param TiempoEnvio new value of TiempoEnvio
+     */
+    public void setTiempoEnvio(double TiempoEnvio) {
+        this.TiempoEnvio = TiempoEnvio;
+    }
+
+    /**
+     * Get the value of TiempoPerdida
+     *
+     * @return the value of TiempoPerdida
+     */
+    public double getTiempoPerdida() {
+        return TiempoPerdida;
+    }
+
+    /**
+     * Set the value of TiempoPerdida
+     *
+     * @param TiempoPerdida new value of TiempoPerdida
+     */
+    public void setTiempoPerdida(double TiempoPerdida) {
+        this.TiempoPerdida = TiempoPerdida;
+    }
+
 
     /**
      * Get the value of nombre
@@ -54,7 +95,9 @@ public class Transportista {
     public String toString() {
         return "{"
             + "\"nombre\": \"" + nombre + "\", "
-            + "\"id\": \"" + id + "\""
+            + "\"id\": \"" + id + "\", "
+            + "\"TiempoEnvio\": \"" + TiempoEnvio + "\", "
+            + "\"TiempoPerdida\": \"" + TiempoPerdida + "\""
             + "}";
     }
 

@@ -109,7 +109,8 @@ public class Logic
         
     }
     
-    public static int contarMinutosPorEncimaDelUmbral(int idEnvio) {
+    public static double contarMinutosPorEncimaDelUmbral(int idEnvio) {
+        //Log.log.info("EN CONTAR UMBRAL");
         // Obtener los datos de temperatura y humedad para el idEnvio
         ArrayList<TemperaturaHumedad> datos = FachadaEnvioBD.getTemperaturaHumedad(idEnvio);
 
@@ -120,23 +121,29 @@ public class Logic
         Collections.sort(datos, Comparator.comparing(TemperaturaHumedad::getFecha));
 
         // Variable para contar los minutos
-        int minutosTotales = 0;
+        double minutosTotales = 0;
+        double milisTotales = 0;
 
         // Recorrer el ArrayList y calcular los minutos
         for (int i = 0; i < datos.size() - 1; i++) {
             TemperaturaHumedad actual = datos.get(i);
             TemperaturaHumedad siguiente = datos.get(i + 1);
-
+            //Log.log.info("Temperatura actual: "+actual);
+                
             // Verificar si la temperatura está por encima del umbral
             if (actual.getTemperatura() > umbral) {
+                //Log.log.info("HAY UN VALOR POR ENCIMA DEL UMBRAL");
                 // Calcular la diferencia de tiempo en minutos entre los dos objetos
                 long diferenciaMillis = siguiente.getFecha().getTime() - actual.getFecha().getTime();
-                int diferenciaMinutos = (int) (diferenciaMillis / (1000 * 60));
+                double diferenciaMilis = (diferenciaMillis);
+                //Log.log.info("Diferencia "+siguiente.getFecha().getTime()+"-"+actual.getFecha().getTime()+"="+diferenciaMilis);
 
                 // Sumar los minutos al total
-                minutosTotales += diferenciaMinutos;
+                milisTotales += diferenciaMilis;
+                //Log.log.info("Minutos: "+minutosTotales);
             }
         }
+        minutosTotales = milisTotales / (1000 * 60);
 
         return minutosTotales;
     }

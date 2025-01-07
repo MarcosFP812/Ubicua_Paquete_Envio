@@ -43,7 +43,11 @@ public class Projectinitializer implements ServletContextListener {
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp fecha = Timestamp.valueOf(localDateTime);
         
-        Controlador.registrarUbicacion(1, -3.270053,  40.562697, -1, fecha);
+        Log.log.info(Controlador.obtenerTiempoMedioTransportista(2,2, 1));
+        Log.log.info(Controlador.obtenerPerdidaMedia(2));
+            
+        
+        //Controlador.registrarUbicacion(1, -3.270053,  40.562697, -1, fecha);
         /* 
         //Test registrar Cliente
         Controlador.registrarCliente("ubicua", "ubicua", 0, 0, "Receptor");
@@ -126,9 +130,9 @@ public class Projectinitializer implements ServletContextListener {
         for (TemperaturaHumedad th : ths) {
             Log.log.info("Temperatura y Humedad: " + th);
         }
-        */
-        
-        String path = "/opt/tomcat/jsons/t1-guada/";
+        *//*
+        Log.log.info("COMENZANDO LA POBLACIÓN==================");
+        String path = "/opt/tomcat/jsons/t2-guada/";
         
         Controlador.poblarEnvios(path);
         

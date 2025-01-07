@@ -216,6 +216,87 @@ public class FachadaEnvioBD {
         
         return valido;
     }
+    
+    public static boolean actualizarVelocidadMedia(int idEnvio, double velocidadMedia) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        boolean valido = false;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.updateVelocidadMedia(con);
+            ps.setDouble(1, velocidadMedia);
+            ps.setInt(2, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            int rowsAffected = ps.executeUpdate();
+
+            // Verificar si se actualizaron filas
+            if (rowsAffected > 0) {
+                valido = true;
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return valido;
+    }
+    
+    public static boolean actualizarPerdidaCadena(int idEnvio, double perdidaCadena) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        boolean valido = false;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.updatePerdidaCadena(con);
+            ps.setDouble(1, perdidaCadena);
+            ps.setInt(2, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            int rowsAffected = ps.executeUpdate();
+
+            // Verificar si se actualizaron filas
+            if (rowsAffected > 0) {
+                valido = true;
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return valido;
+    }
+
+    
+    public static boolean actualizarTiempoEnvio(int idEnvio, double tiempoEnvio) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        boolean valido = false;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.updateTiempoEnvio(con);
+            ps.setDouble(1, tiempoEnvio);
+            ps.setInt(2, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+            int rowsAffected = ps.executeUpdate();
+
+            // Verificar si se actualizaron filas
+            if (rowsAffected > 0) {
+                valido = true;
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return valido;
+    }
+
+
 
     public static ArrayList<UbicacionEnvio> getUbicaciones(int idEnvio) {
         ArrayList<UbicacionEnvio> ubicaciones = new ArrayList<>();
@@ -753,5 +834,61 @@ public class FachadaEnvioBD {
 
         return t;
     }
+    
+    public static double getMediaTiempoEnvio(int idTransportista, int idReceptor, int idRemitente) {
+        double mediaTiempoEnvio = 0.0; // Valor inicial de la media
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectMediaTiempoEnvio(con); // Utilizar la consulta preparada
+            ps.setInt(1, idTransportista); // Transportista como parámetro
+            ps.setInt(2, idReceptor);      // Receptor como parámetro
+            ps.setInt(3, idRemitente);     // Remitente como parámetro
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Obtener el resultado de AVG(Tiempo_envio)
+                mediaTiempoEnvio = rs.getDouble("Media_Tiempo_Envio");
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return mediaTiempoEnvio;
+    }
+    
+    public static double getMediaPerdida(int idTransportista) {
+        double mediaTiempoEnvio = 0.0; // Valor inicial de la media
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectMediaPerdida(con); // Utilizar la consulta preparada
+            ps.setInt(1, idTransportista); // Transportista como parámetro
+
+            Log.log.info("Ejecutando: " + ps);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Obtener el resultado de AVG(Tiempo_envio)
+                mediaTiempoEnvio = rs.getDouble("Media_Perdida");
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return mediaTiempoEnvio;
+    }
+
+    
+    
 
 }
