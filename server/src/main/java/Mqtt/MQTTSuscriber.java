@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import db.Topics;
 import Logic.Log;
+import db.FachadaClienteBD;
+import db.FachadaEnvioBD;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,41 +54,45 @@ public class MQTTSuscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.logmqtt.info("Mensaje recibido en topic {}: {}", topic, message.toString());
-        //Topics newTopic = new Topics();
-        //newTopic.setValue(message.toString());
+        Topics newTopic = new Topics();
+        newTopic.setValue(message.toString());
+        String[] mensaje;
         try{
             String[] topicParts = topic.split("/");
             if (topicParts.length < 4) return;
             
-            int idPaquete = Integer.parseInt(topicParts[1]);
+            
+            int idPaquete = (Character.getNumericValue(topicParts[1].charAt(1)));
             int idEnvio = Integer.parseInt(topicParts[2]);
             String subTopic = topicParts[3];
             Timestamp now = new Timestamp(System.currentTimeMillis());
+            
+            double temperatura;
+            double humedad;
 
             switch (subTopic) {
                 case "estado":
                     Controlador.registrarEstado(idPaquete, idEnvio, message.toString(), now);
                     break;
-                case "temperatura":
-                    double temperatura = Double.parseDouble(message.toString());
-                    temperaturaCache.put(idEnvio, temperatura);
-
-                    // Verifica si ya hay un valor de humedad asociado
-                    if (humedadCache.containsKey(idEnvio)) {
-                        double humedad = humedadCache.remove(idEnvio);
-                        Controlador.registrarTH(idPaquete, idEnvio, temperatura, humedad, now);
-                        temperaturaCache.remove(idEnvio);
+                case "dht22":
+                    mensaje = message.toString().split("-");
+                    temperatura = Double.parseDouble(mensaje[0]);
+                    humedad = Double.parseDouble(mensaje[1]);
+                    Controlador.registrarTH(idPaquete, idEnvio, temperatura, humedad, now);
+                    if (temperatura > FachadaEnvioBD.getTemperaturaMax(idEnvio)){
+                        Controlador.registrarVentilador(idPaquete, idEnvio, true, now);
                     }
                     break;
-                case "humedad":
-                    double humedad = Double.parseDouble(message.toString());
-                    humedadCache.put(idEnvio, humedad);
-
-                    // Verifica si ya hay un valor de temperatura asociado
-                    if (temperaturaCache.containsKey(idEnvio)) {
-                        temperatura = temperaturaCache.remove(idEnvio);
-                        Controlador.registrarTH(idPaquete, idEnvio, temperatura, humedad, now);
-                        humedadCache.remove(idEnvio);
+                case "gps":
+                    mensaje = message.toString().split("-");
+                    double longitud = Double.parseDouble(mensaje[0]);
+                    double latitud = Double.parseDouble(mensaje[1]);
+                    if (mensaje.length == 2) {
+                        Controlador.registrarUbicacion(idEnvio, longitud, latitud, -1, now);
+                    }else{
+                        String velocidadTexto = (mensaje[2]);
+                        double velocidad = Double.parseDouble(velocidadTexto);
+                        Controlador.registrarUbicacion(idEnvio, longitud, latitud, velocidad, now);
                     }
                     break;
                 default:

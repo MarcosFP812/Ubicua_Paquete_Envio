@@ -82,8 +82,8 @@ public class Controlador {
     */
     public static int crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min){
         int id = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(id), String.valueOf(id));
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(id)+"/estado","CARGA");
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id), String.valueOf(id));
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id)+"/estado","CARGA");
         return id;
     }
     
@@ -125,8 +125,6 @@ public class Controlador {
     public static boolean registrarTH(int idPaquete, int idEnvio, double t, double h, Timestamp fecha){
        boolean valido = FachadaEnvioBD.registrarTemperaturaHumedad(idEnvio, fecha, t, h);
         //Lógica de la temperatura
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/temperatura", String.valueOf(t));
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/temperatura", String.valueOf(h));
         return valido;
     }
     
@@ -186,7 +184,7 @@ public class Controlador {
        boolean valido = FachadaEnvioBD.registrarVentilador(idEnvio, fecha, activo);
        
         //Publish del estado del ventilador
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/ventilador", String.valueOf(activo));
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/ventilador", String.valueOf(activo));
         
         return valido;
     }
@@ -198,7 +196,6 @@ public class Controlador {
        boolean valido = FachadaEnvioBD.registrarCambioEstado(idEnvio, fecha, estado);
        
         //Publish estado 
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/estado", estado);
         
         return valido;
     }
@@ -270,7 +267,7 @@ public class Controlador {
         String pin = pinBuilder.toString();
         
         //Publish del pin
-        //MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/pw", pin);
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/pw", pin);
         int idPaquete = 0;
         
         LocalDateTime currentDateTime = LocalDateTime.now();

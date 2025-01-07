@@ -189,7 +189,7 @@ public class Projectinitializer implements ServletContextListener {
         Log.log.info("");
 
         // Prueba subscribers
-        /*
+        
         Log.log.info("-->Suscribe Topics<--");
         MQTTSuscriber suscriber = new MQTTSuscriber();
         
@@ -199,12 +199,10 @@ public class Projectinitializer implements ServletContextListener {
         int idPaquete = 0;
         int idEnvio = Controlador.crearEnvio(idTrans, idPaquete, Receptor, Remitente, Receptor, Receptor);
         
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/dht22/temperatura", String.valueOf(17));
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/dht22/humedad", String.valueOf(14));
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/dht22/temperatura-humedad", "20-34");
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/gps/longitud-latitud-velocidad", "20-34-10");
         
-        suscriber.suscribeTopic("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/dht22/temperatura");
-        suscriber.suscribeTopic("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/dht22/humedad");
-        */
+        suscriber.suscribeTopic("Paquetes/p0/"+String.valueOf(idEnvio)+"/gps/+");
         
         /*Log.log.info("-->Suscribe Topics<--");
         MQTTBroker broker = new MQTTBroker();
