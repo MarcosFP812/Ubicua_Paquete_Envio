@@ -1,5 +1,6 @@
 package com.example.smart_packet
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.TableLayout
@@ -28,6 +29,7 @@ class EnvioActivity : AppCompatActivity() {
     private var selectedTransportistaId: String? = null
     private var lastSelectedRowReceptor: TableRow? = null
     private var lastSelectedRowTransportista: TableRow? = null
+    private var idCliente: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,9 @@ class EnvioActivity : AppCompatActivity() {
         }
 
         val id = intent.getStringExtra("id")
+        if (id != null) {
+            idCliente = id
+        };
         // Permitir operaciones de red en el hilo principal (solo para pruebas, usa AsyncTask o coroutines para producción)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -118,6 +123,7 @@ class EnvioActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.item_option1 -> {
                         val intent = Intent(this, HistorialActivity::class.java)
+                        intent.putExtra("id", idCliente)
                         startActivity(intent)
                         true
                     }
@@ -185,7 +191,7 @@ class EnvioActivity : AppCompatActivity() {
                             val idTextView = row.getChildAt(0) as TextView
                             selectedTransportistaId = idTextView.text.toString()
                         }
-                        row.setBackgroundColor(android.graphics.Color.BLUE)
+                        row.setBackgroundColor(Color.parseColor("#01A0E1"));
                     }
                 }
             }

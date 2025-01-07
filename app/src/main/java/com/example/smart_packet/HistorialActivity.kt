@@ -39,6 +39,23 @@ class HistorialActivity : AppCompatActivity() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Limpiar las listas para evitar duplicados
+        elementsE?.clear()
+        elementsEs?.clear()
+        elementsC?.clear()
+
+        // Volver a cargar los datos del cliente
+        if (idCliente.isNotEmpty()) {
+            obtenerEnviosCliente(idCliente) // Esto recargará los datos desde el servidor
+        } else {
+            Log.e("HistorialActivity", "El ID del cliente no está disponible para recargar los datos")
+        }
+    }
+
+
     fun mostrarMenu(){
         val menu: ImageView = findViewById(R.id.menu)
         menu.setOnClickListener { view ->
@@ -53,6 +70,7 @@ class HistorialActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.item_option1 -> {
                         val intent = Intent(this, HistorialActivity::class.java)
+                        intent.putExtra("id", idCliente)
                         startActivity(intent)
                         true
                     }
@@ -196,7 +214,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")  // Asumimos que "paqueteId" es el detalle del paquete
 
                 // Crear el ListElement con el detalle del paquete y su estado
-                val listElement = ListElement(generarColor(), idEnvio, estado)
+                val listElement = ListElement(generarColor(), idEnvio, estado, idCliente)
 
                 // Filtrar y añadir el elemento a la lista correspondiente según el estado
                 when (estado) {
@@ -212,7 +230,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")
 
                 // Crear el ListElement
-                val listElement = ListElement(generarColor(), idEnvio,estado)
+                val listElement = ListElement(generarColor(), idEnvio,estado, idCliente)
 
                 // Filtrar y añadir el elemento a la lista correspondiente
                 when (estado) {
@@ -228,7 +246,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")
 
                 // Crear el ListElement
-                val listElement = ListElement(generarColor(), idEnvio, estado)
+                val listElement = ListElement(generarColor(), idEnvio, estado, idCliente)
 
                 // Filtrar y añadir el elemento a la lista correspondiente
                 when (estado) {

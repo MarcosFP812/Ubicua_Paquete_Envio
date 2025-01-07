@@ -31,12 +31,14 @@ import java.net.URL
 class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mMap: GoogleMap? = null
     private var tipo: String = ""
+    private var idCliente: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Comprobar si es empresa o cliente
         var tipo = intent.getStringExtra("tipo")
+        idCliente = intent.getStringExtra("id")!!
         if (tipo == "Remitente"){
             setContentView(R.layout.activity_ver_paquete_e) // Usa el layout que definimos antes
             val idEnvio = intent.getStringExtra("idEnvio")
@@ -122,6 +124,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
                 when (item.itemId) {
                     R.id.item_option1 -> {
                         val intent = Intent(this, HistorialActivity::class.java)
+                        intent.putExtra("id", idCliente)
                         startActivity(intent)
                         true
                     }

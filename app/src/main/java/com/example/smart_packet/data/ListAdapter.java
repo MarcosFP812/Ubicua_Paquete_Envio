@@ -51,6 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
                 var id = items.getId();
                 intent.putExtra("idEnvio", id);
                 intent.putExtra("tipo", tipo);
+                intent.putExtra("id", items.getIdCliente());
                 context.startActivity(intent);
             });
         }
