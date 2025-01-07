@@ -42,9 +42,9 @@ class IniSesActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, ingrese nombre y contraseña", Toast.LENGTH_SHORT).show()
             }
-            /*val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
+            val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
             startActivity(i)
-            finish()*/
+            finish()
         }
 
         val registrarse = findViewById<TextView>(R.id.clickableText)
@@ -91,10 +91,11 @@ class IniSesActivity : AppCompatActivity() {
                     val response = inputStream.bufferedReader().use { it.readText() }
 
                     // En este caso, consideramos que si el servidor responde con "-1", el cliente está autenticado
-                    if (response.contains("-1")) {
+                    if (!response.contains("-1")) {
                         runOnUiThread {
                             Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                             val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
+                            i.putExtra("id", response)
                             startActivity(i)
                             finish()
                         }

@@ -33,16 +33,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Comprobar si es empresa o cliente
-        val map = GlobalVariables.listaReceptor
-        if (map != null) {
-            if(map.get(GlobalVariables.nombre)!=null){
-                tipo = "Receptor"
-            } else{
-                tipo = "Remitente"
-            }
-        } else{
-            tipo = "Remitente"
-        }
+        var tipo = intent.getStringExtra("tipo")
         if (tipo == "Remitente"){
             setContentView(R.layout.activity_ver_paquete_e) // Usa el layout que definimos antes
             val idEnvio = intent.getIntExtra("idEnvio", -1)
@@ -70,25 +61,27 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             setContentView((R.layout.activity_ver_paquete_c))
             val btnPin: Button = findViewById(R.id.btnPin)
             btnPin.setOnClickListener {
-                val idEnvio = intent.getIntExtra("idEnvio", -1)
+                val idEnvio = intent.getStringExtra("idEnvio")
                 // Crear el código que deseas mostrar
-                val codigo = generarCodigoEnvio(idEnvio)
+                if (idEnvio!=null) {
+                    val codigo = generarCodigoEnvio(idEnvio)
+                    // Crear el AlertDialog para mostrar el código
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Código de Seguridad")  // Título del diálogo
+                        .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
+                        .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
+                        .setPositiveButton("OK") { dialog, id ->
+                            dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
+                        }
 
-                // Crear el AlertDialog para mostrar el código
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Código de Seguridad")  // Título del diálogo
-                    .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
-                    .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
-                    .setPositiveButton("OK") { dialog, id ->
-                        dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
-                    }
-
-                // Mostrar el diálogo
-                val alert = builder.create()
-                alert.show()
+                    // Mostrar el diálogo
+                    val alert = builder.create()
+                    alert.show()
+                } else {
+                    Log.e("Error", "El ID no fue recibido en el Intent")
+                }
             }
         }
-
 
         supportActionBar!!.hide()
         // Configurar el mapa
@@ -284,7 +277,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Función para generar el código de seguridad PIN
-    private fun generarCodigoEnvio(idEnvio: Int) {
+    private fun generarCodigoEnvio(idEnvio: String) {
         // URL del servlet para generar el PIN
         val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/GenerarPinEnvio?idEnvio=$idEnvio"
 

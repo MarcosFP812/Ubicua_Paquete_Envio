@@ -27,9 +27,6 @@ import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
     private val tag = "Register"
-    private val listaReceptores: HashMap<String, Receptor> = hashMapOf()
-    private val listaRemitente: HashMap<String, Remitente> = hashMapOf()
-    private var idCount : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,18 +68,6 @@ class RegisterActivity : AppCompatActivity() {
                 if (coord1 != null && coord2 != null){
                     sendClientDataToServer(nombre, pw, coord1, coord2, tipo)
                     val i = Intent(this@RegisterActivity, IniSesActivity::class.java)
-                    if (tipo == "Receptor"){
-                        idCount++
-                        listaReceptores[nombre] = Receptor(idCount, nombre, pw, Ubicacion(coord1, coord2))
-                        GlobalVariables.listaReceptor = listaReceptores
-                        GlobalVariables.id = idCount
-                        GlobalVariables.nombre = nombre
-                    } else {
-                        idCount++
-                        listaRemitente[nombre] = Remitente(idCount, nombre, pw, Ubicacion(coord1, coord2))
-                        GlobalVariables.id = idCount
-                        GlobalVariables.nombre = nombre
-                    }
                     Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
                     startActivity(i)
                     finish()

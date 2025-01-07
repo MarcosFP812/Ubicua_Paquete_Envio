@@ -22,11 +22,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     private List<ListElement> mData;
     private LayoutInflater mInflater;
     private Context context;
+    private String tipo;
 
-    public ListAdapter(List<ListElement> mData, Context context) {
+    public ListAdapter(List<ListElement> mData, Context context, String tipo) {
         this.mData = mData;
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
+        this.tipo = tipo;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
             Intent intent = new Intent(context, VerPaqueteActivity.class);  // O la Activity/Fragment que desees
             var id = items.getId();
             intent.putExtra("idEnvio", id);
+            intent.putExtra("tipo", tipo);
             context.startActivity(intent);
         });
     }

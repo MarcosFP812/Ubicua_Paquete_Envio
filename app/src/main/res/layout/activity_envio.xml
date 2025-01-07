@@ -75,7 +75,7 @@
         android:layout_width="135dp"
         android:layout_height="0dp"
         android:fontFamily="@font/niramit"
-        android:text="Temperatura(ºC)"
+        android:text="Temp. max(ºC)"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintHorizontal_bias="0.078"
@@ -83,68 +83,41 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
-    <TextView
-        android:id="@+id/txt3"
-        android:layout_width="85dp"
-        android:layout_height="25dp"
-        android:layout_marginHorizontal="130dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="0dp"
-        android:fontFamily="@font/niramit"
-        android:text="Humedad"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.078"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txt2"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
 
     <TextView
         android:id="@+id/txt4"
         android:layout_width="135dp"
         android:layout_height="0dp"
         android:fontFamily="@font/niramit"
-        android:text="Dirección"
+        android:text="Temp. min(ºC)"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintHorizontal_bias="0.078"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/miEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/max" />
 
     <TextView
         android:id="@+id/txt5"
         android:layout_width="135dp"
         android:layout_height="0dp"
         android:fontFamily="@font/niramit"
-        android:text="Fecha entrega"
+        android:text="ID"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintHorizontal_bias="0.078"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/miEditText2" />
+        app:layout_constraintTop_toBottomOf="@+id/min" />
 
 
-    <TextView
-        android:id="@+id/txt6"
-        android:layout_width="135dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="44dp"
-        android:fontFamily="@font/niramit"
-        android:text="ID"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txt5"
-        app:layout_constraintTop_toBottomOf="@+id/miEditText2" />
+
+
 
     <EditText
-        android:id="@+id/miEditText"
-        android:layout_width="135dp"
+        android:id="@+id/max"
+        android:layout_width="330dp"
         android:layout_height="60dp"
         android:gravity="left"
         android:imeOptions="actionDone"
@@ -152,29 +125,13 @@
         android:maxLength="50"
         android:padding="16dp"
         android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.079"
+        app:layout_constraintHorizontal_bias="0.271"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt2" />
 
     <EditText
-        android:id="@+id/miEditText1"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="4dp"
-        android:gravity="left"
-        android:imeOptions="actionDone"
-        android:inputType="numberDecimal"
-        android:maxLength="50"
-        android:padding="16dp"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.641"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt3" />
-
-    <EditText
-        android:id="@+id/miEditText2"
+        android:id="@+id/min"
         android:layout_width="330dp"
         android:layout_height="60dp"
         android:gravity="left"
@@ -188,9 +145,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt4" />
 
+
     <EditText
-        android:id="@+id/miEditText3"
-        android:layout_width="150dp"
+        android:id="@+id/paquete"
+        android:layout_width="330dp"
         android:layout_height="60dp"
         android:gravity="left"
         android:imeOptions="actionDone"
@@ -198,25 +156,10 @@
         android:maxLength="50"
         android:padding="16dp"
         android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintHorizontal_bias="0.271"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt5" />
-
-    <EditText
-        android:id="@+id/miEditText4"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:gravity="left"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:maxLength="50"
-        android:padding="16dp"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.708"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt6" />
 
     <ScrollView
         android:id="@+id/scrollView3"
@@ -347,7 +290,7 @@
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/miEditText4" />
+        app:layout_constraintTop_toBottomOf="@+id/paquete" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

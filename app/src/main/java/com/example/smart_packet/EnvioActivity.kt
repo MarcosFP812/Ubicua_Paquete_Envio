@@ -13,6 +13,7 @@ import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
+import android.widget.EditText
 import android.widget.Toast
 import com.example.smart_packet.data.GlobalVariables
 import java.io.OutputStream
@@ -24,6 +25,7 @@ class EnvioActivity : AppCompatActivity() {
     private var selectedTransportistaId: String? = null
     private var lastSelectedRowReceptor: TableRow? = null
     private var lastSelectedRowTransportista: TableRow? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -38,6 +40,7 @@ class EnvioActivity : AppCompatActivity() {
             insets
         }
 
+        val id = intent.getStringExtra("id")
         // Permitir operaciones de red en el hilo principal (solo para pruebas, usa AsyncTask o coroutines para producción)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -63,6 +66,9 @@ class EnvioActivity : AppCompatActivity() {
         setupTableRowSelection(tablaTransportistas, isReceptor = false)
 
         val enviarButton = findViewById<View>(R.id.btn1)
+        val edit = findViewById<EditText>(R.id.max)
+        val edit1 = findViewById<EditText>(R.id.min)
+        val edit2 = findViewById<EditText>(R.id.paquete)
         enviarButton.setOnClickListener {
             if (selectedReceptorId == null || selectedTransportistaId == null) {
                 Toast.makeText(
@@ -70,18 +76,25 @@ class EnvioActivity : AppCompatActivity() {
                     "Debe seleccionar un receptor y un transportista.",
                     Toast.LENGTH_SHORT
                 ).show()
+            } else if (edit == null || edit1==null || edit2 == null ){
+                Toast.makeText(
+                    this,
+                    "Debe llenar todos los campos.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
             } else {
                 val url = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/CrearEnvio"
                 val params = mapOf(
                     "idTransportista" to selectedTransportistaId!!,
                     "idReceptor" to selectedReceptorId!!,
-                    "idPaquete" to "1",
-                    "idRemitente" to "2",
-                    "temperatura_max" to "8",
-                    "temperatura_min" to "2"
+                    "idPaquete" to edit2,
+                    "idRemitente" to id,
+                    "temperatura_max" to edit,
+                    "temperatura_min" to edit1
                 )
-                sendPostRequest(url, params)
-
+                val datosString: Map<String, String> = params.mapValues { it.value.toString() }
+                sendPostRequest(url, datosString)
 
             }
         }
@@ -143,7 +156,7 @@ class EnvioActivity : AppCompatActivity() {
                 }
             }
 
-            private fun sendPostRequest(urlString: String, params: Map<String, String>) {
+            private fun sendPostRequest(urlString: String, params: Map<String, Any>) {
                 // Habilitar política de red para operaciones en el hilo principal (solo para demostración)
                 StrictMode.setThreadPolicy(
                     StrictMode.ThreadPolicy.Builder().permitNetwork().build()
@@ -167,11 +180,10 @@ class EnvioActivity : AppCompatActivity() {
 
                         // Leer la respuesta
                         val responseCode = connection.responseCode
-                        val responseMessage = connection.inputStream.bufferedReader().readText()
 
                         runOnUiThread {
                             if (responseCode == HttpURLConnection.HTTP_OK) {
-                                Toast.makeText(this, "Envío exitoso: $responseMessage", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this, "Envío exitoso", Toast.LENGTH_LONG).show()
                             } else {
                                 Toast.makeText(this, "Error en el envío: $responseCode", Toast.LENGTH_LONG).show()
                             }

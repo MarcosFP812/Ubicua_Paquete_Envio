@@ -3,20 +3,20 @@ package com.example.smart_packet.data;
 import android.widget.ImageView;
 
 public class ListElement {
-    public int id;
+    public String id;
     public String color;
     public ImageView img;
 
-    public ListElement(String color, int id) {
+    public ListElement(String color, String id) {
         this.color = color;
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
