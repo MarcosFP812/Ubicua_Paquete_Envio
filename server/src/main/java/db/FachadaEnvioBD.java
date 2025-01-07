@@ -198,11 +198,16 @@ public class FachadaEnvioBD {
         try{
             con = connector.obtainConnection(true);
             PreparedStatement ps = ConnectionDB.updateEstado(con);
-            ps.setString(2, estado);
+            ps.setString(1, estado);
             ps.setInt(2, idEnvio);
             Log.log.info("Ejecutando: " + ps);
-            ResultSet rs = ps.executeQuery();
-            valido = true;
+            int rowsAffected = ps.executeUpdate();
+        
+            // Verificar si se actualizaron filas
+            if (rowsAffected > 0) {
+                valido = true;
+            }
+                valido = true;
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
         } finally {
@@ -409,7 +414,7 @@ public class FachadaEnvioBD {
         try {
             con = connector.obtainConnection(false);
             PreparedStatement ps = ConnectionDB.selectMaxIdDato(con);
-            ps.setInt(1, idEnvio);
+            //ps.setInt(1, idEnvio);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 maxId = rs.getInt("max_id"); // Obtiene el valor del campo `max_id`
@@ -697,6 +702,56 @@ public class FachadaEnvioBD {
         }
 
         return ubicacion;
+    }
+    
+    public static Timestamp getUltimaFecha(int idEnvio) {
+        Timestamp t = null;
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectMayorFecha(con);
+            ps.setInt(1, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                t = rs.getTimestamp("MayorFecha");
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return t;
+    }
+    
+    public static Timestamp getPrimeraFecha(int idEnvio) {
+        Timestamp t = null;
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+
+        try {
+            con = connector.obtainConnection(true);
+            PreparedStatement ps = ConnectionDB.selectMenorFecha(con);
+            ps.setInt(1, idEnvio);
+            Log.log.info("Ejecutando: " + ps);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                t = rs.getTimestamp("MenorFecha");
+            }
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return t;
     }
 
 }

@@ -1,0 +1,542 @@
+{
+    "0": [
+        {
+            "Fecha": "2024-10-28 11:59:00",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-10-28 11:59:50",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-10-28 12:00:00",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-10-28 13:26:43",
+            "Estado": "APERTURA"
+        }
+    ],
+    "1": [
+        {
+            "Fecha": "2024-10-29 12:12:34",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-10-29 12:13:24",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-10-29 12:13:34",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-10-29 13:27:00",
+            "Estado": "APERTURA"
+        }
+    ],
+    "2": [
+        {
+            "Fecha": "2024-10-30 12:13:06",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-10-30 12:13:56",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-10-30 12:14:06",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-10-30 13:32:23",
+            "Estado": "APERTURA"
+        }
+    ],
+    "3": [
+        {
+            "Fecha": "2024-10-31 12:11:38",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-10-31 12:12:28",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-10-31 12:12:38",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-10-31 13:29:32",
+            "Estado": "APERTURA"
+        }
+    ],
+    "4": [
+        {
+            "Fecha": "2024-11-01 12:11:21",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-01 12:12:11",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-01 12:12:21",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-01 13:32:01",
+            "Estado": "APERTURA"
+        }
+    ],
+    "5": [
+        {
+            "Fecha": "2024-11-04 12:12:38",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-04 12:13:28",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-04 12:13:38",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-04 13:32:54",
+            "Estado": "APERTURA"
+        }
+    ],
+    "6": [
+        {
+            "Fecha": "2024-11-05 12:12:30",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-05 12:13:20",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-05 12:13:30",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-05 13:30:46",
+            "Estado": "APERTURA"
+        }
+    ],
+    "7": [
+        {
+            "Fecha": "2024-11-06 12:12:03",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-06 12:12:53",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-06 12:13:03",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-06 13:35:41",
+            "Estado": "APERTURA"
+        }
+    ],
+    "8": [
+        {
+            "Fecha": "2024-11-07 12:11:49",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-07 12:12:39",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-07 12:12:49",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-07 13:31:09",
+            "Estado": "APERTURA"
+        }
+    ],
+    "9": [
+        {
+            "Fecha": "2024-11-08 12:12:32",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-08 12:13:22",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-08 12:13:32",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-08 13:33:26",
+            "Estado": "APERTURA"
+        }
+    ],
+    "10": [
+        {
+            "Fecha": "2024-11-11 12:12:33",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-11 12:13:23",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-11 12:13:33",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-11 13:32:33",
+            "Estado": "APERTURA"
+        }
+    ],
+    "11": [
+        {
+            "Fecha": "2024-11-12 12:12:38",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-12 12:13:28",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-12 12:13:38",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-12 13:29:50",
+            "Estado": "APERTURA"
+        }
+    ],
+    "12": [
+        {
+            "Fecha": "2024-11-13 12:12:13",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-13 12:13:03",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-13 12:13:13",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-13 13:33:29",
+            "Estado": "APERTURA"
+        }
+    ],
+    "13": [
+        {
+            "Fecha": "2024-11-14 12:11:38",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-14 12:12:28",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-14 12:12:38",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-14 13:32:55",
+            "Estado": "APERTURA"
+        }
+    ],
+    "14": [
+        {
+            "Fecha": "2024-11-15 12:11:47",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-15 12:12:37",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-15 12:12:47",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-15 13:28:57",
+            "Estado": "APERTURA"
+        }
+    ],
+    "15": [
+        {
+            "Fecha": "2024-11-18 12:11:48",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-18 12:12:38",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-18 12:12:48",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-18 13:32:19",
+            "Estado": "APERTURA"
+        }
+    ],
+    "16": [
+        {
+            "Fecha": "2024-11-19 12:12:43",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-19 12:13:33",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-19 12:13:43",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-19 13:31:08",
+            "Estado": "APERTURA"
+        }
+    ],
+    "17": [
+        {
+            "Fecha": "2024-11-20 12:11:51",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-20 12:12:41",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-20 12:12:51",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-20 13:36:28",
+            "Estado": "APERTURA"
+        }
+    ],
+    "18": [
+        {
+            "Fecha": "2024-11-21 12:12:34",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-21 12:13:24",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-21 12:13:34",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-21 13:28:22",
+            "Estado": "APERTURA"
+        }
+    ],
+    "19": [
+        {
+            "Fecha": "2024-11-22 12:13:23",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-22 12:14:13",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-22 12:14:23",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-22 13:34:24",
+            "Estado": "APERTURA"
+        }
+    ],
+    "20": [
+        {
+            "Fecha": "2024-11-25 12:12:10",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-25 12:13:00",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-25 12:13:10",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-25 13:32:33",
+            "Estado": "APERTURA"
+        }
+    ],
+    "21": [
+        {
+            "Fecha": "2024-11-26 12:12:12",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-26 12:13:02",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-26 12:13:12",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-26 13:33:39",
+            "Estado": "APERTURA"
+        }
+    ],
+    "22": [
+        {
+            "Fecha": "2024-11-27 12:12:31",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-27 12:13:21",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-27 12:13:31",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-27 13:28:11",
+            "Estado": "APERTURA"
+        }
+    ],
+    "23": [
+        {
+            "Fecha": "2024-11-28 12:12:36",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-28 12:13:26",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-28 12:13:36",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-28 13:33:01",
+            "Estado": "APERTURA"
+        }
+    ],
+    "24": [
+        {
+            "Fecha": "2024-11-29 12:12:57",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-11-29 12:13:47",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-11-29 12:13:57",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-11-29 13:28:53",
+            "Estado": "APERTURA"
+        }
+    ],
+    "25": [
+        {
+            "Fecha": "2024-12-02 12:11:19",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-12-02 12:12:09",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-12-02 12:12:19",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-12-02 13:30:35",
+            "Estado": "APERTURA"
+        }
+    ],
+    "26": [
+        {
+            "Fecha": "2024-12-03 12:12:15",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-12-03 12:13:05",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-12-03 12:13:15",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-12-03 13:31:24",
+            "Estado": "APERTURA"
+        }
+    ],
+    "27": [
+        {
+            "Fecha": "2024-12-04 12:12:01",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-12-04 12:12:51",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-12-04 12:13:01",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-12-04 13:34:05",
+            "Estado": "APERTURA"
+        }
+    ],
+    "28": [
+        {
+            "Fecha": "2024-12-05 12:11:49",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-12-05 12:12:39",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-12-05 12:12:49",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-12-05 13:33:06",
+            "Estado": "APERTURA"
+        }
+    ],
+    "29": [
+        {
+            "Fecha": "2024-12-06 12:11:38",
+            "Estado": "CARGA"
+        },
+        {
+            "Fecha": "2024-12-06 12:12:28",
+            "Estado": "CERRAR"
+        },
+        {
+            "Fecha": "2024-12-06 12:12:38",
+            "Estado": "ENVIO"
+        },
+        {
+            "Fecha": "2024-12-06 13:29:19",
+            "Estado": "APERTURA"
+        }
+    ]
+}

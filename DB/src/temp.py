@@ -2,6 +2,8 @@ import json
 import random
 from datetime import datetime, timedelta
 
+carpeta = "../t2-guada"
+
 # Función para generar datos de temperatura y humedad
 def generate_temperature_humidity(start_time, end_time):
     th_data = []
@@ -61,7 +63,7 @@ def generate_states(start_time, end_time, envio_time):
     return state_data
 
 # Cargar los datos de ubicación desde el archivo JSON
-with open('synthetic_shipments.json', 'r') as file:
+with open(carpeta+'/ubi.json', 'r') as file:
     ubicaciones = json.load(file)
 
 # Procesar cada entrada de ubicación y generar los datos
@@ -86,14 +88,15 @@ for key in ubicaciones:
     state_data = generate_states(start_time, end_time, start_time)
     all_state_data[key]=state_data
 
+
 # Guardar los datos generados en archivos JSON
-with open('temperature_humidity.json', 'w') as file:
+with open(carpeta+'/temp.json', 'w') as file:
     json.dump(all_th_data, file, indent=4)
 
-with open('ventilator.json', 'w') as file:
+with open(carpeta+'/ventilator.json', 'w') as file:
     json.dump(all_ventilator_data, file, indent=4)
 
-with open('states.json', 'w') as file:
+with open(carpeta+'/estados.json', 'w') as file:
     json.dump(all_state_data, file, indent=4)
 
 print("Archivos generados: temperature_humidity.json, ventilator.json, states.json")

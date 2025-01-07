@@ -15,7 +15,7 @@ public class MQTTPublisher {
      * @param topic
      * @param content
      */
-    public static void publish(MQTTBroker broker, String topic, String content) {
+    public static void publish(String topic, String content) {
         MemoryPersistence persistence = new MemoryPersistence();
         try {
             MqttClient sampleClient = new MqttClient(MQTTBroker.getBroker(), MQTTBroker.getClientId(), persistence);

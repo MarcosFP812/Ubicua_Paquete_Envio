@@ -1,4 +1,5 @@
 db\FachadaEnvioBD.class
+Servlets\CancelarEnvioServlet.class
 Servlets\CrearEnvioServlet.class
 mqtt\MQTTPublisher.class
 Logic\Controlador.class
@@ -12,6 +13,7 @@ Clases\Ventilador.class
 Servlets\CrearPinServlet.class
 Servlets\ValidarClienteServlet.class
 Logic\Measurement.class
+Servlets\ObtenerTipoServlet.class
 db\FachadaClienteBD.class
 Servlets\SetData.class
 Clases\Cliente.class
@@ -19,12 +21,16 @@ Logic\Log.class
 Clases\Ubicacion.class
 db\ConnectionDB.class
 Servlets\ObtenerReceptoresServlet.class
+Servlets\ObtenerEstadosServlet.class
+Servlets\ObtenerUbicacionesServlet.class
 Servlets\RegistrarClienteServlet.class
 Clases\Estado.class
 Logic\Projectinitializer.class
 Servlets\ObtenerEnviosClienteServlet.class
 Servlets\GetData.class
 Clases\Envio.class
+Servlets\ObtenerTemperaturasHumedadesServlet.class
 Logic\Transportista.class
+Servlets\ObtenerVentiladoresServlet.class
 Clases\UbicacionEnvio.class
 Servlets\ObtenerTransportistasServlet.class

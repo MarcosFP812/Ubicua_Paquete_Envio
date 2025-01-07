@@ -54,7 +54,7 @@ public class Cliente {
     return "{"
         + "\"nombre\": \"" + nombre + "\", "
         + "\"Id\": \"" + Id + "\", "
-        + "\"ubicacion\": \"" + ubicacion + "\", "
+        + "\"ubicacion\": " + ubicacion + ", "
         + "\"tipo\": \"" + tipo + "\""
         + "}";
 }

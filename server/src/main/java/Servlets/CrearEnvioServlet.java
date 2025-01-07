@@ -31,9 +31,13 @@ public class CrearEnvioServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            Log.log.info(request.getParameter("idTransportista"));
             int idTransportista = Integer.parseInt(request.getParameter("idTransportista"));
+            Log.log.info(request.getParameter("idPaquete"));
             int idPaquete = Integer.parseInt(request.getParameter("idPaquete"));
+            Log.log.info("idReceptor");
             int idReceptor = Integer.parseInt(request.getParameter("idReceptor"));
+            Log.log.info("idRemitente");
             int idRemitente = Integer.parseInt(request.getParameter("idRemitente"));
             double temperatura_min = Double.parseDouble(request.getParameter("temperatura_min"));
             double temperatura_max = Double.parseDouble(request.getParameter("temperatura_max"));

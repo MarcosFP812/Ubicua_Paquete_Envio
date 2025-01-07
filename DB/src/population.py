@@ -36,7 +36,7 @@ def get_speed_limit(lon, lat, last_speed=None):
 
         url = "https://overpass-api.de/api/interpreter"
 
-        response = requests.get(url, params={'data': query})
+        response = requests.get(url, params={'data': query}, timeout=10)
 
         if response.status_code == 200:
             data = response.json()
@@ -150,13 +150,13 @@ def write_to_json(data, output_path):
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 # Ruta del archivo KML
-input_kml_path = 'guada1.kml'
+input_kml_path = 'Torrejon.kml'
 
 # Número de envíos a generar
 num_shipments = 30
 
 # Fecha y hora de inicio
-start_time = datetime.datetime(2024, 10, 28, 10, 0)
+start_time = datetime.datetime(2024, 11, 5, 10, 0)
 
 # Extraer coordenadas
 coordinates = extract_coordinates_from_kml(input_kml_path)
@@ -165,7 +165,7 @@ coordinates = extract_coordinates_from_kml(input_kml_path)
 synthetic_shipments = generate_synthetic_data(coordinates, num_shipments, start_time)
 
 # Guardar los datos en un archivo JSON
-output_json_path = 'synthetic_shipments_t1_guada.json'
+output_json_path = 'synthetic_shipments_t2_torrejon.json'
 write_to_json(synthetic_shipments, output_json_path)
 
 print(f"Datos sintéticos generados y guardados en {output_json_path}")

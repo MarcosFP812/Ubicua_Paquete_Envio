@@ -73,6 +73,21 @@ public class ConnectionDB {
     public static PreparedStatement selectClientesByTipo(Connection con, String tipo) {
         return getStatement(con, "SELECT * FROM Cliente WHERE idCliente IN (SELECT Cliente_idCliente FROM " + tipo + ")");
     }
+    
+    public static PreparedStatement selectTipo(Connection con){
+        return getStatement(con, "SELECT \n" +
+                            "    CASE \n" +
+                            "        WHEN EXISTS (\n" +
+                            "            SELECT 1 FROM Receptor WHERE Cliente_idCliente = ?\n" +
+                            "        ) THEN 'Receptor'\n" +
+                            "        WHEN EXISTS (\n" +
+                            "            SELECT 1 FROM Remitente WHERE Cliente_idCliente = ?\n" +
+                            "        ) THEN 'Remitente'\n" +
+                            "        ELSE 'Ninguno'\n" +
+                            "    END AS Rol\n" +
+                            "FROM Cliente\n" +
+                            "WHERE idCliente = 1;");
+    }
 
     public static PreparedStatement selectClienteById(Connection con) {
         return getStatement(con, "SELECT * FROM Cliente WHERE idCliente = ?");
@@ -87,7 +102,8 @@ public class ConnectionDB {
     }
     
     public static PreparedStatement selectMaxIdDato(Connection con) {
-        return getStatement(con, "SELECT MAX(idDato) AS max_id FROM Dato WHERE Envio_idEnvio = ?;");
+        return getStatement(con, "SELECT MAX(idDato) AS max_id FROM Dato");
+        //return getStatement(con, "SELECT MAX(idDato) AS max_id FROM Dato WHERE Envio_idEnvio = ?;");
     }
 
     public static PreparedStatement insertCliente(Connection con) {
@@ -176,6 +192,19 @@ public class ConnectionDB {
 
     public static PreparedStatement selectTemperaturaHumedad(Connection con) {
         return getStatement(con, "SELECT * FROM TH WHERE Dato_idDato IN (SELECT idDato FROM Dato WHERE Envio_idEnvio = ?)");
+    }
+    
+    public static PreparedStatement selectUltimaUbicacion(Connection con) {
+    return getStatement(con, 
+        "SELECT * FROM Ubicacion u JOIN Dato d ON u.Dato_idDato = d.idDato WHERE d.Envio_idEnvio = ? ORDER BY u.Fecha DESC LIMIT 1");
+    }
+    
+    public static PreparedStatement selectMayorFecha(Connection con){
+        return getStatement(con, "SELECT MAX(Fecha) AS MayorFecha FROM Dato WHERE Envio_idEnvio = ?");
+    }
+    
+    public static PreparedStatement selectMenorFecha(Connection con){
+        return getStatement(con, "SELECT MIN(Fecha) AS MenorFecha FROM Dato WHERE Envio_idEnvio = ?");
     }
 
 }

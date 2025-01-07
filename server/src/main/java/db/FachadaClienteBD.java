@@ -259,4 +259,34 @@ public class FachadaClienteBD {
         return maxId;
     }
     
+    public static String getTipo(int idCliente) {
+        ConnectionDB connector = new ConnectionDB();
+        Connection con = null;
+        String tipo="";
+
+        try {
+            con = connector.obtainConnection(false);
+            PreparedStatement ps = ConnectionDB.selectTipo(con);
+            ps.setInt(1, idCliente);
+            ps.setInt(2, idCliente);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tipo = rs.getString("Rol"); // Obtiene el valor del campo `max_id`
+                Log.log.info("Tipo: "+tipo);
+            } else {
+                Log.log.info("No se encontraron resultados.");
+            }
+
+            // Cierra el ResultSet y PreparedStatement
+            rs.close();
+            ps.close();
+        } catch (SQLException | NullPointerException e) {
+            Log.log.info(e);
+        } finally {
+            connector.closeConnection(con);
+        }
+
+        return tipo;
+    }
+    
 }

@@ -1,0 +1,9 @@
+{
+    "Transportista_idTransportista": 1,
+    "Paquete_idPaquete": 1,
+    "Receptor_Cliente_idCliente": 3,
+    "Remitente_Cliente_idCliente":1,
+    "Estado": "Enviado",
+    "Temperatura_max": 8,
+    "Temperatura_min": 2
+}

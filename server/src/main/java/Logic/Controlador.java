@@ -13,12 +13,16 @@ import Clases.Envio;
 import Clases.UbicacionEnvio;
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
+import java.io.FileReader;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import mqtt.MQTTPublisher;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  *
@@ -107,12 +111,9 @@ public class Controlador {
     
     /* Cambiar estado de un envío
     */
-    public static boolean cambiarEstadoEnvio(int idPaquete, int idEnvio, String estado){
+    public static boolean cambiarEstadoEnvio(int idEnvio, String estado){
         boolean e = FachadaEnvioBD.actualizarEstado(idEnvio, estado);
-        
-        //Publish estado
-        MQTTPublisher.publish("Paquetes/p"+String.valueOf(idPaquete)+"/"+String.valueOf(idEnvio)+"/estado", estado);
-        
+                
         return e;
     }
     
@@ -132,17 +133,48 @@ public class Controlador {
     */
     public static boolean registrarUbicacion(int idEnvio, double longitud, double latitud, double velocidad, Timestamp fecha){
         
-        //Comprobar que la ubicación el válida con la anterior
-        
-        //Calcular la velocidad si lo necesita
-        
-        //Comprobar la velocidad en la vía
-        double velocidadVia = -1;
-        
+        UbicacionEnvio ubAnterior = FachadaEnvioBD.getUltimaUbicacionPorEnvio(idEnvio);
+
+        if (ubAnterior != null) {
+            // En caso de que la velocidad sea -1, calcular la velocidad actual comparando con la ubicación anterior
+            if (velocidad == -1) {
+                // Distancia entre la ubicación anterior y la nueva (en kilómetros)
+                double distancia = Logic.calcularDistancia(ubAnterior.getLongitud(), ubAnterior.getLatitud(), longitud, latitud);
+                Log.log.info("Distancia: " + distancia);
+
+                // Tiempo entre la ubicación anterior y la nueva (en horas)
+                double tiempoHoras = (fecha.getTime() - ubAnterior.getFecha().getTime()) / 3600000.0;
+                Log.log.info("Tiempo: " + tiempoHoras);
+
+                // Calcular velocidad (en km/h)
+                if (tiempoHoras > 0) {
+                    velocidad = distancia / tiempoHoras;
+                } else {
+                    velocidad = 0; // En caso de tiempo 0 o negativo, asignar velocidad 0
+                }
+            }
+
+            // Comprobar que la ubicación no ha pegado un salto ilógico (velocidad exagerada)
+            if (velocidad > 250) { // Por ejemplo, velocidad mayor a 300 km/h es sospechosa
+                return false; // Rechazar el registro por salto ilógico
+            }
+        }
+
+        // Comprobar la velocidad en la vía según las coordenadas usando algún API
+        // Aquí deberíamos integrar un servicio externo que permita consultar la velocidad permitida en la vía
+        // Ejemplo de simulación:
+        Log.log.info("Intentado sacar la velocidad de la via...");
+        double velocidadVia = Logic.obtenerVelocidadVia(longitud, latitud); // Método que interactúa con un API externo
+        Log.log.info("velocidad de la via: "+velocidadVia);
+        // Validar si la velocidad registrada excede en un margen razonable la velocidad de la vía
+        if (velocidadVia > 0 && velocidad > velocidadVia * 2) { // Margen del 20% por ejemplo
+            return false; // Rechazar si la velocidad supera este margen
+        }
+
+        // Registrar la nueva ubicación en la base de datos
         boolean valido = FachadaEnvioBD.registrarUbicacion(idEnvio, fecha, longitud, latitud, velocidad, velocidadVia);
-        
+
         return valido;
-        
     }
     
     /* Registrar ventilador
@@ -185,6 +217,10 @@ public class Controlador {
     */
     public static ArrayList<Estado> obtenerEstados(int idEnvio){
         return FachadaEnvioBD.getEstados(idEnvio);
+    }
+    
+    public static String obtenerTipo(int idCliente){
+        return FachadaClienteBD.getTipo(idCliente);
     }
 
     /* Obtener historial de temperatura y humedad
@@ -242,6 +278,108 @@ public class Controlador {
         
         return pin;
     }
+    
+    public static boolean cancelarEnvio(int idEnvio){
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(currentDateTime);
+        
+        return Controlador.cambiarEstadoEnvio(idEnvio, "Cancelado");
+    }
+    
+    
+    
+    public static void finalizarEnvio(int idEnvio, int idPaquete){
+        Controlador.cambiarEstadoEnvio(idEnvio, "Enviado");
+        
+        //Calculos
+        double tiempoEnvio = Logic.calcularTiempoEnvio(idEnvio);
+        double tiempoCadenaFrio = Logic.contarMinutosPorEncimaDelUmbral(idEnvio);
+        
+    }
+
+    public static void poblarEnvios(String ruta) {
+        try {
+            // Leer el archivo envio.json
+            FileReader envioReader = new FileReader(ruta+"envio.json");
+            JSONArray enviosArray = new JSONArray(new JSONTokener(envioReader));
+
+            // Iterar sobre los envíos y registrar cada uno en la base de datos
+            for (int i = 0; i < 30; i++) {
+                JSONObject envio = enviosArray.getJSONObject(i);
+
+                int idTransportista = envio.getInt("Transportista_idTransportista");
+                int idPaquete = envio.getInt("Paquete_idPaquete");
+                int idReceptor = envio.getInt("Receptor_Cliente_idCliente");
+                int idRemitente = envio.getInt("Remitente_Cliente_idCliente");
+                double temperaturaMax = envio.getDouble("Temperatura_max");
+                double temperaturaMin = envio.getDouble("Temperatura_min");
+
+                // Crear el envío en la base de datos
+                int idEnvio = Controlador.crearEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperaturaMax, temperaturaMin);
+
+                // Registrar datos asociados al envío
+                registrarDatosAsociados(idEnvio, idPaquete, i, ruta);
+            }
+
+        } catch (Exception e) {
+            Log.log.info(e);
+        }
+    }
+
+    public static void registrarDatosAsociados(int idEnvio, int idPaquete, int indice, String ruta) {
+        try {
+            // Leer y procesar estados
+            FileReader estadosReader = new FileReader(ruta+"estados.json");
+            JSONObject estadosJson = new JSONObject(new JSONTokener(estadosReader));
+            JSONArray estadosArray = estadosJson.getJSONArray(String.valueOf(indice));
+            for (int j = 0; j < estadosArray.length(); j++) {
+                JSONObject estado = estadosArray.getJSONObject(j);
+                Timestamp fecha = Timestamp.valueOf(estado.getString("Fecha"));
+                String estadoStr = estado.getString("Estado");
+                Controlador.registrarEstado(idPaquete, idEnvio, estadoStr, fecha);
+            }
+
+            // Leer y procesar temperaturas y humedad
+            FileReader temperaturasReader = new FileReader(ruta+"temp.json");
+            JSONObject temperaturasJson = new JSONObject(new JSONTokener(temperaturasReader));
+            JSONArray temperaturasArray = temperaturasJson.getJSONArray(String.valueOf(indice));
+            for (int j = 0; j < temperaturasArray.length(); j++) {
+                JSONObject temp = temperaturasArray.getJSONObject(j);
+                Timestamp fecha = Timestamp.valueOf(temp.getString("Fecha"));
+                double temperatura = temp.getDouble("Temperatura");
+                double humedad = temp.getDouble("Humedad");
+                Controlador.registrarTH(idPaquete, idEnvio, temperatura, humedad, fecha);
+            }
+
+            // Leer y procesar ventiladores
+            FileReader ventiladorReader = new FileReader(ruta+"ventilador.json");
+            JSONObject ventiladoresJson = new JSONObject(new JSONTokener(ventiladorReader));
+            JSONArray ventiladoresArray = ventiladoresJson.getJSONArray(String.valueOf(indice));
+            for (int j = 0; j < ventiladoresArray.length(); j++) {
+                JSONObject ventilador = ventiladoresArray.getJSONObject(j);
+                Timestamp fecha = Timestamp.valueOf(ventilador.getString("Fecha"));
+                boolean activo = ventilador.getBoolean("Activo");
+                Controlador.registrarVentilador(idPaquete, idEnvio, activo, fecha);
+            }
+
+            // Leer y procesar ubicaciones
+            FileReader ubicacionesReader = new FileReader(ruta+"ubi.json");
+            JSONObject ubicacionesJson = new JSONObject(new JSONTokener(ubicacionesReader));
+            JSONArray ubicacionesArray = ubicacionesJson.getJSONArray(String.valueOf(indice));
+            for (int j = 0; j < ubicacionesArray.length(); j++) {
+                JSONObject ubicacion = ubicacionesArray.getJSONObject(j);
+                double longitud = ubicacion.getDouble("Longitud");
+                double latitud = ubicacion.getDouble("Latitud");
+                double velocidad = ubicacion.getDouble("Velocidad");
+                Timestamp fecha = Timestamp.valueOf(ubicacion.getString("Fecha"));
+                Controlador.registrarUbicacion(idEnvio, longitud, latitud, velocidad, fecha);
+            }
+
+        } catch (Exception e) {
+            Log.log.info(e);
+        }
+    }
+    
     
     
 }
