@@ -1,4 +1,5 @@
 package com.example.smart_packet
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TableLayout
@@ -14,6 +15,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Toast
 import com.example.smart_packet.data.GlobalVariables
 import java.io.OutputStream
@@ -97,6 +100,37 @@ class EnvioActivity : AppCompatActivity() {
                 sendPostRequest(url, datosString)
 
             }
+        }
+        mostrarMenu()
+    }
+
+    fun mostrarMenu(){
+        val menu: ImageView = findViewById(R.id.menu)
+        menu.setOnClickListener { view ->
+            // Crear el objeto PopupMenu
+            val popupMenu = PopupMenu(this, view)
+
+            // Inflar el menú desde el archivo XML
+            popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
+
+            // Configurar el evento para manejar los clics en las opciones del menú
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.item_option1 -> {
+                        val intent = Intent(this, HistorialActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.item_option2 -> {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            // Mostrar el menú emergente
+            popupMenu.show()
         }
     }
 

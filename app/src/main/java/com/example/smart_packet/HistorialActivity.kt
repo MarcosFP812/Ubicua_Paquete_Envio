@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,8 +35,38 @@ class HistorialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_historial)
         supportActionBar!!.hide()
+        mostrarMenu()
         init()
+    }
 
+    fun mostrarMenu(){
+        val menu: ImageView = findViewById(R.id.menu)
+        menu.setOnClickListener { view ->
+            // Crear el objeto PopupMenu
+            val popupMenu = PopupMenu(this, view)
+
+            // Inflar el menú desde el archivo XML
+            popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
+
+            // Configurar el evento para manejar los clics en las opciones del menú
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.item_option1 -> {
+                        val intent = Intent(this, HistorialActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.item_option2 -> {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            // Mostrar el menú emergente
+            popupMenu.show()
+        }
     }
 
     fun init() {
@@ -46,7 +78,6 @@ class HistorialActivity : AppCompatActivity() {
         } else {
             Log.e("Error", "El ID no fue recibido en el Intent")
         }
-
 
         val listAdapterE = ListAdapter(elementsE ?: emptyList(), this, tipo)
         val recyclerViewE = findViewById<RecyclerView>(R.id.enviorv)
@@ -165,7 +196,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")  // Asumimos que "paqueteId" es el detalle del paquete
 
                 // Crear el ListElement con el detalle del paquete y su estado
-                val listElement = ListElement(generarColor(), idEnvio)
+                val listElement = ListElement(generarColor(), idEnvio, estado)
 
                 // Filtrar y añadir el elemento a la lista correspondiente según el estado
                 when (estado) {
@@ -181,7 +212,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")
 
                 // Crear el ListElement
-                val listElement = ListElement(generarColor(), idEnvio)
+                val listElement = ListElement(generarColor(), idEnvio,estado)
 
                 // Filtrar y añadir el elemento a la lista correspondiente
                 when (estado) {
@@ -197,7 +228,7 @@ class HistorialActivity : AppCompatActivity() {
                 val detalle = envio.getInt("paqueteId")
 
                 // Crear el ListElement
-                val listElement = ListElement(generarColor(), idEnvio)
+                val listElement = ListElement(generarColor(), idEnvio, estado)
 
                 // Filtrar y añadir el elemento a la lista correspondiente
                 when (estado) {

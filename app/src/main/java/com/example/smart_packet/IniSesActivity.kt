@@ -42,9 +42,6 @@ class IniSesActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, ingrese nombre y contraseña", Toast.LENGTH_SHORT).show()
             }
-            val i = Intent(this@IniSesActivity, HistorialActivity::class.java)
-            startActivity(i)
-            finish()
         }
 
         val registrarse = findViewById<TextView>(R.id.clickableText)

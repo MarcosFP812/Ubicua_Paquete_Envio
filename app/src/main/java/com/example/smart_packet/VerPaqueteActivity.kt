@@ -1,9 +1,12 @@
 package com.example.smart_packet
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.LineChart
@@ -63,25 +66,31 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             val btnPin: Button = findViewById(R.id.btnPin)
             btnPin.setOnClickListener {
                 val idEnvio = intent.getStringExtra("idEnvio")
-                // Crear el código que deseas mostrar
-                if (idEnvio!=null) {
-                    val codigo = generarCodigoEnvio(idEnvio)
-                    // Crear el AlertDialog para mostrar el código
+                if (idEnvio != null) {
+                    // Mostrar advertencia antes de continuar
                     val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Código de Seguridad")  // Título del diálogo
-                        .setMessage("Tu código es: $codigo")  // Mostrar el código en el mensaje
-                        .setCancelable(true)  // Permitir que se cierre tocando fuera del diálogo
-                        .setPositiveButton("OK") { dialog, id ->
-                            dialog.dismiss()  // Cerrar el diálogo al presionar "OK"
+                    builder.setTitle("Advertencia")  // Título del diálogo
+                        .setMessage("¿Recibiste el paquete? Si no, no clickees en continuar.")  // Mensaje de advertencia
+                        .setCancelable(false)  // No permitir cerrar tocando fuera del diálogo
+                        .setPositiveButton("Continuar") { dialog, id ->
+                            // Acción al presionar "Continuar"
+                            generarCodigoEnvio(idEnvio)
+                            dialog.dismiss()  // Cerrar el diálogo
+                        }
+                        .setNegativeButton("Cancelar") { dialog, id ->
+                            // Acción al presionar "Cancelar"
+                            dialog.dismiss()  // Cerrar el diálogo
                         }
 
-                    // Mostrar el diálogo
+                    // Mostrar el diálogo de advertencia
                     val alert = builder.create()
                     alert.show()
                 } else {
                     Log.e("Error", "El ID no fue recibido en el Intent")
                 }
             }
+
+
         }
 
         supportActionBar!!.hide()
@@ -95,6 +104,37 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             obtenerTemperaturasYHumedades(idEnvio)
         } else {
             Toast.makeText(this, "ID de envío no válido", Toast.LENGTH_SHORT).show()
+        }
+        mostrarMenu()
+    }
+
+    fun mostrarMenu(){
+        val menu: ImageView = findViewById(R.id.menu)
+        menu.setOnClickListener { view ->
+            // Crear el objeto PopupMenu
+            val popupMenu = PopupMenu(this, view)
+
+            // Inflar el menú desde el archivo XML
+            popupMenu.menuInflater.inflate(R.menu.menu, popupMenu.menu)
+
+            // Configurar el evento para manejar los clics en las opciones del menú
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.item_option1 -> {
+                        val intent = Intent(this, HistorialActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.item_option2 -> {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            // Mostrar el menú emergente
+            popupMenu.show()
         }
     }
 
@@ -270,12 +310,6 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         combinedChart.invalidate()
     }
 
-    // Función para cancelar el envío
-    fun cancelarEnvio() {
-        // Lógica para cancelar el envío
-        // Aquí puedes agregar lo que debe suceder cuando el usuario confirma la cancelación
-        Toast.makeText(this, "Envío cancelado", Toast.LENGTH_SHORT).show()
-    }
 
     // Función para generar el código de seguridad PIN
     private fun generarCodigoEnvio(idEnvio: String) {

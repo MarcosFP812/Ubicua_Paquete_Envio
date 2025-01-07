@@ -5,11 +5,21 @@ import android.widget.ImageView;
 public class ListElement {
     public String id;
     public String color;
+    public String estado;
     public ImageView img;
 
-    public ListElement(String color, String id) {
+    public ListElement(String color, String id, String estado) {
         this.color = color;
         this.id = id;
+        this.estado = estado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getId() {

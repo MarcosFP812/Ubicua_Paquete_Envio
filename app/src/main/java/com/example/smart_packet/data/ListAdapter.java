@@ -17,6 +17,7 @@ import com.example.smart_packet.R;
 import com.example.smart_packet.VerPaqueteActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     private List<ListElement> mData;
@@ -41,17 +42,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>{
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position) {
         holder.bindData(mData.get(position));
         ListElement items = mData.get(position);
+        if (Objects.equals(items.getEstado(), "Envio")) {
+            // Agregar el OnClickListener a la imagen
+            holder.icon.setOnClickListener(v -> {
+                // Aquí se maneja el clic en la imagen y se navega a la siguiente actividad/pestaña
+                Context context = holder.icon.getContext();
+                Intent intent = new Intent(context, VerPaqueteActivity.class);  // O la Activity/Fragment que desees
+                var id = items.getId();
+                intent.putExtra("idEnvio", id);
+                intent.putExtra("tipo", tipo);
+                context.startActivity(intent);
+            });
+        }
 
-        // Agregar el OnClickListener a la imagen
-        holder.icon.setOnClickListener(v -> {
-            // Aquí se maneja el clic en la imagen y se navega a la siguiente actividad/pestaña
-            Context context = holder.icon.getContext();
-            Intent intent = new Intent(context, VerPaqueteActivity.class);  // O la Activity/Fragment que desees
-            var id = items.getId();
-            intent.putExtra("idEnvio", id);
-            intent.putExtra("tipo", tipo);
-            context.startActivity(intent);
-        });
     }
 
     @Override
