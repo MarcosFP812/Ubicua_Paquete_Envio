@@ -52,15 +52,12 @@ class EnvioActivity : AppCompatActivity() {
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas"
 
         // Tablas en el diseño
-        val tablaReceptore = findViewById<TableLayout>(R.id.tabla)
-        val tablaTransportista = findViewById<TableLayout>(R.id.tabla1)
-
-        // Cargar datos en las tablas
-        cargarTabla(tablaReceptore, urlReceptores, "id")
-        cargarTabla(tablaTransportista, urlTransportistas, "id")
-
         val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
         val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
+
+        // Cargar datos en las tablas
+        cargarTabla(tablaReceptores, urlReceptores, "Id")
+        cargarTabla(tablaTransportistas, urlTransportistas, "id")
 
         setupTableRowSelection(tablaReceptores, isReceptor = true)
         setupTableRowSelection(tablaTransportistas, isReceptor = false)
@@ -84,7 +81,10 @@ class EnvioActivity : AppCompatActivity() {
                 ).show()
 
             } else {
-                val url = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/CrearEnvio"
+                val tmax = edit.text.toString()
+                val tmin = edit.text.toString()
+                val idpaquete = edit.text.toString()
+                val url = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/CrearEnvio?idTransportista=$selectedTransportistaId&idPaquete=$idpaquete&idReceptor=$selectedReceptorId&idRemitente=$id&temperatura_max=$tmax&temperatura_min=$tmin"
                 val params = mapOf(
                     "idTransportista" to selectedTransportistaId!!,
                     "idReceptor" to selectedReceptorId!!,
@@ -151,7 +151,7 @@ class EnvioActivity : AppCompatActivity() {
                             val idTextView = row.getChildAt(0) as TextView
                             selectedTransportistaId = idTextView.text.toString()
                         }
-                        row.setBackgroundColor(android.graphics.Color.LTGRAY)
+                        row.setBackgroundColor(android.graphics.Color.BLUE)
                     }
                 }
             }

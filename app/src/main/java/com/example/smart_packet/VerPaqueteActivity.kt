@@ -90,8 +90,8 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.mapa) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
-        val idEnvio = intent.getIntExtra("idEnvio", -1)
-        if (idEnvio != -1) {
+        val idEnvio = intent.getStringExtra("idEnvio")
+        if (idEnvio != null) {
             obtenerTemperaturasYHumedades(idEnvio)
         } else {
             Toast.makeText(this, "ID de envío no válido", Toast.LENGTH_SHORT).show()
@@ -101,15 +101,15 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val idEnvio = intent.getIntExtra("idEnvio", -1)
-        if (idEnvio != -1) {
+        val idEnvio = intent.getStringExtra("idEnvio")
+        if (idEnvio != null) {
             obtenerUbicaciones(idEnvio)
         } else {
             Toast.makeText(this, "ID de envío no válido", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun obtenerUbicaciones(idEnvio: Int) {
+    private fun obtenerUbicaciones(idEnvio: String) {
         val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerUbicaciones?idEnvio=$idEnvio"
 
         val thread = Thread {
@@ -172,7 +172,7 @@ class VerPaqueteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun obtenerTemperaturasYHumedades(idEnvio: Int) {
+    private fun obtenerTemperaturasYHumedades(idEnvio: String) {
         val urlString = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTemperaturasHumedades?idEnvio=$idEnvio"
 
         val thread = Thread {
