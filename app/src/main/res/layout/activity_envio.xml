@@ -103,7 +103,7 @@
         android:layout_width="135dp"
         android:layout_height="0dp"
         android:fontFamily="@font/niramit"
-        android:text="ID Cliente"
+        android:text="ID Paquete"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintHorizontal_bias="0.078"

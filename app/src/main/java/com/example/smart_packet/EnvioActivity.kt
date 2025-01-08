@@ -84,8 +84,8 @@ class EnvioActivity : AppCompatActivity() {
 
             } else {
                 val tmax = edit.text.toString()
-                val tmin = edit.text.toString()
-                val idpaquete = edit.text.toString()
+                val tmin = edit1.text.toString()
+                val idpaquete = edit2.text.toString()
                 val url = "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/CrearEnvio?idTransportista=$selectedTransportistaId&idPaquete=$idpaquete&idReceptor=$selectedReceptorId&idRemitente=$id&temperatura_max=$tmax&temperatura_min=$tmin"
                 val params = mapOf(
                     "idTransportista" to selectedTransportistaId!!,
@@ -125,7 +125,7 @@ class EnvioActivity : AppCompatActivity() {
                     val idTextView = row.getChildAt(0) as TextView
                     selectedReceptorId = idTextView.text.toString()
                     row.setBackgroundColor(Color.parseColor("#01A0E1"))
-
+                    table.removeAllViewsInLayout()
                     cargarTransportistas()
 
                 } else {
@@ -269,14 +269,24 @@ class EnvioActivity : AppCompatActivity() {
             val mensaje = "No hay suficientes datos"
             Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
         }else {
-            val mensajePerdida = clasificarTiempo(tiempoPerdida)
 
-            // Mostrar el mensaje en un Toast o en un cuadro de texto
-            val mensaje = "Tiempo de Envío: $tiempoEnvio minutos\n" +
-                    "Tiempo de Pérdida: $tiempoPerdida minutos ($mensajePerdida)"
+            // Redondear los tiempos
+            val tiempoEnvioRedondeado = redondearTiempo(tiempoEnvio)
+            val tiempoPerdidaRedondeado = redondearTiempo(tiempoPerdida)
 
+            // Clasificar el tiempo de pérdida
+            val mensajePerdida = clasificarTiempo(tiempoPerdidaRedondeado)
+
+            // Mostrar el mensaje en un Toast
+            val mensaje = "Tiempo de Envío: $tiempoEnvioRedondeado minutos\n" +
+                    "Tiempo de Pérdida: $tiempoPerdidaRedondeado minutos ($mensajePerdida)"
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+
         }
+    }
+
+    fun redondearTiempo(tiempo: Double): Double {
+        return String.format("%.2f", tiempo).toDouble()
     }
 
     private fun clasificarTiempo(tiempo: Double): String {
