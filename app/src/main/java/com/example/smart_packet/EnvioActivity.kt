@@ -198,12 +198,11 @@ class EnvioActivity : AppCompatActivity() {
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray.getJSONObject(i)
                     val id = jsonObject.getString(idKey)
-                    val nombre = jsonObject.getString("nombre")
 
                     // Crear una nueva fila para la tabla
                     val fila = TableRow(this)
                     val textView = TextView(this)
-                    textView.text = nombre
+                    textView.text = id
                     textView.setPadding(16, 16, 16, 16)
                     fila.addView(textView)
 
