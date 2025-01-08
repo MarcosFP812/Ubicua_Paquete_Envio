@@ -103,10 +103,12 @@ class EnvioActivity : AppCompatActivity() {
         mostrarMenu()
     }
 
-    // Cargar transportistas después de seleccionar un receptor
     private fun cargarTransportistas() {
         if (selectedReceptorId != null) {
+            // Vaciar la tabla de transportistas
             val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
+            tablaTransportistas.removeAllViews()  // Limpiar la tabla antes de cargar nuevos datos
+
             val urlTransportistas =
                 "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
             cargarTablaT(tablaTransportistas, urlTransportistas, "id")
@@ -125,7 +127,6 @@ class EnvioActivity : AppCompatActivity() {
                     val idTextView = row.getChildAt(0) as TextView
                     selectedReceptorId = idTextView.text.toString()
                     row.setBackgroundColor(Color.parseColor("#01A0E1"))
-                    table.removeAllViewsInLayout()
                     cargarTransportistas()
 
                 } else {
@@ -278,8 +279,8 @@ class EnvioActivity : AppCompatActivity() {
             val mensajePerdida = clasificarTiempo(tiempoPerdidaRedondeado)
 
             // Mostrar el mensaje en un Toast
-            val mensaje = "Tiempo de Envío: $tiempoEnvioRedondeado minutos\n" +
-                    "Tiempo de Pérdida: $tiempoPerdidaRedondeado minutos ($mensajePerdida)"
+            val mensaje = "Tiempo de Envío: $tiempoEnvioRedondeado min\n" +
+                    "Tiempo de Pérdida: $tiempoPerdidaRedondeado min ($mensajePerdida)"
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
 
         }
