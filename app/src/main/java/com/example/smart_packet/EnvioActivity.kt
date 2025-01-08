@@ -21,6 +21,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import com.example.smart_packet.data.GlobalVariables
 import java.io.OutputStream
+import kotlin.math.roundToInt
 
 
 class EnvioActivity : AppCompatActivity() {
@@ -57,7 +58,7 @@ class EnvioActivity : AppCompatActivity() {
         val urlReceptores =
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerReceptores"
         val urlTransportistas =
-            "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas"
+            "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
 
         // Tablas en el diseño
         val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
@@ -157,16 +158,25 @@ class EnvioActivity : AppCompatActivity() {
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray.getJSONObject(i)
                     val id = jsonObject.getString(idKey)
+                    val nombre = jsonObject.getString("nombre")
+                    val tiempoEnvio = jsonObject.getDouble("TiempoEnvio")
+                    val tiempoPerdida = jsonObject.getDouble("TiempoPerdida")
 
                     // Crear una nueva fila para la tabla
                     val fila = TableRow(this)
                     val textView = TextView(this)
-                    textView.text = id
+                    textView.text = nombre
                     textView.setPadding(16, 16, 16, 16)
                     fila.addView(textView)
 
                     // Añadir la fila a la tabla
                     tabla.addView(fila)
+
+                    // Agregar el clic en la fila para seleccionar el transportista
+                    fila.setOnClickListener {
+                        selectedTransportistaId = id
+                        mostrarMensajeDeTiempo(tiempoEnvio, tiempoPerdida)
+                    }
                 }
             } else {
                 Log.e("HTTP_ERROR", "Código de respuesta: ${connection.responseCode}")
@@ -175,28 +185,61 @@ class EnvioActivity : AppCompatActivity() {
             Log.e("ERROR", "Error al cargar datos: ${e.message}")
         }
     }
-            private fun setupTableRowSelection(table: TableLayout, isReceptor: Boolean) {
-                for (i in 0 until table.childCount) {
-                    val row = table.getChildAt(i) as TableRow
 
-                    row.setOnClickListener {
-                        if (isReceptor) {
-                            lastSelectedRowReceptor?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                            lastSelectedRowReceptor = row
-                            val idTextView = row.getChildAt(0) as TextView
-                            selectedReceptorId = idTextView.text.toString()
-                        } else {
-                            lastSelectedRowTransportista?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                            lastSelectedRowTransportista = row
-                            val idTextView = row.getChildAt(0) as TextView
-                            selectedTransportistaId = idTextView.text.toString()
-                        }
-                        row.setBackgroundColor(Color.parseColor("#01A0E1"));
+    private fun mostrarMensajeDeTiempo(tiempoEnvio: Double, tiempoPerdida: Double) {
+        val mensajePerdida = clasificarTiempo(tiempoPerdida)
+
+        // Mostrar el mensaje en un Toast o en un cuadro de texto
+        val mensaje = "Tiempo de Envío: $tiempoEnvio minutos\n" +
+                "Tiempo de Pérdida: $tiempoPerdida minutos ($mensajePerdida)"
+
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+    }
+
+    private fun clasificarTiempo(tiempo: Double): String {
+        return when {
+            tiempo <= 3 -> "Bien conservado"
+            tiempo > 3 && tiempo <= 5 -> "Aceptable"
+            else -> "Mal"
+        }
+    }
+
+
+    private fun setupTableRowSelection(table: TableLayout, isReceptor: Boolean) {
+        for (i in 0 until table.childCount) {
+            val row = table.getChildAt(i) as TableRow
+
+            row.setOnClickListener {
+                if (isReceptor) {
+                    // Selección de receptor
+                    lastSelectedRowReceptor?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    lastSelectedRowReceptor = row
+                    val idTextView = row.getChildAt(0) as TextView
+                    selectedReceptorId = idTextView.text.toString()
+                    row.setBackgroundColor(Color.parseColor("#01A0E1"))
+                } else {
+                    // Validación: No permitir seleccionar transportista si no se ha seleccionado receptor
+                    if (selectedReceptorId == null) {
+                        Toast.makeText(
+                            this,
+                            "Debe seleccionar un receptor antes de elegir un transportista.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // Selección de transportista
+                        lastSelectedRowTransportista?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                        lastSelectedRowTransportista = row
+                        val idTextView = row.getChildAt(0) as TextView
+                        selectedTransportistaId = idTextView.text.toString()
+                        row.setBackgroundColor(Color.parseColor("#01A0E1"))
                     }
                 }
             }
+        }
+    }
 
-            private fun sendPostRequest(urlString: String, params: Map<String, Any>) {
+
+    private fun sendPostRequest(urlString: String, params: Map<String, Any>) {
                 // Habilitar política de red para operaciones en el hilo principal (solo para demostración)
                 StrictMode.setThreadPolicy(
                     StrictMode.ThreadPolicy.Builder().permitNetwork().build()
