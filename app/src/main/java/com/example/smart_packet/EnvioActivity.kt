@@ -54,18 +54,14 @@ class EnvioActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        // URLs de los servidores
+        val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
         val urlReceptores =
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerReceptores"
-
-        val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
         cargarTablaR(tablaReceptores, urlReceptores, "Id")
         setupTableRowSelection(tablaReceptores, isReceptor = true)
 
+
         val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
-        val urlTransportistas =
-            "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
-        cargarTablaT(tablaTransportistas, urlTransportistas, "id")
         setupTableRowSelection(tablaTransportistas, isReceptor = false)
 
         val enviarButton = findViewById<View>(R.id.btn1)
@@ -79,7 +75,7 @@ class EnvioActivity : AppCompatActivity() {
                     "Debe seleccionar un receptor y un transportista.",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else if (edit == null || edit1==null || edit2 == null ){
+            } else if (edit == null || edit1 == null || edit2 == null) {
                 Toast.makeText(
                     this,
                     "Debe llenar todos los campos.",
@@ -106,6 +102,53 @@ class EnvioActivity : AppCompatActivity() {
         }
         mostrarMenu()
     }
+
+    // Cargar transportistas después de seleccionar un receptor
+    private fun cargarTransportistas() {
+        if (selectedReceptorId != null) {
+            val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
+            val urlTransportistas =
+                "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
+            cargarTablaT(tablaTransportistas, urlTransportistas, "id")
+        }
+    }
+
+    private fun setupTableRowSelection(table: TableLayout, isReceptor: Boolean) {
+        for (i in 0 until table.childCount) {
+            val row = table.getChildAt(i) as TableRow
+
+            row.setOnClickListener {
+                if (isReceptor) {
+                    // Selección de receptor
+                    lastSelectedRowReceptor?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    lastSelectedRowReceptor = row
+                    val idTextView = row.getChildAt(0) as TextView
+                    selectedReceptorId = idTextView.text.toString()
+                    row.setBackgroundColor(Color.parseColor("#01A0E1"))
+
+                    cargarTransportistas()
+
+                } else {
+                    // Validación: No permitir seleccionar transportista si no se ha seleccionado receptor
+                    if (selectedReceptorId == null) {
+                        Toast.makeText(
+                            this,
+                            "Debe seleccionar un receptor antes de elegir un transportista.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // Selección de transportista
+                        lastSelectedRowTransportista?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                        lastSelectedRowTransportista = row
+                        val idTextView = row.getChildAt(0) as TextView
+                        selectedTransportistaId = idTextView.text.toString()
+                        row.setBackgroundColor(Color.parseColor("#01A0E1"))
+                    }
+                }
+            }
+        }
+    }
+
 
     fun mostrarMenu(){
         val menu: ImageView = findViewById(R.id.menu)
@@ -222,13 +265,19 @@ class EnvioActivity : AppCompatActivity() {
     }
 
     private fun mostrarMensajeDeTiempo(tiempoEnvio: Double, tiempoPerdida: Double) {
-        val mensajePerdida = clasificarTiempo(tiempoPerdida)
 
-        // Mostrar el mensaje en un Toast o en un cuadro de texto
-        val mensaje = "Tiempo de Envío: $tiempoEnvio minutos\n" +
-                "Tiempo de Pérdida: $tiempoPerdida minutos ($mensajePerdida)"
+        if(tiempoEnvio == 0.0){
+            val mensaje = "No hay suficientes datos"
+            Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+        }else {
+            val mensajePerdida = clasificarTiempo(tiempoPerdida)
 
-        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+            // Mostrar el mensaje en un Toast o en un cuadro de texto
+            val mensaje = "Tiempo de Envío: $tiempoEnvio minutos\n" +
+                    "Tiempo de Pérdida: $tiempoPerdida minutos ($mensajePerdida)"
+
+            Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun clasificarTiempo(tiempo: Double): String {
@@ -239,39 +288,6 @@ class EnvioActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun setupTableRowSelection(table: TableLayout, isReceptor: Boolean) {
-        for (i in 0 until table.childCount) {
-            val row = table.getChildAt(i) as TableRow
-
-            row.setOnClickListener {
-                if (isReceptor) {
-                    // Selección de receptor
-                    lastSelectedRowReceptor?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                    lastSelectedRowReceptor = row
-                    val idTextView = row.getChildAt(0) as TextView
-                    selectedReceptorId = idTextView.text.toString()
-                    row.setBackgroundColor(Color.parseColor("#01A0E1"))
-                } else {
-                    // Validación: No permitir seleccionar transportista si no se ha seleccionado receptor
-                    if (selectedReceptorId == null) {
-                        Toast.makeText(
-                            this,
-                            "Debe seleccionar un receptor antes de elegir un transportista.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // Selección de transportista
-                        lastSelectedRowTransportista?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                        lastSelectedRowTransportista = row
-                        val idTextView = row.getChildAt(0) as TextView
-                        selectedTransportistaId = idTextView.text.toString()
-                        row.setBackgroundColor(Color.parseColor("#01A0E1"))
-                    }
-                }
-            }
-        }
-    }
 
 
     private fun sendPostRequest(urlString: String, params: Map<String, Any>) {
