@@ -194,7 +194,7 @@ void loop() {
     lcd.print("Esperando ID");
     delay(2000);
 
-    estado = "CERRAR"
+    estado = "CERRAR";
   }  // Espera a que el ID del paquete se defina
   Serial.println("Topics modificados");
   topicEstado = "Paquetes/p0/"+id+"/estado";

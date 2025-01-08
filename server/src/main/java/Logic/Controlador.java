@@ -25,6 +25,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mqtt.MQTTPublisher;
+import mqtt.MQTTSuscriber;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -85,13 +86,12 @@ public class Controlador {
     */
     public static int crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min){
         int id = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
+        MQTTSuscriber suscriber = new MQTTSuscriber();
+        
+
         MQTTPublisher.publish("Paquetes/p0/id", String.valueOf(id));
-        try {
-            sleep(5000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id)+"/estado","CIERRE");
+        suscriber.suscribeTopic("Paquetes/p0/"+id+"/#");
+        
         return id;
     }
     
@@ -273,9 +273,11 @@ public class Controlador {
         }
 
         String pin = pinBuilder.toString();
+        pin = "255411";
         
         //Publish del pin
         MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/pw", pin);
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(idEnvio)+"/estado", "APERTURA");
         int idPaquete = 0;
         
         LocalDateTime currentDateTime = LocalDateTime.now();
