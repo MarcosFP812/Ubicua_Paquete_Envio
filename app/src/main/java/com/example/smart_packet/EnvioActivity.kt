@@ -57,18 +57,15 @@ class EnvioActivity : AppCompatActivity() {
         // URLs de los servidores
         val urlReceptores =
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerReceptores"
+
+        val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
+        cargarTabla(tablaReceptores, urlReceptores, "Id", false)
+        setupTableRowSelection(tablaReceptores, isReceptor = true)
+
+        val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
         val urlTransportistas =
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
-
-        // Tablas en el diseño
-        val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
-        val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
-
-        // Cargar datos en las tablas
-        cargarTabla(tablaReceptores, urlReceptores, "Id")
-        cargarTabla(tablaTransportistas, urlTransportistas, "id")
-
-        setupTableRowSelection(tablaReceptores, isReceptor = true)
+        cargarTabla(tablaTransportistas, urlTransportistas, "id", true)
         setupTableRowSelection(tablaTransportistas, isReceptor = false)
 
         val enviarButton = findViewById<View>(R.id.btn1)
@@ -141,7 +138,7 @@ class EnvioActivity : AppCompatActivity() {
         }
     }
 
-    private fun cargarTabla(tabla: TableLayout, urlString: String, idKey: String) {
+    private fun cargarTabla(tabla: TableLayout, urlString: String, idKey: String, es_transp: Boolean) {
         try {
             val url = URL(urlString)
             val connection = url.openConnection() as HttpURLConnection
@@ -159,9 +156,10 @@ class EnvioActivity : AppCompatActivity() {
                     val jsonObject = jsonArray.getJSONObject(i)
                     val id = jsonObject.getString(idKey)
                     val nombre = jsonObject.getString("nombre")
-                    val tiempoEnvio = jsonObject.getDouble("TiempoEnvio")
-                    val tiempoPerdida = jsonObject.getDouble("TiempoPerdida")
-
+                    if (es_transp) {
+                        val tiempoEnvio = jsonObject.getDouble("TiempoEnvio")
+                        val tiempoPerdida = jsonObject.getDouble("TiempoPerdida")
+                    }
                     // Crear una nueva fila para la tabla
                     val fila = TableRow(this)
                     val textView = TextView(this)
@@ -175,7 +173,9 @@ class EnvioActivity : AppCompatActivity() {
                     // Agregar el clic en la fila para seleccionar el transportista
                     fila.setOnClickListener {
                         selectedTransportistaId = id
-                        mostrarMensajeDeTiempo(tiempoEnvio, tiempoPerdida)
+                        if(es_transp) {
+                            mostrarMensajeDeTiempo(tiempoEnvio, tiempoPerdida)
+                        }
                     }
                 }
             } else {
