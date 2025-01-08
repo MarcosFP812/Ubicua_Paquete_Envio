@@ -59,13 +59,13 @@ class EnvioActivity : AppCompatActivity() {
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerReceptores"
 
         val tablaReceptores = findViewById<TableLayout>(R.id.tabla)
-        cargarTabla(tablaReceptores, urlReceptores, "Id", false)
+        cargarTablaR(tablaReceptores, urlReceptores, "Id")
         setupTableRowSelection(tablaReceptores, isReceptor = true)
 
         val tablaTransportistas = findViewById<TableLayout>(R.id.tabla1)
         val urlTransportistas =
             "http://${GlobalVariables.myGlobalUrl}/ServerExampleUbicomp-1.0-SNAPSHOT/ObtenerTransportistas?idReceptor=$selectedReceptorId&idRemitente=$idCliente"
-        cargarTabla(tablaTransportistas, urlTransportistas, "id", true)
+        cargarTablaT(tablaTransportistas, urlTransportistas, "id")
         setupTableRowSelection(tablaTransportistas, isReceptor = false)
 
         val enviarButton = findViewById<View>(R.id.btn1)
@@ -138,7 +138,7 @@ class EnvioActivity : AppCompatActivity() {
         }
     }
 
-    private fun cargarTabla(tabla: TableLayout, urlString: String, idKey: String, es_transp: Boolean) {
+    private fun cargarTablaR(tabla: TableLayout, urlString: String, idKey: String) {
         try {
             val url = URL(urlString)
             val connection = url.openConnection() as HttpURLConnection
@@ -156,10 +156,47 @@ class EnvioActivity : AppCompatActivity() {
                     val jsonObject = jsonArray.getJSONObject(i)
                     val id = jsonObject.getString(idKey)
                     val nombre = jsonObject.getString("nombre")
-                    if (es_transp) {
-                        val tiempoEnvio = jsonObject.getDouble("TiempoEnvio")
-                        val tiempoPerdida = jsonObject.getDouble("TiempoPerdida")
-                    }
+
+                    // Crear una nueva fila para la tabla
+                    val fila = TableRow(this)
+                    val textView = TextView(this)
+                    textView.text = nombre
+                    textView.setPadding(16, 16, 16, 16)
+                    fila.addView(textView)
+
+                    // Añadir la fila a la tabla
+                    tabla.addView(fila)
+
+                }
+            } else {
+                Log.e("HTTP_ERROR", "Código de respuesta: ${connection.responseCode}")
+            }
+        } catch (e: Exception) {
+            Log.e("ERROR", "Error al cargar datos: ${e.message}")
+        }
+    }
+
+    private fun cargarTablaT(tabla: TableLayout, urlString: String, idKey: String) {
+        try {
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            connection.connectTimeout = 5000
+            connection.readTimeout = 5000
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val inputStream = connection.inputStream
+                val response = inputStream.bufferedReader().use { it.readText() }
+
+                // Parsear el JSON
+                val jsonArray = JSONArray(response)
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    val id = jsonObject.getString(idKey)
+                    val nombre = jsonObject.getString("nombre")
+                    val tiempoEnvio = jsonObject.getDouble("TiempoEnvio")
+                    val tiempoPerdida = jsonObject.getDouble("TiempoPerdida")
+
                     // Crear una nueva fila para la tabla
                     val fila = TableRow(this)
                     val textView = TextView(this)
@@ -173,9 +210,7 @@ class EnvioActivity : AppCompatActivity() {
                     // Agregar el clic en la fila para seleccionar el transportista
                     fila.setOnClickListener {
                         selectedTransportistaId = id
-                        if(es_transp) {
-                            mostrarMensajeDeTiempo(tiempoEnvio, tiempoPerdida)
-                        }
+                        mostrarMensajeDeTiempo(tiempoEnvio, tiempoPerdida)
                     }
                 }
             } else {
