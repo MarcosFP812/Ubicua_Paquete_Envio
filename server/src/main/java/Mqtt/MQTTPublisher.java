@@ -23,20 +23,20 @@ public class MQTTPublisher {
             connOpts.setUserName(MQTTBroker.getUsername());
             connOpts.setPassword(MQTTBroker.getPassword().toCharArray());
             connOpts.setCleanSession(true);
-            Log.logmqtt.info("Connecting to broker: " + MQTTBroker.getBroker());
+            Log.log.info("Connecting to broker: " + MQTTBroker.getBroker() + " con "+ MQTTBroker.getUsername()+" "+MQTTBroker.getPassword());
             sampleClient.connect(connOpts);
-            Log.logmqtt.info("Connected");
+            Log.log.info("Connected");
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(MQTTBroker.getQos());
             sampleClient.publish(topic, message);
-            Log.logmqtt.info("Message published");
+            Log.log.info("Message published");
             sampleClient.disconnect();
-            Log.logmqtt.info("Disconnected");
+            Log.log.info("Disconnected");
 
         } catch (MqttException me) {
-            Log.logmqtt.error("Error on publishing value: {}", me);
+            Log.log.error("Error on publishing value: {}", me);
         } catch (Exception e) {
-            Log.logmqtt.error("Error on publishing value: {}", e);
+            Log.log.error("Error on publishing value: {}", e);
         }
     }
 }

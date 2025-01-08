@@ -25,35 +25,36 @@ public class MQTTSuscriber implements MqttCallback {
     public void suscribeTopic(String topic) {
         MemoryPersistence persistence = new MemoryPersistence();
         try {
+            Log.log.info("Entrando en: "+ MQTTBroker.getBroker()+" "+MQTTBroker.getClientId()+" "+MQTTBroker.getUsername()+" "+MQTTBroker.getPassword());
             MqttClient sampleClient = new MqttClient(MQTTBroker.getBroker(), MQTTBroker.getClientId(), persistence);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setUserName(MQTTBroker.getUsername());
             connOpts.setPassword(MQTTBroker.getPassword().toCharArray());
             connOpts.setCleanSession(true);
             
-            Log.logmqtt.info("Mqtt Conectando al broker: " + MQTTBroker.getBroker());
+            Log.log.info("Mqtt Conectando al broker: " + MQTTBroker.getBroker());
             sampleClient.connect(connOpts);
-            Log.logmqtt.info("Mqtt: Conectado");
+            Log.log.info("Mqtt: Conectado");
             
             sampleClient.setCallback(this);
             sampleClient.subscribe(topic);
-            Log.logmqtt.info("Suscrito al topic {}", topic);
+            Log.log.info("Suscrito al topic {}", topic);
 
         } catch (MqttException me) {
-            Log.logmqtt.error("Error al intentar suscribirse topic: {}", me);
+            Log.log.error("Error al intentar suscribirse topic: {}", me);
         } catch (Exception e) {
-            Log.logmqtt.error("Error al intentar suscribirse topic: {}", e);
+            Log.log.error("Error al intentar suscribirse topic: {}", e);
         }
     }
 
     @Override
     public void connectionLost(Throwable cause) {
-        Log.logmqtt.warn("Conexion perdida: ", cause);
+        Log.log.warn("Conexion perdida: ", cause);
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.logmqtt.info("Mensaje recibido en topic {}: {}", topic, message.toString());
+        Log.log.info("Mensaje recibido en topic {}: {}", topic, message.toString());
         Topics newTopic = new Topics();
         newTopic.setValue(message.toString());
         String[] mensaje;
@@ -96,16 +97,16 @@ public class MQTTSuscriber implements MqttCallback {
                     }
                     break;
                 default:
-                    Log.logmqtt.warn("Subtopico no reconocido: " + subTopic);
+                    Log.log.warn("Subtopico no reconocido: " + subTopic);
                     break;
             }
         }catch (Exception e){
-            Log.logmqtt.error("Error al procesar el mensaje", e);
+            Log.log.error("Error al procesar el mensaje", e);
         }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        Log.logmqtt.info("Mensaje enviado correctamente: {} ", token.isComplete());
+        Log.log.info("Mensaje enviado correctamente: {} ", token.isComplete());
     }
 }

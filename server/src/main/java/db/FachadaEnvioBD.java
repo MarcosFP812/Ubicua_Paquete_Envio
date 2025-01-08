@@ -473,6 +473,7 @@ public class FachadaEnvioBD {
             }
         } catch (SQLException | NullPointerException e) {
             Log.log.info(e);
+            id = -1;
             try {
                 if (con != null) {
                     con.rollback();

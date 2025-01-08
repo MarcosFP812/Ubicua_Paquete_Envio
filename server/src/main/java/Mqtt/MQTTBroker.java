@@ -4,9 +4,9 @@ public class MQTTBroker {
 
     private static int qos = 2;
     private static final String broker = "tcp://localhost:1883";
-    private static final String clientId = "WheatherStationUAH";
-    private static final String username = "ubicua";
-    private static final String password = "ubicua";
+    private static final String clientId = "ubicua";
+    private static final String username = "user";
+    private static final String password = "pw";
     
     public MQTTBroker() {
     }
@@ -24,7 +24,7 @@ public class MQTTBroker {
     }
 
     public static String getUsername() {
-        return password;
+        return username;
     }
 
     public static String getPassword() {

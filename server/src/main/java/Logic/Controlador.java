@@ -14,6 +14,7 @@ import Clases.UbicacionEnvio;
 import db.FachadaClienteBD;
 import db.FachadaEnvioBD;
 import java.io.FileReader;
+import static java.lang.Thread.sleep;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -21,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mqtt.MQTTPublisher;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,8 +85,13 @@ public class Controlador {
     */
     public static int crearEnvio(int idTransportista, int idPaquete, int idReceptor, int idRemitente, double temperatura_max, double temperatura_min){
         int id = FachadaEnvioBD.crearNuevoEnvio(idTransportista, idPaquete, idReceptor, idRemitente, temperatura_max, temperatura_min);
-        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id), String.valueOf(id));
-        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id)+"/estado","CARGA");
+        MQTTPublisher.publish("Paquetes/p0/id", String.valueOf(id));
+        try {
+            sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MQTTPublisher.publish("Paquetes/p0/"+String.valueOf(id)+"/estado","CIERRE");
         return id;
     }
     

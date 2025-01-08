@@ -40,11 +40,11 @@ public class Projectinitializer implements ServletContextListener {
         
         Log.log.info("Pruebas acceso base de datos...");
         
-        LocalDateTime localDateTime = LocalDateTime.now();
+        /*LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp fecha = Timestamp.valueOf(localDateTime);
         
         Log.log.info(Controlador.obtenerTiempoMedioTransportista(2,2, 1));
-        Log.log.info(Controlador.obtenerPerdidaMedia(2));
+        Log.log.info(Controlador.obtenerPerdidaMedia(2));*/
             
         
         //Controlador.registrarUbicacion(1, -3.270053,  40.562697, -1, fecha);
